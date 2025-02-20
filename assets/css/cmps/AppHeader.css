@@ -1,0 +1,16 @@
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+    background: var(--bg1);
+}
+
+nav a {
+    margin: .5em;
+}
+
+nav a.active {
+    color: var(--color1);
+    font-weight: bold;
+    text-decoration: overline;
+}

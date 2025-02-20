@@ -1,0 +1,25 @@
+.user-msg {
+    position: fixed;
+    bottom: -100px;
+    right: .5em;
+    padding: .5em;
+    background-color: #111;
+}
+
+.user-msg.open {
+    bottom: .8em;
+    transition: bottom .5s;
+}
+
+.user-msg.success {
+    background-color: var(--color2);
+}
+
+.user-msg.error {
+    background-color: var(--color3);
+}
+
+.user-msg button{
+   float: right;
+   margin-inline-start: 4px;
+}
