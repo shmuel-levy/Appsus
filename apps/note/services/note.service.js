@@ -45,4 +45,42 @@ const defaultNotes = [
     }
 ]
 
+export const noteService = {
+    query,
+    getById,
+    save,
+    remove,
+    getEmptyNote
+}
 
+function query(filterBy = {}) {
+    return storageService.query(STORAGE_KEY)
+        .then(notes => {
+            if (!notes || !notes.length) {
+                notes = defaultNotes
+                return storageService.post(STORAGE_KEY, notes[0])
+                    .then(() => storageService.post(STORAGE_KEY, notes[1]))
+                    .then(() => storageService.post(STORAGE_KEY, notes[2]))
+                    .then(() => storageService.query(STORAGE_KEY))
+            }
+            return notes
+        })
+        .then(notes => {
+            if (filterBy.txt) {
+                const regex = new RegExp(filterBy.txt, 'i')
+                notes = notes.filter(note => {
+                    return regex.test(note.info.txt) || 
+                           regex.test(note.info.title) || 
+                           (note.type === 'NoteTodos' && note.info.todos.some(todo => regex.test(todo.txt)))
+                })
+            }
+            
+            notes.sort((a, b) => {
+                if (a.isPinned && !b.isPinned) return -1
+                if (!a.isPinned && b.isPinned) return 1
+                return b.createdAt - a.createdAt
+            })
+            
+            return notes
+        })
+}
