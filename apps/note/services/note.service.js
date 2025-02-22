@@ -84,3 +84,5 @@ function query(filterBy = {}) {
             return notes
         })
 }
+
+function getById(){}
