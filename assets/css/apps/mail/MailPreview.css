@@ -1,0 +1,35 @@
+.mail-preview {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    font-size: 14px;
+}
+
+.mail-preview h3 {
+    flex-grow: 1;
+    font-weight: normal;
+    color: #202124;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mail-preview p {
+    flex-grow: 2;
+    color: #5f6368;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mail-preview.unread {
+    font-weight: bold;
+    background: #f2f6fc;
+}
+
+.mail-preview.read {
+    font-weight: normal;
+    background: #fff;
+}

@@ -1,1 +1,18 @@
  /* mail list */
+
+ .mail-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+ }
+
+ .mail-list li {
+    border-bottom: 1px solid #ddd;
+    transition: background 0.2s;
+ }
+
+ .mail-list li:hover {
+    background: #f1f3f4;
+    cursor: pointer;
+ }
+

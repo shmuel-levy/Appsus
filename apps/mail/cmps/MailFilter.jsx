@@ -1,12 +1,12 @@
 const { useState } = React
 
 export function MailFilter({ onSetFilter }) {
-    const [filterBy, SetFilterBy] = useState({ text: '', isRead: 'all' })
+    const [filterBy, setFilterBy] = useState({ text: '', isRead: 'all' })
 
     function handleChange({ target }) {
         const field = target.name
         const value = target.type === 'checkbox' ? target.checked : target.value
-        SetFilterBy(prevFilter => {
+        setFilterBy(prevFilter => {
             const newFilter = { ...prevFilter, [field]: value }
             onSetFilter(newFilter)
             return newFilter
