@@ -1,101 +1,157 @@
-// note service
-import { storageService } from "../../../services/async-storage.service"
-import { utilService } from "../../../services/util.service"
-import { showSuccessMsg, showErrorMsg } from "../../../services/event-bus.service"
-const STORAGE_KEY = 'noteDB'
+import { storageService } from '../../services/async-storage.service.js'
+import { utilService } from '../../services/util.service.js'
 
-const defaultNotes = [
-    {
-        id: 'n101',
-        createdAt: 1112222,
-        type: 'NoteTxt',
-        isPinned: true,
-        style: {
-            backgroundColor: '#00d'
-        },
-        info: {
-            txt: 'Fullstack Me Baby!'
-        }
-    },
-    {
-        id: 'n102',
-        createdAt: 1112223,
-        type: 'NoteImg',
-        isPinned: false,
-        info: {
-            url: 'http://some-img/me',
-            title: 'Bobi and Me'
-        },
-        style: {
-            backgroundColor: '#00d'
-        }
-    },
-    {
-        id: 'n103',
-        createdAt: 1112224,
-        type: 'NoteTodos',
-        isPinned: false,
-        info: {
-            title: 'Get my stuff together',
-            todos: [
-                { txt: 'Driving license', doneAt: null },
-                { txt: 'Coding power', doneAt: 187111111 }
-            ]
-        }
-    }
-]
+const NOTES_KEY = 'notesDB'
 
 export const noteService = {
     query,
-    getById,
-    save,
+    get,
     remove,
-    getEmptyNote
+    save,
+    getEmptyNote,
+    createNote
 }
+
+// Initialize demo notes if needed
+_createDemoNotes()
 
 function query(filterBy = {}) {
-    return storageService.query(STORAGE_KEY)
+    return storageService.query(NOTES_KEY)
         .then(notes => {
-            if (!notes || !notes.length) {
-                notes = defaultNotes
-                return storageService.post(STORAGE_KEY, notes[0])
-                    .then(() => storageService.post(STORAGE_KEY, notes[1]))
-                    .then(() => storageService.post(STORAGE_KEY, notes[2]))
-                    .then(() => storageService.query(STORAGE_KEY))
+            // Optional filtering logic can be added here
+            if (filterBy.type) {
+                notes = notes.filter(note => note.type === filterBy.type)
             }
-            return notes
-        })
-        .then(notes => {
             if (filterBy.txt) {
-                const regex = new RegExp(filterBy.txt, 'i')
-                notes = notes.filter(note => {
-                    return regex.test(note.info.txt) || 
-                           regex.test(note.info.title) || 
-                           (note.type === 'NoteTodos' && note.info.todos.some(todo => regex.test(todo.txt)))
-                })
+                notes = notes.filter(note => 
+                    _getNoteText(note).toLowerCase().includes(filterBy.txt.toLowerCase())
+                )
             }
-            
-            notes.sort((a, b) => {
-                if (a.isPinned && !b.isPinned) return -1
-                if (!a.isPinned && b.isPinned) return 1
-                return b.createdAt - a.createdAt
-            })
-            
-            return notes
+            return notes.sort((a, b) => b.isPinned - a.isPinned || b.createdAt - a.createdAt)
         })
 }
 
-function getById(noteId) {
-}
-
-function save(note) {
+function get(noteId) {
+    return storageService.get(NOTES_KEY, noteId)
 }
 
 function remove(noteId) {
+    return storageService.remove(NOTES_KEY, noteId)
 }
 
-function getEmptyNote() {
+function save(note) {
+    if (note.id) {
+        return storageService.put(NOTES_KEY, note)
+    } else {
+        return storageService.post(NOTES_KEY, note)
+    }
 }
 
+function createNote(type, info, style = {}) {
+    const note = {
+        id: utilService.makeId(),
+        createdAt: Date.now(),
+        type,
+        isPinned: false,
+        style: {
+            backgroundColor: style.backgroundColor || '#ffffff'
+        },
+        info
+    }
+    return save(note)
+}
 
-window.noteService = noteService
+function getEmptyNote(type = 'NoteTxt') {
+    switch(type) {
+        case 'NoteTxt':
+            return {
+                type: 'NoteTxt',
+                info: { txt: '' }
+            }
+        case 'NoteImg':
+            return {
+                type: 'NoteImg',
+                info: { 
+                    url: '',
+                    title: ''
+                }
+            }
+        case 'NoteVideo':
+            return {
+                type: 'NoteVideo',
+                info: { 
+                    url: '',
+                    title: ''
+                }
+            }
+        case 'NoteTodos':
+            return {
+                type: 'NoteTodos',
+                info: {
+                    title: '',
+                    todos: []
+                }
+            }
+        default:
+            throw new Error('Invalid note type')
+    }
+}
+
+function _createDemoNotes() {
+    storageService.query(NOTES_KEY).then(notes => {
+        if (notes.length) return
+
+        const demoNotes = [
+            {
+                id: 'n101',
+                createdAt: 1112222,
+                type: 'NoteTxt',
+                isPinned: true,
+                style: { backgroundColor: '#f0f0f0' },
+                info: { txt: 'Fullstack Me Baby!' }
+            },
+            {
+                id: 'n102',
+                createdAt: 1112223,
+                type: 'NoteImg',
+                isPinned: false,
+                style: { backgroundColor: '#e6f2ff' },
+                info: {
+                    url: 'https://example.com/sample-image.jpg',
+                    title: 'Bobi and Me'
+                }
+            },
+            {
+                id: 'n103',
+                createdAt: 1112224,
+                type: 'NoteTodos',
+                isPinned: false,
+                style: { backgroundColor: '#f0fff0' },
+                info: {
+                    title: 'Get my stuff together',
+                    todos: [
+                        { txt: 'Driving license', doneAt: null },
+                        { txt: 'Coding power', doneAt: 187111111 }
+                    ]
+                }
+            }
+        ]
+
+        demoNotes.forEach(note => storageService.post(NOTES_KEY, note))
+    })
+}
+
+function _getNoteText(note) {
+    switch(note.type) {
+        case 'NoteTxt':
+            return note.info.txt
+        case 'NoteTodos':
+            return note.info.title + ' ' + 
+                note.info.todos.map(todo => todo.txt).join(' ')
+        case 'NoteImg':
+        case 'NoteVideo':
+            return note.info.title
+        default:
+            return ''
+    }
+}

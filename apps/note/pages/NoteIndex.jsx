@@ -1,11 +1,10 @@
-const noteService = window.noteService
+import { noteService } from '../services/note.service.js'
 import { NoteList } from '../cmps/NoteList.jsx' 
 const { useState, useEffect } = React
 
 export function NoteIndex() {
     const [notes, setNotes] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
-    console.log('noteService:', noteService)
 
     useEffect(() => {
         loadNotes()
@@ -13,7 +12,6 @@ export function NoteIndex() {
 
     function loadNotes() {
         if (!noteService) {
-            console.error('noteService is not defined')
             return
         }
         setIsLoading(true)
@@ -23,7 +21,6 @@ export function NoteIndex() {
                 setIsLoading(false)
             })
             .catch(err => {
-                console.error('Error loading notes:', err)
                 setIsLoading(false)
                 setNotes(null)
             })
