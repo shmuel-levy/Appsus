@@ -1,0 +1,86 @@
+.mail-details {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.mail-details h2 {
+    margin-top: 25px;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.mail-details p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.mail-details strong {
+    color: #444;
+}
+
+.mail-details button {
+    background: none;
+    border: none;
+    
+}
+
+.mail-details button i {
+    padding: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    
+}
+
+.mail-details button:hover {
+    opacity: 0.8;
+    background: rgb(224, 224, 224);
+    transition: background 0.8s;
+    border-radius: 50%;
+}
+
+.tooltip-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px;
+    transition: color 0.2s;
+}
+
+.tooltip-btn i {
+    font-size: 18px;
+}
+
+/* Tooltip Text Styling */
+.tooltip-text {
+    position: absolute;
+    bottom: -23px; /* Move tooltip below the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s;
+}
+
+/* Show Tooltip on Hover */
+.tooltip-btn:hover .tooltip-text {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+

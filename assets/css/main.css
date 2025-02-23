@@ -14,4 +14,5 @@
 /* Mail-App */
 @import './apps/mail/MailIndex.css';
 @import './apps/mail/MailList.css';
-@import './apps/mail/MailPreview.css'
+@import './apps/mail/MailPreview.css';
+@import './apps/mail/MailDetails.css';
