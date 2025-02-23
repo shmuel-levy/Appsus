@@ -85,4 +85,17 @@ function query(filterBy = {}) {
         })
 }
 
-function getById(){}
+function getById(noteId) {
+}
+
+function save(note) {
+}
+
+function remove(noteId) {
+}
+
+function getEmptyNote() {
+}
+
+
+window.noteService = noteService
