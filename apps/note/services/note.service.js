@@ -3,6 +3,42 @@ import { utilService } from '../../services/util.service.js'
 
 const NOTES_KEY = 'notesDB'
 
+const defaultNotes = [
+    {
+        id: 'n101',
+        createdAt: 1112222,
+        type: 'NoteTxt',
+        isPinned: true,
+        style: { backgroundColor: '#f8f8f8' },
+        info: { txt: 'Fullstack Me Baby!' }
+    },
+    {
+        id: 'n102',
+        createdAt: 1112223,
+        type: 'NoteImg',
+        isPinned: false,
+        style: { backgroundColor: '#e6f2ff' },
+        info: {
+            url: 'https://picsum.photos/200/300',
+            title: 'Bobi and Me'
+        }
+    },
+    {
+        id: 'n103',
+        createdAt: 1112224,
+        type: 'NoteTodos',
+        isPinned: false,
+        style: { backgroundColor: '#f0fff0' },
+        info: {
+            title: 'Get my stuff together',
+            todos: [
+                { txt: 'Driving license', doneAt: null },
+                { txt: 'Coding power', doneAt: 187111111 }
+            ]
+        }
+    }
+]
+
 export const noteService = {
     query,
     get,
@@ -17,7 +53,6 @@ _createDemoNotes()
 function query(filterBy = {}) {
     return storageService.query(NOTES_KEY)
         .then(notes => {
-            // Optional filtering logic can be added here
             if (filterBy.type) {
                 notes = notes.filter(note => note.type === filterBy.type)
             }
@@ -61,96 +96,45 @@ function createNote(type, info, style = {}) {
 }
 
 function getEmptyNote(type = 'NoteTxt') {
-    switch(type) {
-        case 'NoteTxt':
-            return {
-                type: 'NoteTxt',
-                info: { txt: '' }
-            }
-        case 'NoteImg':
-            return {
-                type: 'NoteImg',
-                info: { 
-                    url: '',
-                    title: ''
-                }
-            }
-        case 'NoteVideo':
-            return {
-                type: 'NoteVideo',
-                info: { 
-                    url: '',
-                    title: ''
-                }
-            }
-        case 'NoteTodos':
-            return {
-                type: 'NoteTodos',
-                info: {
-                    title: '',
-                    todos: []
-                }
-            }
-        default:
-            throw new Error('Invalid note type')
+    const emptyInfoMap = {
+        'NoteTxt': { txt: '' },
+        'NoteImg': { url: '', title: '' },
+        'NoteVideo': { url: '', title: '' },
+        'NoteTodos': { title: '', todos: [] }
+    }
+    
+    if (!emptyInfoMap[type]) {
+        throw new Error('Invalid note type')
+    }
+    
+    return {
+        type,
+        info: emptyInfoMap[type]
     }
 }
 
 function _createDemoNotes() {
-    storageService.query(NOTES_KEY).then(notes => {
-        if (notes.length) return
-
-        const demoNotes = [
-            {
-                id: 'n101',
-                createdAt: 1112222,
-                type: 'NoteTxt',
-                isPinned: true,
-                style: { backgroundColor: '#f0f0f0' },
-                info: { txt: 'Fullstack Me Baby!' }
-            },
-            {
-                id: 'n102',
-                createdAt: 1112223,
-                type: 'NoteImg',
-                isPinned: false,
-                style: { backgroundColor: '#e6f2ff' },
-                info: {
-                    url: 'https://picsum.photos/200/300',
-                    title: 'Bobi and Me'
-                }
-            },
-            {
-                id: 'n103',
-                createdAt: 1112224,
-                type: 'NoteTodos',
-                isPinned: false,
-                style: { backgroundColor: '#f0fff0' },
-                info: {
-                    title: 'Get my stuff together',
-                    todos: [
-                        { txt: 'Driving license', doneAt: null },
-                        { txt: 'C4 in case you know', doneAt: 187111111 }
-                    ]
-                }
-            }
-        ]
-
-        demoNotes.forEach(note => storageService.post(NOTES_KEY, note))
-    })
+    return storageService.query(NOTES_KEY)
+        .then(notes => {
+            if (notes.length >= 3) return notes
+                        localStorage.removeItem(NOTES_KEY)
+                        return storageService.post(NOTES_KEY, defaultNotes[0])
+                .then(() => storageService.post(NOTES_KEY, defaultNotes[1]))
+                .then(() => storageService.post(NOTES_KEY, defaultNotes[2]))
+                .then(() => storageService.query(NOTES_KEY))
+        })
 }
 
 function _getNoteText(note) {
     switch(note.type) {
-        case 'NoteTxt':
+        case 'NoteTxt': 
             return note.info.txt
-        case 'NoteTodos':
-            return note.info.title + ' ' + 
-                note.info.todos.map(todo => todo.txt).join(' ')
+        case 'NoteTodos': 
+            return note.info.title + ' ' + note.info.todos.map(todo => todo.txt).join(' ')
         case 'NoteImg':
-        case 'NoteVideo':
+        case 'NoteVideo': 
             return note.info.title
-        default:
+        default: 
             return ''
     }
 }
