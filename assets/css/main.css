@@ -8,7 +8,9 @@
 @import './cmps/UserMsg.css';
 @import './cmps/AppHeader.css';
 
-
+@import './apps/note/NoteAdd.css';
+@import './apps/note/NotePreview.css';
+@import './apps/note/NoteIndex.css';
 @import './apps/note/NoteIndex.css';
 
 /* Mail-App */

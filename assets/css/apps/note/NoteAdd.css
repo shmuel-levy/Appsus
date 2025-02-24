@@ -1,0 +1,69 @@
+.note-add {
+    max-width: 600px;
+    margin: 0 auto 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    padding: 16px;
+    background-color: white;
+}
+
+.note-add form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.note-add input, 
+.note-add textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #eaeaea;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.note-add textarea {
+    min-height: 60px;
+    resize: vertical;
+}
+
+.note-type-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.note-type-buttons button {
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #555;
+}
+
+.note-type-buttons button:hover {
+    background-color: #f1f3f4;
+}
+
+.note-add button[type="submit"] {
+    align-self: flex-end;
+    background-color: #f1f3f4;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.note-add button[type="submit"]:hover {
+    background-color: #e0e0e0;
+}
+
+.img-note-form,
+.todos-note-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
