@@ -1,13 +1,15 @@
 const { useState, useEffect } = React
-const { Outlet } = ReactRouterDOM
+const { Outlet, Link } = ReactRouterDOM
 import { mailService } from "../services/mail.service.js"
 import { MailList } from "../cmps/MailList.jsx"
 import { MailFilter } from "../cmps/MailFilter.jsx"
 import { MailFolderList } from "../cmps/MailFolderList.jsx"
+import { MailCompose } from "../cmps/MailCompose.jsx"
 
 export function MailIndex() {
     const [mails, setMails] = useState([])
     const [filterBy, setFilterBy] = useState({ text: '', isRead: 'all', folder: 'inbox' })
+    const [isComposing, setIsComposing] = useState(false)
 
     useEffect(() => {
         loadMails()
@@ -50,10 +52,16 @@ export function MailIndex() {
     }
 
     return (
-        <section className="container">
-            <MailFilter onSetFilter={onSetFilter} />
+        <section className="main-index">
+            <div className='mail-header'>
+                <MailFilter onSetFilter={onSetFilter} />
+                <button className='compose-btn' onClick={() => setIsComposing(true)}>
+                    <i className='fas fa-pencil-alt'></i>Compose
+                </button>
+            </div>
             <MailFolderList onSetFolder={onSetFolder} />
-            <MailList mails={mails} onMailClick={markAsRead}/>
+            <MailList mails={mails} onMailClick={markAsRead} />
+            {isComposing && <MailCompose onClose={() => setIsComposing(false)} />}
             <Outlet />
         </section>
     )

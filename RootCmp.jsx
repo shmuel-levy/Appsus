@@ -11,6 +11,7 @@ import { MailDetails } from './apps/mail/pages/MailDetails.jsx'
 
 
 import { NoteIndex } from './apps/note/pages/NoteIndex.jsx'
+import { MailCompose } from './apps/mail/cmps/MailCompose.jsx'
 
 export function RootCmp() {
     return <Router>
@@ -23,6 +24,7 @@ export function RootCmp() {
                     <Route path="/mail/:mailId" element={<MailDetails />} />
                 </Route>
                 <Route path="/note" element={<NoteIndex />} />
+                <Route path= "/mail/compose" element={<MailCompose />} />
             </Routes>
             <UserMsg />
         </section>
