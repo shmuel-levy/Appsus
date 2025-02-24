@@ -1,4 +1,5 @@
 const { useState, useEffect } = React
+const { Outlet } = ReactRouterDOM
 import { mailService } from "../services/mail.service.js"
 import { MailList } from "../cmps/MailList.jsx"
 import { MailFilter } from "../cmps/MailFilter.jsx"
@@ -38,11 +39,22 @@ export function MailIndex() {
         setFilterBy(prevFilter => ({ ...prevFilter, folder }))
     }
 
+    function markAsRead(mailId) {
+        mailService.get(mailId).then(mail => {
+            if (!mail.isRead) {
+                mail.isRead = true
+                mailService.save(mail).then(loadMails)
+            }
+        })
+
+    }
+
     return (
         <section className="container">
             <MailFilter onSetFilter={onSetFilter} />
             <MailFolderList onSetFolder={onSetFolder} />
-            <MailList mails={mails} />
+            <MailList mails={mails} onMailClick={markAsRead}/>
+            <Outlet />
         </section>
     )
 }
