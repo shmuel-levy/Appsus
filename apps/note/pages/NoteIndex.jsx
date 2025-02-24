@@ -1,5 +1,6 @@
 import { noteService } from '../services/note.service.js'
 import { NoteList } from '../cmps/NoteList.jsx'
+import { NoteAdd } from '../cmps/NoteAdd.jsx'
 
 const { useState, useEffect } = React
 
@@ -24,6 +25,10 @@ export function NoteIndex() {
             .finally(() => {
                 setIsLoading(false)
             })
+    }
+
+    function onAddNote(newNote) {
+        setNotes(prevNotes => [newNote, ...prevNotes])
     }
 
     function renderNoteContent(note) {
@@ -81,6 +86,7 @@ export function NoteIndex() {
     return (
         <section className="note-index">
             <h1>Notes</h1>
+            <NoteAdd onAddNote={onAddNote} />
             {getNotesForDisplay()}
         </section>
     )
