@@ -42,7 +42,7 @@ function _createMails() {
             removedAt: null,
             from: 'boss@company.com',
             to: 'user@appsus.com',
-            folder: 'starred'
+            folder: 'inbox'
         },
         {
             id: 'e103',
@@ -54,7 +54,7 @@ function _createMails() {
             removedAt: null,
             from: 'orders@amazon.com',
             to: 'user@appsus.com',
-            folder: 'sent'
+            folder: 'inbox'
         },
         {
             id: 'e104',
@@ -66,7 +66,7 @@ function _createMails() {
             removedAt: null,
             from: 'friend@mail.com',
             to: 'user@appsus.com',
-            folder: 'trash'
+            folder: 'inbox'
         },
         {
             id: 'e105',
@@ -78,7 +78,7 @@ function _createMails() {
             removedAt: null,
             from: 'user@appsus.com',
             to: '',
-            folder: 'draft'
+            folder: 'inbox'
         }]
         utilService.saveToStorage(MAIL_KEY, mails)
 

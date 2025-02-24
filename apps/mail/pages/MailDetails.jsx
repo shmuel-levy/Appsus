@@ -9,7 +9,13 @@ export function MailDetails() {
     const [mail, setMail] = useState(null)
 
     useEffect(() => {
-        mailService.get(mailId).then(setMail)
+        mailService.get(mailId).then(mail => {
+            if (!mail.isRead) {
+                mail.Read = true
+                mailService.save(mail)
+            }
+            setMail(mail)
+        })
     }, [mailId])
 
     function onDeleteMail() {
