@@ -12,7 +12,6 @@ export const noteService = {
     createNote
 }
 
-// Initialize demo notes if needed
 _createDemoNotes()
 
 function query(filterBy = {}) {
@@ -117,7 +116,7 @@ function _createDemoNotes() {
                 isPinned: false,
                 style: { backgroundColor: '#e6f2ff' },
                 info: {
-                    url: 'https://example.com/sample-image.jpg',
+                    url: 'https://picsum.photos/200/300',
                     title: 'Bobi and Me'
                 }
             },
@@ -131,7 +130,7 @@ function _createDemoNotes() {
                     title: 'Get my stuff together',
                     todos: [
                         { txt: 'Driving license', doneAt: null },
-                        { txt: 'Coding power', doneAt: 187111111 }
+                        { txt: 'C4 in case you know', doneAt: 187111111 }
                     ]
                 }
             }

@@ -1,1 +1,11 @@
- /* note list */
+.notes-list {
+    display: grid;
+    gap: 20px;
+    padding: 20px;
+}
+
+.note-preview {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+}

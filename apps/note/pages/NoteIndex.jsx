@@ -1,57 +1,79 @@
-import { noteService } from '../services/note.service.js'
-import { NoteList } from '../cmps/NoteList.jsx' 
+import { noteService } from "../services/note.service.js"
+import { NoteList } from "../cmps/NoteList.jsx"
 const { useState, useEffect } = React
 
 export function NoteIndex() {
-    const [notes, setNotes] = useState(null)
-    const [isLoading, setIsLoading] = useState(true)
+  const [notes, setNotes] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [filterBy, setFilterBy] = useState({ txt: "", type: "" })
+  useEffect(() => {
+    loadNotes()
+  }, [])
 
-    useEffect(() => {
-        loadNotes()
-    }, [])
+  function loadNotes() {
+    console.log("loading...")
+    setIsLoading(true)
+    noteService
+      .query(filterBy)
+      .then((notes) => {
+        console.log('Notes loaded:', notes)
+        setNotes(notes)
+        setIsLoading(false)
+      })
+      .catch((err) => {
+        console.error("Failed", err)
+        setNotes(null)
+        setIsLoading(false)
+      })
+  }
+  function renderNoteContent(note) {
+    switch (note.type) {
+      case "NoteTxt":
+        return <p>{note.info.txt}</p>
 
-    function loadNotes() {
-        if (!noteService) {
-            return
-        }
-        setIsLoading(true)
-        noteService.query()
-            .then(notesFromService => {
-                setNotes(notesFromService)
-                setIsLoading(false)
-            })
-            .catch(err => {
-                setIsLoading(false)
-                setNotes(null)
-            })
+      case "NoteImg":
+        return (
+          <div className="note-img">
+            <h3>{note.info.title}</h3>
+            <img src={note.info.url} alt={note.info.title} />
+          </div>
+        )
+      case "NoteTodos":
+        return (
+          <div className="note-todos">
+            <h3>{note.info.title}</h3>
+            <ul>
+              {note.info.todos.map((todo, idx) => (
+                <li key={idx} className={todo.doneAt ? "done" : ""}>
+                  {todo.txt}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+        default:
+            return <p> Unsupported note type</p>
     }
+  }
 
   function getNotesForDisplay() {
-    if (isLoading) return <div>Loading...</div>
-    if (notes === null) return <div>Error loading notes</div>
-    if (notes.length === 0) return <div>No notes yet</div>
+    if (isLoading) return <div className="loading">Loading...</div>
+    if (!notes) return <div className="error">Error loading notes</div>
+    if (notes.length === 0) return <div className="empty">No notes yet</div>
 
-    return notes.map(note => (
-        <div key={note.id}>
-            {note.type === 'NoteTxt' && <p>{note.info.txt}</p>}
-            {note.type === 'NoteImg' && (
-                <div>
-                    <h3>{note.info.title}</h3>
-                    <img src={note.info.url} alt={note.info.title} />
-                </div>
-            )}
-            {note.type === 'NoteTodos' && (
-                <div>
-                    <h3>{note.info.title}</h3>
-                    <ul>
-                        {note.info.todos.map((todo, idx) => (
-                            <li key={idx}>{todo.txt}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+    return (
+        <div className="notes-grid">
+            {notes.map(note => (
+                <article 
+                    key={note.id} 
+                    className={`note ${note.type.toLowerCase()} ${note.isPinned ? 'pinned' : ''}`}
+                    style={note.style}
+                >
+                    {renderNoteContent(note)}
+                </article>
+            ))}
         </div>
-    ))
+    )
 }
 
   return (
