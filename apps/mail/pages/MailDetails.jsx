@@ -13,7 +13,15 @@ export function MailDetails() {
     }, [mailId])
 
     function onDeleteMail() {
-        mailService.remove(mailId).then(() => navigate('/mail'))
+        mailService.get(mailId).then(mail => {
+            if (mail.folder === 'trash') {
+                mailService.remove(mailId).then(() => navigate('/mail'))
+            } else {
+                mail.folder = 'trash'
+                mailService.save(mail).then(() => navigate('/mail'))
+            }
+        })
+
     }
 
     if (!mail) return <p>Loading...</p>
@@ -22,11 +30,11 @@ export function MailDetails() {
         <section className='mail-details'>
             <button className='tooltip-btn back-btn' onClick={() => navigate('/mail')} >
                 <i className='fas fa-arrow-left'></i>
-                <span className= 'tooltip-text'>Back to Inbox</span>
+                <span className='tooltip-text'>Back to Inbox</span>
             </button>
-            <button  className='tooltip-btn delete-btn' onClick={onDeleteMail} >
+            <button className='tooltip-btn delete-btn' onClick={onDeleteMail} >
                 <i className='fa-regular fa-trash-can'></i>
-                <span className= 'tooltip-text'>Delete</span>
+                <span className='tooltip-text'>Delete</span>
             </button>
             <h2>{mail.subject}</h2>
             <p><strong>From:</strong> {mail.from}</p>

@@ -2,10 +2,11 @@ const { useState, useEffect } = React
 import { mailService } from "../services/mail.service.js"
 import { MailList } from "../cmps/MailList.jsx"
 import { MailFilter } from "../cmps/MailFilter.jsx"
+import { MailFolderList } from "../cmps/MailFolderList.jsx"
 
 export function MailIndex() {
     const [mails, setMails] = useState([])
-    const [filterBy, setFilterBy] = useState({ text: '', isRead: 'all' })
+    const [filterBy, setFilterBy] = useState({ text: '', isRead: 'all', folder: 'inbox' })
 
     useEffect(() => {
         loadMails()
@@ -21,18 +22,28 @@ export function MailIndex() {
                 const isRead = filterBy === 'read'
                 filteredMails = filteredMails.filter(mail => mail.isRead === isRead)
             }
+
+            if (filterBy.folder) {
+                filteredMails = filteredMails.filter(mail => mail.folder === filterBy.folder)
+            }
             setMails(filteredMails)
         })
     }
 
     function onSetFilter(filter) {
-        setFilterBy(filter)
+        setFilterBy(prevFilter => ({ ...prevFilter, ...filter }))
+    }
+
+    function onSetFolder(folder) {
+        setFilterBy(prevFilter => ({ ...prevFilter, folder }))
     }
 
     return (
         <section className="container">
-         <MailFilter onSetFilter={onSetFilter}/>
-         <MailList mails={mails}/>
-        </section>)
+            <MailFilter onSetFilter={onSetFilter} />
+            <MailFolderList onSetFolder={onSetFolder} />
+            <MailList mails={mails} />
+        </section>
+    )
 }
 
