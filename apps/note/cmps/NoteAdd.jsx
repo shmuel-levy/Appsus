@@ -27,13 +27,14 @@ export function NoteAdd({ onAddNote }) {
     function handleSubmit(ev) {
         ev.preventDefault()
         if (isNoteEmpty()) return 
-                const noteToAdd = noteService.getEmptyNote(noteType)
-        noteToAdd.info = noteInfo
-        
+
         noteService.createNote(noteType, noteInfo)
             .then(savedNote => {
                 onAddNote(savedNote)
                 resetForm()
+            })
+            .catch(err => {
+                console.error('Error saving note:', err)
             })
     }
 
@@ -44,7 +45,7 @@ export function NoteAdd({ onAddNote }) {
             case 'NoteImg':
                 return !noteInfo.url || !noteInfo.title
             case 'NoteTodos':
-                return !noteInfo.title || !noteInfo.todos.length
+                return !noteInfo.title || !noteInfo.todos || noteInfo.todos.length === 0
             default:
                 return true
         }
@@ -78,7 +79,7 @@ export function NoteAdd({ onAddNote }) {
                         type="text" 
                         name="txt" 
                         placeholder="Take a note..." 
-                        value={noteInfo.txt}
+                        value={noteInfo.txt || ''}
                         onChange={handleChange}
                         autoFocus
                     />
