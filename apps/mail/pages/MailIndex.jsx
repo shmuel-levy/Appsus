@@ -17,6 +17,8 @@ export function MailIndex() {
 
     function loadMails() {
         mailService.query().then(allMails => {
+            
+
             var filteredMails = allMails.filter(mail =>
                 mail.subject.toLowerCase().includes(filterBy.text.toLowerCase())
             )
@@ -29,6 +31,7 @@ export function MailIndex() {
             if (filterBy.folder) {
                 filteredMails = filteredMails.filter(mail => mail.folder === filterBy.folder)
             }
+            
             setMails(filteredMails)
         })
     }
@@ -48,7 +51,10 @@ export function MailIndex() {
                 mailService.save(mail).then(loadMails)
             }
         })
+    }
 
+    function handleMailSent() {
+        loadMails()
     }
 
     return (
@@ -61,7 +67,7 @@ export function MailIndex() {
             </div>
             <MailFolderList onSetFolder={onSetFolder} />
             <MailList mails={mails} onMailClick={markAsRead} />
-            {isComposing && <MailCompose onClose={() => setIsComposing(false)} />}
+            {isComposing && <MailCompose onClose={() => setIsComposing(false)} onMailSent={handleMailSent} />}
             <Outlet />
         </section>
     )

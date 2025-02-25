@@ -97,7 +97,18 @@ function get(mailId) {
 }
 
 function save(mail) {
-    return mail.id ? storageService.put(MAIL_KEY, mail) : storageService.post(MAIL_KEY, mail)
+    return query().then(mails => {
+        const idx = mails.findIndex(m => m.id === mail.id);
+        if (idx === -1) {
+            console.log('Adding New Mail:', mail); // ✅ Debugging: New mail
+            mails.push(mail);
+        } else {
+            console.log('Updating Existing Mail:', mail); // ✅ Debugging: Updating mail
+            mails[idx] = mail;
+        }
+        localStorage.setItem(MAIL_KEY, JSON.stringify(mails)); 
+        return mail;
+    });
 }
 
 function remove(mailId) {
