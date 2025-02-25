@@ -1,0 +1,40 @@
+.mail-folder-list {
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+}
+
+.mail-folder-list button {
+    display: flex;
+    align-items: center;
+    padding: 0px 12px 0px 26px;
+    height: 32px;
+    background: none;
+    border: none;
+    font-family: "Roboto", serif;
+    font-size:16px;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+    color: #001d35;
+    border-radius: 0px 20px 20px 0px;
+    transition: background 0.2s;
+}
+
+.mail-folder-list button i {
+    margin-right: 18px;
+    font-size: 16px;
+}
+
+.mail-folder-list button:hover {
+    background:#f2f2f2
+}
+
+.mail-folder-list button.active {
+    background: #d3e3fd;
+    font-weight: 600;
+}
+
+.mail-folder-list button.active i {
+    font-weight: bold;
+}
