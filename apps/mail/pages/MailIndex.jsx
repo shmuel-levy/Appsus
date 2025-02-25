@@ -10,6 +10,7 @@ export function MailIndex() {
     const [mails, setMails] = useState([])
     const [filterBy, setFilterBy] = useState({ text: '', isRead: 'all', folder: 'inbox' })
     const [isComposing, setIsComposing] = useState(false)
+    const [activeFolder, setActiveFolder] = useState('inbox')
 
     useEffect(() => {
         loadMails()
@@ -41,6 +42,7 @@ export function MailIndex() {
     }
 
     function onSetFolder(folder) {
+        setActiveFolder(folder)
         setFilterBy(prevFilter => ({ ...prevFilter, folder }))
     }
 
@@ -58,14 +60,14 @@ export function MailIndex() {
     }
 
     return (
-        <section className="main-index">
+        <section className="mail-index">
             <div className='mail-header'>
                 <MailFilter onSetFilter={onSetFilter} />
                 <button className='compose-btn' onClick={() => setIsComposing(true)}>
                     <i className='fas fa-pencil-alt'></i>Compose
                 </button>
             </div>
-            <MailFolderList onSetFolder={onSetFolder} />
+            <MailFolderList onSetFolder={onSetFolder} activeFolder={activeFolder} />
             <MailList mails={mails} onMailClick={markAsRead} />
             {isComposing && <MailCompose onClose={() => setIsComposing(false)} onMailSent={handleMailSent} />}
             <Outlet />
