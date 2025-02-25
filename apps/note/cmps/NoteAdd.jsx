@@ -1,5 +1,8 @@
 const { useState } = React
 import { noteService } from '../services/note.service.js'
+import { storageService } from '../../services/async-storage.service.js'
+
+const NOTES_KEY = 'notesDB'
 
 export function NoteAdd({ onAddNote }) {
     const [noteType, setNoteType] = useState('NoteTxt')
@@ -28,8 +31,25 @@ export function NoteAdd({ onAddNote }) {
         ev.preventDefault()
         if (isNoteEmpty()) return 
 
-        noteService.createNote(noteType, noteInfo)
+        console.log('Creating new note of type:', noteType, 'with info:', noteInfo)
+        
+        // Create a new note object directly
+        const newNote = {
+            createdAt: Date.now(),
+            type: noteType,
+            isPinned: false,
+            style: {
+                backgroundColor: '#ffffff'
+            },
+            info: noteInfo
+        }
+        
+        console.log('New note object:', newNote)
+        
+        // Use storageService.post directly for new notes
+        storageService.post(NOTES_KEY, newNote)
             .then(savedNote => {
+                console.log('Note saved successfully:', savedNote)
                 onAddNote(savedNote)
                 resetForm()
             })
@@ -41,7 +61,7 @@ export function NoteAdd({ onAddNote }) {
     function isNoteEmpty() {
         switch(noteType) {
             case 'NoteTxt': 
-                return !noteInfo.txt.trim()
+                return !noteInfo.txt || !noteInfo.txt.trim()
             case 'NoteImg':
                 return !noteInfo.url || !noteInfo.title
             case 'NoteTodos':
