@@ -42,7 +42,7 @@ function _createMails() {
             removedAt: null,
             from: 'boss@company.com',
             to: 'user@appsus.com',
-            folder: 'starred'
+            folder: 'inbox'
         },
         {
             id: 'e103',
@@ -54,7 +54,7 @@ function _createMails() {
             removedAt: null,
             from: 'orders@amazon.com',
             to: 'user@appsus.com',
-            folder: 'sent'
+            folder: 'inbox'
         },
         {
             id: 'e104',
@@ -66,7 +66,7 @@ function _createMails() {
             removedAt: null,
             from: 'friend@mail.com',
             to: 'user@appsus.com',
-            folder: 'trash'
+            folder: 'inbox'
         },
         {
             id: 'e105',
@@ -78,7 +78,7 @@ function _createMails() {
             removedAt: null,
             from: 'user@appsus.com',
             to: '',
-            folder: 'draft'
+            folder: 'inbox'
         }]
         utilService.saveToStorage(MAIL_KEY, mails)
 
@@ -97,7 +97,18 @@ function get(mailId) {
 }
 
 function save(mail) {
-    return mail.id ? storageService.put(MAIL_KEY, mail) : storageService.post(MAIL_KEY, mail)
+    return query().then(mails => {
+        const idx = mails.findIndex(m => m.id === mail.id);
+        if (idx === -1) {
+            console.log('Adding New Mail:', mail); // ✅ Debugging: New mail
+            mails.push(mail);
+        } else {
+            console.log('Updating Existing Mail:', mail); // ✅ Debugging: Updating mail
+            mails[idx] = mail;
+        }
+        localStorage.setItem(MAIL_KEY, JSON.stringify(mails)); 
+        return mail;
+    });
 }
 
 function remove(mailId) {

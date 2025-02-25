@@ -13,23 +13,30 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-family: "Roboto", serif;
 }
 
 .mail-preview p {
     flex-grow: 2;
-    color: #5f6368;
+    color: #202124;
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-family: "Roboto", serif;
 }
 
 .mail-preview.unread {
     font-weight: bold;
-    background: #f2f6fc;
+    background: #fff;
+}
+
+.mail-preview.unread h3 {
+    font-weight: bold;
+    background: #fff;
 }
 
 .mail-preview.read {
     font-weight: normal;
-    background: #fff;
+    background: #f2f6fc;
 }
