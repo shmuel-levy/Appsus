@@ -45,7 +45,8 @@ export const noteService = {
     remove,
     save,
     getEmptyNote,
-    createNote
+    createNote,
+    getRandomId: utilService.makeId
 }
 
 _createDemoNotes()
@@ -109,7 +110,7 @@ function getEmptyNote(type = 'NoteTxt') {
     
     return {
         type,
-        info: emptyInfoMap[type]
+        info: {...emptyInfoMap[type]}
     }
 }
 
@@ -117,8 +118,10 @@ function _createDemoNotes() {
     return storageService.query(NOTES_KEY)
         .then(notes => {
             if (notes.length >= 3) return notes
-                        localStorage.removeItem(NOTES_KEY)
-                        return storageService.post(NOTES_KEY, defaultNotes[0])
+            
+            localStorage.removeItem(NOTES_KEY)
+            
+            return storageService.post(NOTES_KEY, defaultNotes[0])
                 .then(() => storageService.post(NOTES_KEY, defaultNotes[1]))
                 .then(() => storageService.post(NOTES_KEY, defaultNotes[2]))
                 .then(() => storageService.query(NOTES_KEY))

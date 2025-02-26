@@ -9,60 +9,7 @@
     color: #333;
 }
 
-.notes-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
-}
 
-.note-preview {
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    border: 1px solid #ddd;
-    transition: box-shadow 0.3s ease;
-    min-height: 100px;
-}
-
-.note-preview:hover {
-    box-shadow: 0 1px 5px rgba(0,0,0,0.2);
-}
-
-.note-preview h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 16px;
-}
-
-.note-preview p {
-    margin: 0;
-}
-
-.note-preview ul {
-    padding-left: 20px;
-    margin: 10px 0;
-}
-
-.note-preview img {
-    max-width: 100%;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    display: block;
-    margin-top: 10px;
-}
-
-.note-preview.notetxt {
-    background-color: #f8f8f8;
-}
-
-.note-preview.noteimg {
-    background-color: #e6f2ff;
-}
-
-.note-preview.notetodos {
-    background-color: #f0fff0;
-}
 
 .loading {
     text-align: center;

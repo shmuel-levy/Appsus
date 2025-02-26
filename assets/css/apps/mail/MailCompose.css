@@ -12,6 +12,35 @@
     overflow: hidden;
 }
 
+.compose-btn {
+    display: flex;
+    align-items: center;
+    background: #c2e7ff; /* Light blue like Gmail */
+    color: #001d35;
+    font-family: "Roboto", serif;
+    font-weight: 450;
+    font-size: 16px;
+    padding: 0px 24px 0px 16px;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    margin:8px 106px 16px 8px;
+    width: 140px;
+    height: 55px;
+    line-height: 32px;
+}
+
+.compose-btn i {
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+.compose-btn:hover {
+    background: #a0cfff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
 
 /* Compose Header */
 .compose-header {

@@ -1,5 +1,8 @@
 const { useState } = React
 import { noteService } from '../services/note.service.js'
+import { storageService } from '../../services/async-storage.service.js'
+
+const NOTES_KEY = 'notesDB'
 
 export function NoteAdd({ onAddNote }) {
     const [noteType, setNoteType] = useState('NoteTxt')
@@ -27,24 +30,42 @@ export function NoteAdd({ onAddNote }) {
     function handleSubmit(ev) {
         ev.preventDefault()
         if (isNoteEmpty()) return 
-                const noteToAdd = noteService.getEmptyNote(noteType)
-        noteToAdd.info = noteInfo
+
+        console.log('Creating new note of type:', noteType, 'with info:', noteInfo)
         
-        noteService.createNote(noteType, noteInfo)
+        // Create a new note object directly
+        const newNote = {
+            createdAt: Date.now(),
+            type: noteType,
+            isPinned: false,
+            style: {
+                backgroundColor: '#ffffff'
+            },
+            info: noteInfo
+        }
+        
+        console.log('New note object:', newNote)
+        
+        // Use storageService.post directly for new notes
+        storageService.post(NOTES_KEY, newNote)
             .then(savedNote => {
+                console.log('Note saved successfully:', savedNote)
                 onAddNote(savedNote)
                 resetForm()
+            })
+            .catch(err => {
+                console.error('Error saving note:', err)
             })
     }
 
     function isNoteEmpty() {
         switch(noteType) {
             case 'NoteTxt': 
-                return !noteInfo.txt.trim()
+                return !noteInfo.txt || !noteInfo.txt.trim()
             case 'NoteImg':
                 return !noteInfo.url || !noteInfo.title
             case 'NoteTodos':
-                return !noteInfo.title || !noteInfo.todos.length
+                return !noteInfo.title || !noteInfo.todos || noteInfo.todos.length === 0
             default:
                 return true
         }
@@ -78,7 +99,7 @@ export function NoteAdd({ onAddNote }) {
                         type="text" 
                         name="txt" 
                         placeholder="Take a note..." 
-                        value={noteInfo.txt}
+                        value={noteInfo.txt || ''}
                         onChange={handleChange}
                         autoFocus
                     />
