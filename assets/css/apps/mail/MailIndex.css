@@ -1,6 +1,22 @@
  /* mail index  */
 
  .mail-index {
+    display: flex;
     height: 100vh;
     background-color: #f8fafd;
  }
+
+ .mail-sidebar {
+   width: 250px; /* Set sidebar width */
+   display: flex;
+   flex-direction: column;
+}
+
+/* Mail Content (Mail List) */
+.mail-content {
+   flex-grow: 1; /* Take remaining space */
+   display: flex;
+   flex-direction: column;
+   padding: 15px;
+   overflow-y: auto;
+}

@@ -1,5 +1,5 @@
 const { useState, useEffect } = React
-const { Outlet, Link } = ReactRouterDOM
+const { Outlet, Link, useLocation } = ReactRouterDOM
 import { mailService } from "../services/mail.service.js"
 import { MailList } from "../cmps/MailList.jsx"
 import { MailFilter } from "../cmps/MailFilter.jsx"
@@ -11,6 +11,7 @@ export function MailIndex() {
     const [filterBy, setFilterBy] = useState({ text: '', isRead: 'all', folder: 'inbox' })
     const [isComposing, setIsComposing] = useState(false)
     const [activeFolder, setActiveFolder] = useState('inbox')
+    const location = useLocation()
 
     useEffect(() => {
         loadMails()
@@ -18,21 +19,19 @@ export function MailIndex() {
 
     function loadMails() {
         mailService.query().then(allMails => {
-            
-
             var filteredMails = allMails.filter(mail =>
                 mail.subject.toLowerCase().includes(filterBy.text.toLowerCase())
             )
 
             if (filterBy.isRead !== 'all') {
-                const isRead = filterBy === 'read'
+                const isRead = filterBy.isRead === 'read'
                 filteredMails = filteredMails.filter(mail => mail.isRead === isRead)
             }
 
             if (filterBy.folder) {
                 filteredMails = filteredMails.filter(mail => mail.folder === filterBy.folder)
             }
-            
+
             setMails(filteredMails)
         })
     }
@@ -61,17 +60,28 @@ export function MailIndex() {
 
     return (
         <section className="mail-index">
-            <div className='mail-header'>
-                <MailFilter onSetFilter={onSetFilter} />
-                <button className='compose-btn' onClick={() => setIsComposing(true)}>
-                    <i className='fas fa-pencil-alt'></i>Compose
+            <aside className="mail-sidebar">
+                <button className="compose-btn" onClick={() => setIsComposing(true)}>
+                    <i className="fas fa-pencil-alt"></i> Compose
                 </button>
+                <MailFolderList onSetFolder={onSetFolder} activeFolder={activeFolder} />
+            </aside>
+            <div className="mail-content">
+                <div className="mail-filter-container">
+                    <MailFilter onSetFilter={onSetFilter} />
+                    <select name='isRead' onChange={(ev) => onSetFilter({ isRead: ev.target.value })}>
+                        <option value='all'>All</option>
+                        <option value='read'>Read</option>
+                        <option value='unread'>Unread</option>
+                    </select>
+                </div>
+                <div style={{ display: location.pathname.includes('/mail/') ? 'none' : 'block' }}>
+                    <MailList mails={mails} onMailClick={markAsRead} />
+                </div>
+                {isComposing && <MailCompose onClose={() => setIsComposing(false)} onMailSent={handleMailSent} />}
+                <Outlet />
             </div>
-            <MailFolderList onSetFolder={onSetFolder} activeFolder={activeFolder} />
-            <MailList mails={mails} onMailClick={markAsRead} />
-            {isComposing && <MailCompose onClose={() => setIsComposing(false)} onMailSent={handleMailSent} />}
-            <Outlet />
         </section>
-    )
+    );
 }
 
