@@ -1,38 +1,16 @@
-
 .note-preview {
-    padding: 15px;
+    max-width: 100%;
+    border: 1px solid #eee;
     border-radius: 8px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    border: 1px solid #ddd;
-    transition: box-shadow 0.3s ease;
-    min-height: 100px;
+    display: block;
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
 }
 
 .note-preview:hover {
-    box-shadow: 0 1px 5px rgba(0,0,0,0.2);
-}
-
-.note-preview h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 16px;
-}
-
-.note-preview p {
-    margin: 0;
-}
-
-.note-preview ul {
-    padding-left: 20px;
-    margin: 10px 0;
-}
-
-.note-preview img {
-    max-width: 100%;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    display: block;
-    margin-top: 10px;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 1px 3px 1px rgba(60, 64, 67, 0.149);
 }
 
 .note-preview.notetxt {
@@ -60,34 +38,85 @@
     color: #f1c40f;
 }
 
-.pin-btn {
+.note-content {
+    padding: 15px;
+    word-break: break-word;
+}
+
+.note-content h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.note-content p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.note-content img {
+    max-width: 100%;
+    margin-top: 8px;
+    border-radius: 4px;
+}
+
+.note-content ul {
+    margin: 8px 0;
+    padding-left: 20px;
+}
+
+.note-content li {
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.note-content li.done {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.note-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.note-preview:hover .note-actions {
+    opacity: 1;
+}
+
+.note-actions button {
     background: none;
     border: none;
     cursor: pointer;
+    margin-left: 8px;
+    color: #767676;
+    font-size: 18px;
     padding: 5px;
-    font-size: 16px;
-    transition: transform 0.2s;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    transition: background-color 0.2s ease;
 }
 
-.pin-btn:hover {
-    transform: scale(1.2);
+.note-actions button:hover {
+    background-color: rgba(0, 0, 0, 0.08);
 }
 
 .pin-btn.pinned {
     color: #f1c40f;
 }
 
-
-
-.note-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    padding-top: 8px;
-    opacity: 0.5;
-    transition: opacity 0.2s;
-}
-
-.note-preview:hover .note-actions {
-    opacity: 1;
+.notes-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-gap: 16px;
+    padding: 16px;
 }

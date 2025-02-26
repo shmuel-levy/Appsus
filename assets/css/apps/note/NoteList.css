@@ -4,3 +4,14 @@
     gap: 15px;
     margin-top: 20px;
 }
+
+.notes-section-header {
+    font-size: 12px;
+    color: #5f6368;
+    font-weight: 500;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-bottom: 1px solid #e0e0e0;
+    grid-column: 1 / -1;
+    margin-top: 16px;
+}
