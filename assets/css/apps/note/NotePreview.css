@@ -46,3 +46,48 @@
 .note-preview.notetodos {
     background-color: #f0fff0;
 }
+
+.note-preview.pinned {
+    border-left: 4px solid #f1c40f;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pin-indicator {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 16px;
+    color: #f1c40f;
+}
+
+.pin-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 16px;
+    transition: transform 0.2s;
+}
+
+.pin-btn:hover {
+    transform: scale(1.2);
+}
+
+.pin-btn.pinned {
+    color: #f1c40f;
+}
+
+
+
+.note-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-top: 8px;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.note-preview:hover .note-actions {
+    opacity: 1;
+}

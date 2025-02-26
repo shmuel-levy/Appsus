@@ -5,7 +5,7 @@ export function UserMsg() {
     const [msg, setMsg] = useState(null)
     
     useEffect(() => {
-        // Component mounts - start listening to the event bus
+        
         const removeListener = eventBusService.on('show-user-msg', (msg) => {
             setMsg(msg)
             setTimeout(() => {
@@ -13,7 +13,7 @@ export function UserMsg() {
             }, 3000)
         })
         
-        // Component unmounts - stop listening
+       
         return () => {
             removeListener()
         }

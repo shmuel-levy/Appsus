@@ -38,18 +38,35 @@ export function NoteIndex() {
             })     
     }          
     
-    function onPinNote(noteId) {         
-        noteService.get(noteId)             
-            .then(note => {                 
-                const updatedNote = {...note, isPinned: !note.isPinned}                 
-                return noteService.save(updatedNote)             
-            })             
-            .then(updatedNote => {                 
-                setNotes(prevNotes => prevNotes.map(note =>                      
-                    note.id === updatedNote.id ? updatedNote : note                 
-                ))             
-            })     
-    }      
+    function onPinNote(noteId) {
+        // First, get the current note from state
+        const note = notes.find(note => note.id === noteId)
+        if (!note) {
+            console.error('Note not found:', noteId)
+            return
+        }
+        const updatedNote = {
+            ...note,
+            isPinned: !note.isPinned
+        }
+        noteService.save(updatedNote)
+            .then(savedNote => {
+                console.log('Note saved successfully with pinned state:', savedNote)
+                
+                setNotes(prevNotes => 
+                    prevNotes.map(n => 
+                        n.id === savedNote.id ? savedNote : n
+                    )
+                )
+                
+                const actionText = savedNote.isPinned ? 'pinned' : 'unpinned'
+                showSuccessMsg(`Note ${actionText} successfully`)
+            })
+            .catch(err => {
+                console.error('Error updating note:', err)
+                showErrorMsg('Failed to update note')
+            })
+    }
     
     if (isLoading) return <div className="loading">Loading...</div>
     

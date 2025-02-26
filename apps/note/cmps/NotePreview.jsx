@@ -52,9 +52,16 @@ export function NotePreview({ note, onRemoveNote, onPinNote }) {
 
     return (
         <div 
-            className={`note-preview ${type.toLowerCase()}`} 
+            className={`note-preview ${type.toLowerCase()} ${isPinned ? 'pinned' : ''}`} 
             style={{ backgroundColor }}
         >
+    
+            {isPinned && (
+                <div className="pin-indicator">
+                    📌
+                </div>
+            )}
+            
             <div className="note-content">
                 {renderNoteContent()}
             </div>
