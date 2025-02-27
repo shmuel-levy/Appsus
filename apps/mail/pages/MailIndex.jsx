@@ -67,16 +67,18 @@ export function MailIndex() {
                 <MailFolderList onSetFolder={onSetFolder} activeFolder={activeFolder} />
             </aside>
             <div className="mail-content">
+                <MailFilter onSetFilter={onSetFilter} />
                 <div className="mail-filter-container">
-                    <MailFilter onSetFilter={onSetFilter} />
-                    <select name='isRead' onChange={(ev) => onSetFilter({ isRead: ev.target.value })}>
-                        <option value='all'>All</option>
-                        <option value='read'>Read</option>
-                        <option value='unread'>Unread</option>
-                    </select>
-                </div>
-                <div style={{ display: location.pathname.includes('/mail/') ? 'none' : 'block' }}>
-                    <MailList mails={mails} onMailClick={markAsRead} />
+                    <div className='sort-container'>
+                        <select name='isRead' onChange={(ev) => onSetFilter({ isRead: ev.target.value })}>
+                            <option value='all'>All</option>
+                            <option value='read'>Read</option>
+                            <option value='unread'>Unread</option>
+                        </select>
+                    </div>
+                    <div style={{ display: location.pathname.includes('/mail/') ? 'none' : 'block' }}>
+                        <MailList mails={mails} onMailClick={markAsRead} />
+                    </div>
                 </div>
                 {isComposing && <MailCompose onClose={() => setIsComposing(false)} onMailSent={handleMailSent} />}
                 <Outlet />

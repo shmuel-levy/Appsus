@@ -42,7 +42,7 @@ export function MailDetails() {
                 <i className='fa-regular fa-trash-can'></i>
                 <span className='tooltip-text'>Delete</span>
             </button>
-            <h2>{mail.subject}</h2>
+            <h2>{mail.from}</h2>
             <p><strong>From:</strong> {mail.from}</p>
             <p><strong>To:</strong> {mail.to}</p>
             <p>{mail.body}</p>

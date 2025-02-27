@@ -1,5 +1,12 @@
  /* mail list */
 
+ .mail-list {
+   overflow: scroll;
+   overflow-x:hidden;
+   scrollbar-color: lightgrey white;
+   height: 100vh;
+ }
+
  .mail-list ul {
     list-style: none;
     padding: 0;
