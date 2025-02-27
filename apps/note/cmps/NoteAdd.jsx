@@ -1,5 +1,8 @@
 const { useState, useRef, useEffect } = React
 import { noteService } from '../services/note.service.js'
+import { storageService } from '../../services/async-storage.service.js'
+
+const NOTES_KEY = 'notesDB'
 
 export function NoteAdd({ onAddNote }) {
     const [noteType, setNoteType] = useState('NoteTxt')
@@ -48,10 +51,17 @@ export function NoteAdd({ onAddNote }) {
     function handleSubmit(ev) {
         ev.preventDefault()
         if (isNoteEmpty()) return 
-
-        console.log('Creating new note of type:', noteType, 'with info:', noteInfo)
-        
-        noteService.createNote(noteType, noteInfo)
+        const newNote = {
+            createdAt: Date.now(),
+            type: noteType,
+            isPinned: false,
+            style: {
+                backgroundColor: '#ffffff'
+            },
+            info: noteInfo
+        }
+                
+        storageService.post(NOTES_KEY, newNote)
             .then(savedNote => {
                 console.log('Note saved successfully:', savedNote)
                 onAddNote(savedNote)

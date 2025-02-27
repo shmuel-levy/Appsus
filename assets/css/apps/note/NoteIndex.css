@@ -1,22 +1,48 @@
- /* note index */
-
- .note-index {
-    padding: 20px;
+.note-index {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    height: 100%;
 }
 
-.note-index h1 {
-    margin-bottom: 20px;
-    color: #333;
+.note-add-container {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+    padding: 16px 16px 8px 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
 }
 
+.note-add-container.scrolled {
+    border-bottom-color: #e0e0e0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
+.notes-container {
+    padding: 0 16px 16px 16px;
+}
+
+.notes-section-header {
+    font-size: 12px;
+    color: #5f6368;
+    font-weight: 500;
+    text-transform: uppercase;
+    padding: 8px 0;
+    margin-top: 24px;
+}
 
 .loading {
-    text-align: center;
-    padding: 20px;
-    color: #666;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 16px;
+    color: #5f6368;
 }
-
 .error {
     color: #d9534f;
     text-align: center;
