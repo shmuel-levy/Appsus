@@ -1,12 +1,27 @@
-const { useState } = React
+const { useState, useRef, useEffect } = React
 import { noteService } from '../services/note.service.js'
-import { storageService } from '../../services/async-storage.service.js'
-
-const NOTES_KEY = 'notesDB'
 
 export function NoteAdd({ onAddNote }) {
     const [noteType, setNoteType] = useState('NoteTxt')
     const [noteInfo, setNoteInfo] = useState({ txt: '' })
+    const [isExpanded, setIsExpanded] = useState(false)
+    const formRef = useRef()
+
+    // Add click outside listener to collapse the form
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (formRef.current && !formRef.current.contains(event.target)) {
+                if (isExpanded && isNoteEmpty()) {
+                    setIsExpanded(false)
+                }
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [isExpanded])
 
     function handleTypeChange(type) {
         setNoteType(type)
@@ -27,31 +42,22 @@ export function NoteAdd({ onAddNote }) {
         setNoteInfo(prevInfo => ({ ...prevInfo, todos }))
     }
 
+    function handleFocus() {
+        setIsExpanded(true)
+    }
+
     function handleSubmit(ev) {
         ev.preventDefault()
         if (isNoteEmpty()) return 
 
         console.log('Creating new note of type:', noteType, 'with info:', noteInfo)
         
-        // Create a new note object directly
-        const newNote = {
-            createdAt: Date.now(),
-            type: noteType,
-            isPinned: false,
-            style: {
-                backgroundColor: '#ffffff'
-            },
-            info: noteInfo
-        }
-        
-        console.log('New note object:', newNote)
-        
-        // Use storageService.post directly for new notes
-        storageService.post(NOTES_KEY, newNote)
+        noteService.createNote(noteType, noteInfo)
             .then(savedNote => {
                 console.log('Note saved successfully:', savedNote)
                 onAddNote(savedNote)
                 resetForm()
+                setIsExpanded(false)
             })
             .catch(err => {
                 console.error('Error saving note:', err)
@@ -76,17 +82,39 @@ export function NoteAdd({ onAddNote }) {
     }
 
     return (
-        <div className="note-add">
-            <form onSubmit={handleSubmit}>
+        <div className={`note-add ${isExpanded ? 'expanded' : 'collapsed'}`}>
+            <form onSubmit={handleSubmit} ref={formRef}>
                 {renderNoteForm()}
                 
-                <div className="note-type-buttons">
-                    <button type="button" onClick={() => handleTypeChange('NoteTxt')}>Text</button>
-                    <button type="button" onClick={() => handleTypeChange('NoteImg')}>Image</button>
-                    <button type="button" onClick={() => handleTypeChange('NoteTodos')}>Todos</button>
-                </div>
-                
-                <button type="submit">Add Note</button>
+                {isExpanded && (
+                    <div className="note-form-footer">
+                        <div className="note-type-buttons">
+                            <button 
+                                type="button" 
+                                className={noteType === 'NoteTxt' ? 'active' : ''}
+                                onClick={() => handleTypeChange('NoteTxt')}
+                            >
+                                Text
+                            </button>
+                            <button 
+                                type="button" 
+                                className={noteType === 'NoteImg' ? 'active' : ''}
+                                onClick={() => handleTypeChange('NoteImg')}
+                            >
+                                Image
+                            </button>
+                            <button 
+                                type="button" 
+                                className={noteType === 'NoteTodos' ? 'active' : ''}
+                                onClick={() => handleTypeChange('NoteTodos')}
+                            >
+                                Todos
+                            </button>
+                        </div>
+                        
+                        <button type="submit">Add Note</button>
+                    </div>
+                )}
             </form>
         </div>
     )
@@ -101,7 +129,8 @@ export function NoteAdd({ onAddNote }) {
                         placeholder="Take a note..." 
                         value={noteInfo.txt || ''}
                         onChange={handleChange}
-                        autoFocus
+                        onFocus={handleFocus}
+                        autoFocus={isExpanded}
                     />
                 )
                 
@@ -114,6 +143,7 @@ export function NoteAdd({ onAddNote }) {
                             placeholder="Title" 
                             value={noteInfo.title || ''}
                             onChange={handleChange}
+                            onFocus={handleFocus}
                         />
                         <input 
                             type="text" 
@@ -121,6 +151,7 @@ export function NoteAdd({ onAddNote }) {
                             placeholder="Image URL" 
                             value={noteInfo.url || ''}
                             onChange={handleChange}
+                            onFocus={handleFocus}
                         />
                     </div>
                 )
@@ -134,11 +165,14 @@ export function NoteAdd({ onAddNote }) {
                             placeholder="List title" 
                             value={noteInfo.title || ''}
                             onChange={handleChange}
+                            onFocus={handleFocus}
                         />
                         <textarea
                             name="todosText"
                             placeholder="Enter items separated by commas"
                             onChange={handleTodoChange}
+                            onFocus={handleFocus}
+                            rows={isExpanded ? 3 : 1}
                         />
                     </div>
                 )
