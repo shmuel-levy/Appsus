@@ -11,7 +11,7 @@ export function MailDetails() {
     useEffect(() => {
         mailService.get(mailId).then(mail => {
             if (!mail.isRead) {
-                mail.Read = true
+                mail.isRead = true
                 mailService.save(mail)
             }
             setMail(mail)

@@ -13,6 +13,8 @@ export function MailIndex() {
     const [activeFolder, setActiveFolder] = useState('inbox')
     const location = useLocation()
 
+    // console.log(mails)
+
     useEffect(() => {
         loadMails()
     }, [filterBy])
