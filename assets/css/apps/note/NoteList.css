@@ -1,8 +1,18 @@
 .notes-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-gap: 16px;
+    padding: 16px;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+
+.no-notes {
+    text-align: center;
+    padding: 32px;
+    color: #5f6368;
+    font-size: 16px;
 }
 
 .notes-section-header {
@@ -14,4 +24,10 @@
     border-bottom: 1px solid #e0e0e0;
     grid-column: 1 / -1;
     margin-top: 16px;
+}
+@media (max-width: 600px) {
+    .notes-list {
+        grid-template-columns: 1fr;
+        padding: 8px;
+    }
 }

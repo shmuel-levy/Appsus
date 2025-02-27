@@ -1,61 +1,65 @@
-import { noteService } from '../services/note.service.js' 
-import { NoteList } from '../cmps/NoteList.jsx' 
-import { NoteAdd } from '../cmps/NoteAdd.jsx'  
+const { useState, useEffect } = React
 
-const { useState, useEffect } = React  
+import { noteService } from '../services/note.service.js'
+import { NoteList } from '../cmps/NoteList.jsx'
+import { NoteAdd } from '../cmps/NoteAdd.jsx'
+import { showSuccessMsg, showErrorMsg } from '../../services/event-bus.service.js'
 
-export function NoteIndex() {     
-    const [notes, setNotes] = useState([])     
-    const [isLoading, setIsLoading] = useState(true)      
+
+export function NoteIndex() {
+    const [notes, setNotes] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [filterBy, setFilterBy] = useState({ txt: '', type: '' })
     
-    useEffect(() => {         
-        loadNotes()     
-    }, [])      
+    useEffect(() => {
+        loadNotes()
+    }, [filterBy])
     
-    function loadNotes() {         
-        setIsLoading(true)         
-        noteService.query()             
-            .then(notesFromService => {                 
-                setNotes(notesFromService)             
-            })             
-            .catch(err => {                 
-                console.error('Error loading notes:', err)                 
-                setNotes([])             
-            })             
-            .finally(() => {                 
-                setIsLoading(false)             
-            })     
-    }      
+    function loadNotes() {
+        setIsLoading(true)
+        noteService.query(filterBy)
+            .then(notesFromService => {
+                setNotes(notesFromService)
+            })
+            .catch(err => {
+                showErrorMsg('Failed to load notes')
+                setNotes([])
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+    }
     
-    function onAddNote(newNote) {         
-        setNotes(prevNotes => [newNote, ...prevNotes])     
-    }      
+    function onAddNote(newNote) {
+        setNotes(prevNotes => [newNote, ...prevNotes])
+        showSuccessMsg('Note added successfully')
+    }
     
-    function onRemoveNote(noteId) {         
-        noteService.remove(noteId)             
-            .then(() => {                 
-                setNotes(prevNotes => prevNotes.filter(note => note.id !== noteId))             
-            })     
-    }          
+    function onRemoveNote(noteId) {
+        noteService.remove(noteId)
+            .then(() => {
+                setNotes(prevNotes => prevNotes.filter(note => note.id !== noteId))
+                showSuccessMsg('Note removed successfully')
+            })
+            .catch(err => {
+                showErrorMsg('Failed to remove note')
+            })
+    }
     
     function onPinNote(noteId) {
-        // First, get the current note from state
         const note = notes.find(note => note.id === noteId)
-        if (!note) {
-            console.error('Note not found:', noteId)
-            return
-        }
+        if (!note) return
+        
         const updatedNote = {
             ...note,
             isPinned: !note.isPinned
         }
+        
         noteService.save(updatedNote)
             .then(savedNote => {
-                console.log('Note saved successfully with pinned state:', savedNote)
-                
                 setNotes(prevNotes => 
-                    prevNotes.map(n => 
-                        n.id === savedNote.id ? savedNote : n
+                    prevNotes.map(note => 
+                        note.id === savedNote.id ? savedNote : note
                     )
                 )
                 
@@ -68,17 +72,21 @@ export function NoteIndex() {
             })
     }
     
-    if (isLoading) return <div className="loading">Loading...</div>
+    function onSetFilter(filterBy) {
+        setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
+    }
     
-    return (         
-        <section className="note-index">             
-            <h1>Notes</h1>             
-            <NoteAdd onAddNote={onAddNote} />             
+    if (isLoading) return <div className="loading">Loading notes...</div>
+    
+    return (
+        <section className="note-index">
+            <NoteAdd onAddNote={onAddNote} />
+            
             <NoteList 
                 notes={notes} 
                 onRemoveNote={onRemoveNote}
                 onPinNote={onPinNote}
-            />         
-        </section>     
-    ) 
+            />
+        </section>
+    )
 }

@@ -7,7 +7,6 @@ export function NoteAdd({ onAddNote }) {
     const [isExpanded, setIsExpanded] = useState(false)
     const formRef = useRef()
 
-    // Add click outside listener to collapse the form
     useEffect(() => {
         function handleClickOutside(event) {
             if (formRef.current && !formRef.current.contains(event.target)) {
