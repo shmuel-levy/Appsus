@@ -40,3 +40,7 @@
     font-weight: normal;
     background: #f2f6fc;
 }
+
+.mail-preview:hover {
+   box-shadow: rgba(60, 64, 67, 0.25) 0px -1px 0px 0px inset;
+}

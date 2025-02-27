@@ -1,23 +1,48 @@
 .mail-filter {
+   
+     max-width: 720px;
+     border-radius: 24px; 
+}
+
+
+.mail-filter  .input-icon{
     display: flex;
-    align-items: center;
-    padding: 0px;
-    margin-bottom: 15px;
-    max-width: 720px;
-}
 
-.mail-filter input {
+}
+.mail-filter  .input-field {
     flex-grow: 1;
-    min-height: 48px;
-    border: none;
+    height: 48px;
+    margin-bottom: 10px;
     border-radius: 24px;
-    font-family: "Roboto", serif;
-    font-size: 16px;
-    outline: none;
-    background: #e9eef6;
-    padding-left: 20px;
+    padding-left:40px;
+    border: none;
+    background-color:#e9eef6 ;
+    font-size: 18px;
+    
 }
 
-.mail-filter input:focus{
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+.input-icon .fa-solid {
+    position: absolute;
+    padding: 17px;
 }
+
+ .mail-filter input:focus{
+    background-color: white;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    border: none;
+    outline: none;
+}
+
+
+.mail-filter-container {
+    background-color: white;
+    padding-top:15px;
+    border-radius: 16px;
+}
+
+.sort-container {
+
+    border-bottom: 1px solid #ddd;
+}
+
+
