@@ -17,5 +17,5 @@
    flex-grow: 1; /* Take remaining space */
    display: flex;
    flex-direction: column;
-   padding: 15px;
+   padding: 10px;
 }

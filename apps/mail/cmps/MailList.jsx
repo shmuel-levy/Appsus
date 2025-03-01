@@ -16,5 +16,5 @@ export function MailList({ mails, onMailClick, onToggleStar, onToggleSelect, sel
                 ))}
             </ul>
         </section>
-    );
+    )
 }

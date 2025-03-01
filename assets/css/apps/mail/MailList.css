@@ -5,6 +5,7 @@
    overflow-x:hidden;
    scrollbar-color: lightgrey white;
    height: 100vh;
+   background-color: white;
  }
 
  .mail-list ul {

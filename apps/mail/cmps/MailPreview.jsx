@@ -1,6 +1,11 @@
-const { Link } = ReactRouterDOM
+const { Link , useSearchParams } = ReactRouterDOM
 
 export function MailPreview({ mail, onMailClick, onToggleStar, onToggleSelect, selectedMails = [] }) {
+
+    const folder =  mail.folder || 'inbox'
+   
+
+
     return (
         <div className={`mail-preview ${mail.isRead ? 'read' : 'unread'} ${selectedMails.includes(mail.id) ? 'selected' : ''} ${mail.isStarred ? 'starred' : ''}`}>
             <input
@@ -11,11 +16,11 @@ export function MailPreview({ mail, onMailClick, onToggleStar, onToggleSelect, s
             <i
                 className={`fa-star ${mail.isStarred ? 'fas' : 'far'}`}
                 onClick={(ev) => {
-                    ev.stopPropagation();
-                    onToggleStar(mail.id);
+                    ev.stopPropagation()
+                    onToggleStar(mail.id)
                 }}
             ></i>
-            <Link to={`/mail/${mail.id}`} onClick={() => onMailClick(mail.id)}>
+            <Link to={`/mail/${mail.id}?folder=${folder}`} >
                 <h3 className={mail.isRead ? '' : 'bold'}>
                     {mail.from.length > 50 ? mail.from.substring(0, 50) : mail.from}
                 </h3>
@@ -25,5 +30,5 @@ export function MailPreview({ mail, onMailClick, onToggleStar, onToggleSelect, s
                 <p>{mail.body}</p>
             </Link>
         </div>
-    );
+    )
 }
