@@ -8,7 +8,7 @@ import { MailCompose } from "../cmps/MailCompose.jsx"
 
 export function MailIndex() {
     const [mails, setMails] = useState([])
-    const [filterBy, setFilterBy] = useState({ text: '', isRead: 'all', folder: 'inbox' })
+    const [filterBy, setFilterBy] = useState({ text: '', isRead: 'all', folder: 'inbox', isStarred: false })
     const [isComposing, setIsComposing] = useState(false)
     const [activeFolder, setActiveFolder] = useState('inbox')
     const [unreadCount, setUnreadCount] = useState(0)
@@ -23,6 +23,14 @@ export function MailIndex() {
     }, [filterBy])
 
     useEffect(() => {
+        function handleMailUpdate() {
+            loadMails();
+        }
+        window.addEventListener('mail-updated', handleMailUpdate);
+        return () => window.removeEventListener('mail-updated', handleMailUpdate);
+    }, []);
+
+    useEffect(() => {
         updateUnreadCount()
     }, [mails])
 
@@ -32,18 +40,22 @@ export function MailIndex() {
                 mail.subject.toLowerCase().includes(filterBy.text.toLowerCase())
             )
 
-            if (filterBy.isRead !== 'all') {
-                const isRead = filterBy.isRead === 'read'
-                filteredMails = filteredMails.filter(mail => mail.isRead === isRead)
+            if (filterBy.filter === 'read') {
+                filteredMails = filteredMails.filter(mail => mail.isRead);
+            } else if (filterBy.filter === 'unread') {
+                filteredMails = filteredMails.filter(mail => !mail.isRead);
+            } else if (filterBy.filter === 'starred') {
+                filteredMails = filteredMails.filter(mail => mail.isStarred);
             }
 
-            if (filterBy.folder) {
-                if (filterBy.folder === 'starred') {
-                    filteredMails = filteredMails.filter(mail => mail.isStarred)
-                } else {
-                    filteredMails = filteredMails.filter(mail => mail.folder === filterBy.folder)
-                }
+            if (filterBy.folder !== 'all') {
+                filteredMails = filteredMails.filter(mail => mail.folder === filterBy.folder);
             }
+
+            if (filterBy.folder === 'starred') {
+                filteredMails = allMails.filter(mail => mail.isStarred)
+            }
+
             setMails(filteredMails)
         })
     }
@@ -103,7 +115,7 @@ export function MailIndex() {
                 <MailFilter onSetFilter={onSetFilter} />
                 <div className="mail-filter-container">
                     <div className='sort-container'>
-                        <select name='isRead' onChange={(ev) => onSetFilter({ isRead: ev.target.value })}>
+                        <select name='filter' onChange={(ev) => setFilterBy(prev => ({ ...prev, filter: ev.target.value }))}>
                             <option value='all'>All</option>
                             <option value='read'>Read</option>
                             <option value='unread'>Unread</option>

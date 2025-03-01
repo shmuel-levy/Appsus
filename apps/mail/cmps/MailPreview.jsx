@@ -2,7 +2,7 @@ const { Link } = ReactRouterDOM
 
 export function MailPreview({ mail, onMailClick, onToggleStar, onToggleSelect, selectedMails = [] }) {
     return (
-        <div className={`mail-preview ${mail.isRead ? 'read' : 'unread'} ${selectedMails.includes(mail.id) ? 'selected' : ''}`}>
+        <div className={`mail-preview ${mail.isRead ? 'read' : 'unread'} ${selectedMails.includes(mail.id) ? 'selected' : ''} ${mail.isStarred ? 'starred' : ''}`}>
             <input
                 type='checkbox'
                 checked={selectedMails.includes(mail.id)}
