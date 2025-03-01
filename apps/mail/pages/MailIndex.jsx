@@ -11,6 +11,7 @@ export function MailIndex() {
     const [filterBy, setFilterBy] = useState({ text: '', isRead: 'all', folder: 'inbox' })
     const [isComposing, setIsComposing] = useState(false)
     const [activeFolder, setActiveFolder] = useState('inbox')
+    const [unreadCount, setUnreadCount] = useState(0)
     const location = useLocation()
 
     // console.log(mails)
@@ -18,6 +19,10 @@ export function MailIndex() {
     useEffect(() => {
         loadMails()
     }, [filterBy])
+
+    useEffect(() => {
+        updateUnreadCount()
+    }, [mails])
 
     function loadMails() {
         mailService.query().then(allMails => {
@@ -36,6 +41,11 @@ export function MailIndex() {
 
             setMails(filteredMails)
         })
+    }
+
+    function updateUnreadCount() {
+        const count = mails.filter( mail => !mail.isRead && mail.folder === 'inbox').length
+        setUnreadCount(count)
     }
 
     function onSetFilter(filter) {
@@ -66,7 +76,7 @@ export function MailIndex() {
                 <button className="compose-btn" onClick={() => setIsComposing(true)}>
                     <i className="fas fa-pencil-alt"></i> Compose
                 </button>
-                <MailFolderList onSetFolder={onSetFolder} activeFolder={activeFolder} />
+                <MailFolderList onSetFolder={onSetFolder} activeFolder={activeFolder} unreadCount={unreadCount} />
             </aside>
             <div className="mail-content">
                 <MailFilter onSetFilter={onSetFilter} />
