@@ -12,6 +12,8 @@ export function MailIndex() {
     const [isComposing, setIsComposing] = useState(false)
     const [activeFolder, setActiveFolder] = useState('inbox')
     const [unreadCount, setUnreadCount] = useState(0)
+    const [selectedMails, setSelectedMails] = useState([]);
+
     const location = useLocation()
 
     // console.log(mails)
@@ -36,16 +38,35 @@ export function MailIndex() {
             }
 
             if (filterBy.folder) {
-                filteredMails = filteredMails.filter(mail => mail.folder === filterBy.folder)
+                if (filterBy.folder === 'starred') {
+                    filteredMails = filteredMails.filter(mail => mail.isStarred)
+                } else {
+                    filteredMails = filteredMails.filter(mail => mail.folder === filterBy.folder)
+                }
             }
-
             setMails(filteredMails)
         })
     }
 
     function updateUnreadCount() {
-        const count = mails.filter( mail => !mail.isRead && mail.folder === 'inbox').length
+        const count = mails.filter(mail => !mail.isRead && mail.folder === 'inbox').length
         setUnreadCount(count)
+    }
+
+    function toggleStar(mailId) {
+        mailService.get(mailId)
+            .then(mail => {
+                mail.isStarred = !mail.isStarred
+                mailService.save(mail).then(loadMails)
+            })
+    }
+
+    function toggleSelect(mailId) {
+        setSelectedMails(prevSelected =>
+            prevSelected.includes(mailId)
+                ? prevSelected.filter(id => id !== mailId)
+                : [...prevSelected, mailId]
+        );
     }
 
     function onSetFilter(filter) {
@@ -86,10 +107,16 @@ export function MailIndex() {
                             <option value='all'>All</option>
                             <option value='read'>Read</option>
                             <option value='unread'>Unread</option>
+                            <option value='starred'>Starred</option>
                         </select>
                     </div>
                     <div style={{ display: location.pathname.includes('/mail/') ? 'none' : 'block' }}>
-                        <MailList mails={mails} onMailClick={markAsRead} />
+                        <MailList
+                            mails={mails}
+                            onMailClick={markAsRead}
+                            onToggleStar={toggleStar}
+                            onToggleSelect={toggleSelect}
+                            selectedMails={selectedMails} />
                     </div>
                 </div>
                 {isComposing && <MailCompose onClose={() => setIsComposing(false)} onMailSent={handleMailSent} />}
