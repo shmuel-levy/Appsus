@@ -1,12 +1,12 @@
-.mail-preview {
+ .mail-preview {
     display: flex;
     align-items: center;
     padding: 12px;
     font-size: 14px;
+    border-bottom: 1px solid #ddd;
 }
 
 .mail-preview h3 {
-    flex-grow: 1;
     font-weight: normal;
     color: #202124;
     margin: 0;
@@ -14,7 +14,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     font-family: "Roboto", serif;
-    margin-right: 100px;
+    margin-right: 120px;
     flex-basis: 168px;
     flex-shrink: 0;
 }
@@ -24,13 +24,13 @@
 }
 
 .mail-preview p {
-    flex-grow: 2;
     color: #202124;
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     font-family: "Roboto", serif;
+    flex-grow: 1;
 }
 
 .mail-preview.unread {
@@ -42,15 +42,20 @@
     font-weight: bold;
 }
 
+.mail-preview:hover i {
+    color: black;
+}
+
 .mail-preview.read {
     font-weight: normal;
     background: #f2f6fc;
 }
 
 .mail-preview i {
-    color: lightgrey;
+    color: rgb(182, 182, 182);
     margin-right: 10px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 .mail-preview input[type="checkbox" i] {
@@ -68,4 +73,45 @@
  
 .mail-preview:hover {
    box-shadow: rgba(60, 64, 67, 0.25) 0px -1px 0px 0px inset;
+}
+
+.mail-preview .mail-link {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-between; 
+    width: 100%;
+}
+
+.mail-preview .mail-text-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    flex-grow: 1;
+}
+
+.mail-preview .mail-text {
+    display: flex;
+    flex-grow: 1;
+    gap: 5px; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mail-preview .mail-body {
+    color: #757575;
+}
+
+.mail-preview .mail-date {
+    font-family: "Roboto", serif;
+    font-size: 0.9em;
+    white-space: nowrap;
+    min-width: 60px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.mail-preview.read .mail-date {
+    color: grey;
 }
