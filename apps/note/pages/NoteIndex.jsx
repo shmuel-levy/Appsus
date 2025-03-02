@@ -3,18 +3,20 @@ const { useState, useEffect } = React
 import { noteService } from '../services/note.service.js'
 import { NoteList } from '../cmps/NoteList.jsx'
 import { NoteAdd } from '../cmps/NoteAdd.jsx'
+import { NoteFilter } from '../cmps/NoteFilter.jsx'
 
 export function NoteIndex() {
     const [notes, setNotes] = useState([])
+    const [filterBy, setFilterBy] = useState({ txt: '', type: '' })
     const [isLoading, setIsLoading] = useState(true)
     
     useEffect(() => {
         loadNotes()
-    }, [])
+    }, [filterBy])
     
     function loadNotes() {
         setIsLoading(true)
-        noteService.query()
+        noteService.query(filterBy)
             .then(notesFromService => {
                 console.log('Notes loaded:', notesFromService)
                 setNotes(notesFromService)
@@ -26,6 +28,10 @@ export function NoteIndex() {
             .finally(() => {
                 setIsLoading(false)
             })
+    }
+    
+    function onSetFilter(newFilterBy) {
+        setFilterBy(prevFilterBy => ({ ...prevFilterBy, ...newFilterBy }))
     }
     
     function onAddNote(newNote) {
@@ -49,14 +55,16 @@ export function NoteIndex() {
             console.error('Note not found:', noteId)
             return
         }
-                const updatedNote = {
+        
+        const updatedNote = {
             ...note,
             isPinned: !note.isPinned
         }
-                noteService.save(updatedNote)
+        
+        noteService.save(updatedNote)
             .then(savedNote => {
                 setNotes(prevNotes => 
-                    prevNotes.map(note => 
+                    prevNotes.map(note =>
                         note.id === savedNote.id ? savedNote : note
                     )
                 )
@@ -69,16 +77,21 @@ export function NoteIndex() {
             })
     }
     
-    if (isLoading) return <div className="loading">Loading...</div>
+    if (isLoading && notes.length === 0) return <div className="loading">Loading...</div>
     
     return (
         <section className="note-index">
+            <div className="note-filter-container">
+                <NoteFilter onSetFilter={onSetFilter} />
+            </div>
+            
             <div className="note-add-container">
                 <NoteAdd onAddNote={onAddNote} />
             </div>
+            
             <div className="notes-container">
-                <NoteList 
-                    notes={notes} 
+                <NoteList
+                    notes={notes}
                     onRemoveNote={onRemoveNote}
                     onPinNote={onPinNote}
                 />

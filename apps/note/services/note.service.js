@@ -57,12 +57,21 @@ function query(filterBy = {}) {
             if (filterBy.type) {
                 notes = notes.filter(note => note.type === filterBy.type)
             }
+            
             if (filterBy.txt) {
                 notes = notes.filter(note => 
                     _getNoteText(note).toLowerCase().includes(filterBy.txt.toLowerCase())
                 )
             }
-            return notes.sort((a, b) => b.isPinned - a.isPinned || b.createdAt - a.createdAt)
+            
+            if (filterBy.color) {
+                notes = notes.filter(note => 
+                    note.style && 
+                    note.style.backgroundColor && 
+                    note.style.backgroundColor.toLowerCase() === filterBy.color.toLowerCase()
+                )
+            }
+                        return notes.sort((a, b) => b.isPinned - a.isPinned || b.createdAt - a.createdAt)
         })
 }
 
