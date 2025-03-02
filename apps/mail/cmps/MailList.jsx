@@ -1,13 +1,18 @@
 import { MailPreview } from '../cmps/MailPreview.jsx'
 
-export function MailList({ mails, onMailClick }) {
+export function MailList({ mails, onMailClick, onToggleStar, onToggleSelect, selectedMails = [] }) {
     return (
         <section className='mail-list'>
             <ul>
                 {mails.map(mail => (
-                    <li key={mail.id} onClick={() => onMailClick(mail.id)}>
-                        <MailPreview mail={mail} />
-                    </li>
+                    <MailPreview 
+                        key={mail.id} 
+                        mail={mail} 
+                        onMailClick={onMailClick} 
+                        onToggleStar={onToggleStar} 
+                        onToggleSelect={onToggleSelect} 
+                        selectedMails={selectedMails}
+                    />
                 ))}
             </ul>
         </section>

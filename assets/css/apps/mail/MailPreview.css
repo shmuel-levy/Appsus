@@ -14,6 +14,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
     font-family: "Roboto", serif;
+    margin-right: 100px;
+    flex-basis: 168px;
+    flex-shrink: 0;
+}
+
+.mail-preview a {
+    display: flex;
 }
 
 .mail-preview p {
@@ -33,7 +40,6 @@
 
 .mail-preview.unread h3 {
     font-weight: bold;
-    background: #fff;
 }
 
 .mail-preview.read {
@@ -41,6 +47,25 @@
     background: #f2f6fc;
 }
 
+.mail-preview i {
+    color: lightgrey;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.mail-preview input[type="checkbox" i] {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.mail-preview .fas {
+    color: #FFD95F;
+}
+
+.mail-preview.selected {
+    background-color: #c2dbff ;
+}
+ 
 .mail-preview:hover {
    box-shadow: rgba(60, 64, 67, 0.25) 0px -1px 0px 0px inset;
 }

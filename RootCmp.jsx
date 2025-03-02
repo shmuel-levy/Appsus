@@ -21,7 +21,7 @@ export function RootCmp() {
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/mail" element={<MailIndex />} >
-                    <Route path="/mail/:mailId" element={<MailDetails />} />
+                <Route path="/mail/:mailId" element={<MailDetails />} />
                 </Route>
                 <Route path="/note" element={<NoteIndex />} />
                 <Route path= "/mail/compose" element={<MailCompose />} />

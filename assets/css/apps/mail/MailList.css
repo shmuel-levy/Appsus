@@ -5,6 +5,7 @@
    overflow-x:hidden;
    scrollbar-color: lightgrey white;
    height: 100vh;
+   background-color: white;
  }
 
  .mail-list ul {
@@ -13,13 +14,15 @@
     margin: 0;
  }
 
- .mail-list li {
+ .mail-list div {
     border-bottom: 1px solid #ddd;
     transition: background 0.2s;
  }
 
- .mail-list li:hover {
-    background: #f1f3f4;
+ .mail-list div:hover {
     cursor: pointer;
  }
 
+ 
+
+ 

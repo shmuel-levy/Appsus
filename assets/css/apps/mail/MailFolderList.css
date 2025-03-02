@@ -38,3 +38,15 @@
 .mail-folder-list button.active i {
     font-weight: bold;
 }
+
+.unread-count {
+    font-family: 'Roboto', serif;
+    color: #001d35;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 50%;
+    padding: 4px 8px;
+    margin-left: auto;
+    min-width: 18px;
+    text-align: center;
+}
