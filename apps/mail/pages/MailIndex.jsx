@@ -71,15 +71,23 @@ export function MailIndex() {
     }
 
     function updateUnreadCount() {
-        const count = mails.filter(mail => !mail.isRead).length
-        setUnreadCount(count)
+        mailService.query().then(allMails => {
+            const count = allMails.filter(mail => !mail.isRead && mail.folder === "inbox").length;
+            setUnreadCount(count);
+        });
     }
 
     function toggleStar(mailId) {
+        setMails(prevMails => prevMails.map(mail => 
+            mail.id === mailId ? { ...mail, isStarred: !mail.isStarred } : mail
+        ))
+    
         mailService.get(mailId).then(mail => {
-            mail.isStarred = !mail.isStarred
-            mailService.save(mail).then(loadMails)
-        })
+            mail.isStarred = !mail.isStarred;
+            mailService.save(mail).then(() => {
+                window.dispatchEvent(new Event('mail-updated'))
+            });
+        });
     }
 
     function toggleSelect(mailId) {
@@ -101,12 +109,33 @@ export function MailIndex() {
     }
 
     function markAsRead(mailId) {
+        setMails(prevMails => prevMails.map(mail => 
+            mail.id === mailId ? { ...mail, isRead: !mail.isRead } : mail
+        ))
+    
         mailService.get(mailId).then(mail => {
-            if (!mail.isRead) {
-                mail.isRead = true
-                mailService.save(mail).then(loadMails)
+            mail.isRead = !mail.isRead;
+            mailService.save(mail).then(() => {
+                window.dispatchEvent(new Event('mail-updated'))
+            });
+        });
+    }
+
+    function onDeleteMail(mailId) {
+        setMails(prevMails => prevMails.filter(mail => mail.id !== mailId))
+    
+        mailService.get(mailId).then(mail => {
+            if (mail.folder === 'trash') {
+                mailService.remove(mailId).then(() => {
+                    window.dispatchEvent(new Event('mail-updated'));
+                });
+            } else {
+                mail.folder = 'trash';
+                mailService.save(mail).then(() => {
+                    window.dispatchEvent(new Event('mail-updated'));
+                });
             }
-        })
+        });
     }
 
     function handleMailSent() {
@@ -117,7 +146,7 @@ export function MailIndex() {
         <section className="mail-index">
             <aside className="mail-sidebar">
                 <button className="compose-btn" onClick={() => setIsComposing(true)}>
-                    <i className="fas fa-pencil-alt"></i> Compose
+                    <img src="./assets/img/compose.png"></img> Compose
                 </button>
                 <MailFolderList onSetFolder={onSetFolder} activeFolder={folder} unreadCount={unreadCount} />
             </aside>
@@ -132,7 +161,7 @@ export function MailIndex() {
                     </select>
                 </div>
                 <div style={{ display: location.pathname.includes('/mail/') ? 'none' : 'block' }}>
-                    <MailList mails={mails} onMailClick={markAsRead} onToggleStar={toggleStar} onToggleSelect={toggleSelect} selectedMails={selectedMails} />
+                    <MailList mails={mails} onMailClick={markAsRead} onToggleStar={toggleStar} onToggleSelect={toggleSelect} onDeleteMail={onDeleteMail}  selectedMails={selectedMails} />
                 </div>
                 {isComposing && <MailCompose onClose={() => setIsComposing(false)} onMailSent={handleMailSent} />}
                 <Outlet />
