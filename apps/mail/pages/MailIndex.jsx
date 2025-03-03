@@ -12,22 +12,23 @@ export function MailIndex() {
     const [filterBy, setFilterBy] = useState({ text: '', filter: 'all', folder: 'inbox' })
     useEffect(() => {
         const updatedFolder = searchParams.get('folder') || 'inbox'
-        setFilterBy(prev => ({ ...prev, folder: updatedFolder })) 
+        setFilterBy(prev => ({ ...prev, folder: updatedFolder }))
     }, [searchParams])
-    
+
     const folder = filterBy.folder
-    
+
 
     const [mails, setMails] = useState([])
     const [isComposing, setIsComposing] = useState(false)
     const [unreadCount, setUnreadCount] = useState(0)
     const [selectedMails, setSelectedMails] = useState([])
+    const [sortBy, setSortBy] = useState('date');
     const location = useLocation()
     const navigate = useNavigate()
 
     useEffect(() => {
         loadMails()
-    }, [filterBy])
+    }, [filterBy, sortBy])
 
     useEffect(() => {
         updateUnreadCount()
@@ -66,6 +67,12 @@ export function MailIndex() {
                 filteredMails = filteredMails.filter(mail => mail.folder === filterBy.folder)
             }
 
+            if (sortBy === 'date') {
+                filteredMails.sort((a, b) => b.sentAt = a.sentAt)
+            } else if (sortBy === 'title') {
+                filteredMails.sort((a, b) => a.subject.localeCompare(b.subject))
+            }
+
             setMails(filteredMails)
         })
     }
@@ -78,10 +85,10 @@ export function MailIndex() {
     }
 
     function toggleStar(mailId) {
-        setMails(prevMails => prevMails.map(mail => 
+        setMails(prevMails => prevMails.map(mail =>
             mail.id === mailId ? { ...mail, isStarred: !mail.isStarred } : mail
         ))
-    
+
         mailService.get(mailId).then(mail => {
             mail.isStarred = !mail.isStarred;
             mailService.save(mail).then(() => {
@@ -100,7 +107,7 @@ export function MailIndex() {
 
 
     function onSetFolder(newFolder) {
-        setSearchParams({ folder: newFolder }) 
+        setSearchParams({ folder: newFolder })
         setFilterBy(prev => ({ ...prev, folder: newFolder, filter: 'all' }))
     }
 
@@ -109,10 +116,10 @@ export function MailIndex() {
     }
 
     function markAsRead(mailId) {
-        setMails(prevMails => prevMails.map(mail => 
+        setMails(prevMails => prevMails.map(mail =>
             mail.id === mailId ? { ...mail, isRead: !mail.isRead } : mail
         ))
-    
+
         mailService.get(mailId).then(mail => {
             mail.isRead = !mail.isRead;
             mailService.save(mail).then(() => {
@@ -123,7 +130,7 @@ export function MailIndex() {
 
     function onDeleteMail(mailId) {
         setMails(prevMails => prevMails.filter(mail => mail.id !== mailId))
-    
+
         mailService.get(mailId).then(mail => {
             if (mail.folder === 'trash') {
                 mailService.remove(mailId).then(() => {
@@ -151,17 +158,22 @@ export function MailIndex() {
                 <MailFolderList onSetFolder={onSetFolder} activeFolder={folder} unreadCount={unreadCount} />
             </aside>
             <div className="mail-content">
+            <MailFilter onSetFilter={onSetFilter} />
                 <div className="mail-filter-container">
-                    <MailFilter onSetFilter={onSetFilter} />
+                    {/* <MailFilter onSetFilter={onSetFilter} /> */}
                     <select name='filter' onChange={(ev) => setFilterBy(prev => ({ ...prev, filter: ev.target.value }))}>
                         <option value='all'>All</option>
                         <option value='read'>Read</option>
                         <option value='unread'>Unread</option>
                         <option value='starred'>Starred</option>
                     </select>
+                    <select value={sortBy} onChange={(ev) => setSortBy(ev.target.value)}>
+                        <option value="date">Date</option>
+                        <option value="title">Title</option>
+                    </select>
                 </div>
                 <div style={{ display: location.pathname.includes('/mail/') ? 'none' : 'block' }}>
-                    <MailList mails={mails} onMailClick={markAsRead} onToggleStar={toggleStar} onToggleSelect={toggleSelect} onDeleteMail={onDeleteMail}  selectedMails={selectedMails} />
+                    <MailList mails={mails} onMailClick={markAsRead} onToggleStar={toggleStar} onToggleSelect={toggleSelect} onDeleteMail={onDeleteMail} selectedMails={selectedMails} />
                 </div>
                 {isComposing && <MailCompose onClose={() => setIsComposing(false)} onMailSent={handleMailSent} />}
                 <Outlet />

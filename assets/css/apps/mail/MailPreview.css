@@ -43,7 +43,7 @@
     font-weight: bold;
 }
 
-.mail-preview:hover i {
+.mail-preview:hover i:not(.fas) {
     color: black;
 }
 
@@ -65,7 +65,7 @@
 }
 
 .mail-preview .fas {
-    color: #FFD95F;
+    color: #f9b200;
 }
 
 .mail-preview.selected {

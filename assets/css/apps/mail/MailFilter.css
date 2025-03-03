@@ -38,4 +38,17 @@
     border-bottom: 1px solid #ddd;
 }
 
+.mail-filter-container {
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+    border-radius: 10px 10px 0px 0px;
+    padding: 10px;
+}
+
+.mail-filter-container select {
+    padding: 4px;
+    margin: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+}
 
