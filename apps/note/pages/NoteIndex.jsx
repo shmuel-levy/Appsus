@@ -22,7 +22,6 @@ export function NoteIndex({ isTrash = false }) {
         setIsLoading(true)
         noteService.query(filterBy)
             .then(notesFromService => {
-                console.log('Notes loaded:', notesFromService)
                 setNotes(notesFromService)
             })
             .catch(err => {

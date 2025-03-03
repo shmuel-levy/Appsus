@@ -16,7 +16,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.6);
     z-index: 1001;
 }
 
@@ -27,14 +27,13 @@
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 2px 6px 2px rgba(60,64,67,0.15);
-    padding: 20px;
     z-index: 1002;
+    overflow: hidden;
 }
 
 .note-edit-container form {
     display: flex;
     flex-direction: column;
-    gap: 12px;
 }
 
 .note-edit-title, 
@@ -46,31 +45,34 @@
     background: transparent;
     font-family: inherit;
     direction: rtl;
+    padding: 16px 16px 0;
+    color: #202124;
+    box-sizing: border-box;
 }
 
 .note-edit-title {
     font-size: 18px;
     font-weight: 500;
-    padding: 4px 0;
     color: #202124;
 }
 
 .note-edit-content {
-    font-size: 14px;
+    font-size: 16px;
     min-height: 120px;
     resize: none;
-    padding: 4px 0;
+    padding: 16px;
+    margin-bottom: 16px;
     color: #202124;
 }
 
 .note-edit-url {
-    font-size: 14px;
-    padding: 4px 0;
+    font-size: 16px;
+    padding: 16px;
     color: #202124;
 }
 
 .note-edit-img-preview {
-    margin: 8px 0;
+    margin: 8px;
     display: flex;
     justify-content: center;
 }
@@ -85,6 +87,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    padding: 0 16px;
 }
 
 .note-edit-todo-item {
@@ -112,14 +115,14 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid rgba(0,0,0,0.1);
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dadce0;
 }
 
 .note-edit-cancel, 
 .note-edit-save {
-    padding: 8px 16px;
+    padding: 8px 24px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
