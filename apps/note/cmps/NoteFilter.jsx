@@ -36,7 +36,7 @@ export function NoteFilter({ onSetFilter }) {
                     className="search-input"
                     type="text"
                     name="txt"
-                    placeholder="חיפוש בתוך &quot;ברירת מחדל&quot;"
+                    placeholder="חיפוש"
                     value={filterBy.txt}
                     onChange={handleChange}
                     onFocus={() => setIsSearchFocused(true)}
