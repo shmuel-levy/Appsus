@@ -1,4 +1,8 @@
 const { Outlet } = ReactRouterDOM
+<<<<<<< HEAD
+=======
+
+>>>>>>> Sidebar
 import { NoteSidebar } from '../cmps/sidebar-components/NoteSidebar.jsx'
 
 export function NoteApp() {
