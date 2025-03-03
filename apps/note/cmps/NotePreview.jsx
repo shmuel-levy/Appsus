@@ -1,22 +1,24 @@
 export function NotePreview({ note, onRemoveNote, onPinNote }) {
     const { id, type, info, isPinned, style = {} } = note
     const { backgroundColor = '#ffffff' } = style
-
+    
     function handleRemove(ev) {
-        ev.stopPropagation()
+        ev.preventDefault()  // Prevent navigation
+        ev.stopPropagation() // Prevent parent handlers
         onRemoveNote(id)
     }
-
+    
     function handlePin(ev) {
-        ev.stopPropagation()
+        ev.preventDefault()  // Prevent navigation
+        ev.stopPropagation() // Prevent parent handlers
         onPinNote(id)
     }
-
+    
     function renderNoteContent() {
         switch (type) {
             case 'NoteTxt':
                 return <p>{info.txt}</p>
-
+            
             case 'NoteImg':
                 return (
                     <div>
@@ -30,7 +32,7 @@ export function NotePreview({ note, onRemoveNote, onPinNote }) {
                         />
                     </div>
                 )
-
+            
             case 'NoteTodos':
                 return (
                     <div>
@@ -44,18 +46,17 @@ export function NotePreview({ note, onRemoveNote, onPinNote }) {
                         </ul>
                     </div>
                 )
-
+            
             default:
                 return <p>Unsupported note type</p>
         }
     }
-
+    
     return (
         <div 
-            className={`note-preview ${type.toLowerCase()} ${isPinned ? 'pinned' : ''}`} 
+            className={`note-preview ${type.toLowerCase()} ${isPinned ? 'pinned' : ''}`}
             style={{ backgroundColor }}
         >
-    
             {isPinned && (
                 <div className="pin-indicator">
                     📌

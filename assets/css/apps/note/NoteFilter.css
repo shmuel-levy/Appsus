@@ -1,23 +1,21 @@
 .note-filter {
     max-width: 720px;
-    margin: 0 auto;
-    padding: 8px 0;
+    margin: 0 auto 16px;
 }
 
 .search-bar {
+    background-color: #f1f3f4;
+    border-radius: 8px;
+    padding: 0 8px;
     display: flex;
     align-items: center;
     height: 48px;
-    background-color: #f1f3f4;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    padding: 0 8px;
+    transition: box-shadow 0.2s, background-color 0.2s;
 }
 
 .search-bar.focused {
     background-color: #fff;
-    box-shadow: 0 1px 1px 0 rgba(65,69,73,0.3), 0 1px 3px 1px rgba(65,69,73,0.15);
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 1px 3px 1px rgba(60, 64, 67, 0.149);
 }
 
 .search-icon-btn {
@@ -51,9 +49,10 @@
     border: none;
     color: #202124;
     font-size: 16px;
-    font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    font-family: inherit;
     outline: none;
-    padding: 12px 0;
+    padding: 0;
+    direction: rtl;
 }
 
 .search-input::placeholder {
@@ -85,7 +84,7 @@
     height: 24px;
 }
 
-[dir="rtl"] .search-bar,
+[dir="rtl"] .search-bar, 
 .search-bar[dir="rtl"] {
     flex-direction: row-reverse;
 }

@@ -1,0 +1,148 @@
+.note-edit-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.note-edit-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+}
+
+.note-edit-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 2px 6px 2px rgba(60,64,67,0.15);
+    padding: 20px;
+    z-index: 1002;
+}
+
+.note-edit-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.note-edit-title, 
+.note-edit-content, 
+.note-edit-url {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    direction: rtl;
+}
+
+.note-edit-title {
+    font-size: 18px;
+    font-weight: 500;
+    padding: 4px 0;
+    color: #202124;
+}
+
+.note-edit-content {
+    font-size: 14px;
+    min-height: 120px;
+    resize: none;
+    padding: 4px 0;
+    color: #202124;
+}
+
+.note-edit-url {
+    font-size: 14px;
+    padding: 4px 0;
+    color: #202124;
+}
+
+.note-edit-img-preview {
+    margin: 8px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.note-edit-img-preview img {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 4px;
+}
+
+.note-edit-todos {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.note-edit-todo-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.note-edit-todo-text {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    padding: 4px 0;
+    color: #202124;
+}
+
+.note-edit-todo-text.done {
+    text-decoration: line-through;
+    color: #80868b;
+}
+
+.note-edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.note-edit-cancel, 
+.note-edit-save {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.note-edit-cancel {
+    background-color: transparent;
+    color: #5f6368;
+    margin-right: 8px;
+}
+
+.note-edit-save {
+    background-color: #f1f3f4;
+    color: #202124;
+}
+
+.note-edit-cancel:hover {
+    background-color: rgba(95,99,104,0.08);
+}
+
+.note-edit-save:hover {
+    background-color: #e8eaed;
+}

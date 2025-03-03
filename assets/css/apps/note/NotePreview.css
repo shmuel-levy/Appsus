@@ -1,33 +1,33 @@
 .note-preview {
     max-width: 100%;
-    border: 1px solid #eee;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     display: block;
-    margin-top: 10px;
     position: relative;
     overflow: hidden;
-    transition: box-shadow 0.2s ease;
+    transition: box-shadow 0.2s ease, transform 0.1s ease;
+    background-color: #fff;
 }
 
 .note-preview:hover {
     box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 1px 3px 1px rgba(60, 64, 67, 0.149);
+    transform: translateY(-1px);
 }
 
 .note-preview.notetxt {
-    background-color: #f8f8f8;
+    background-color: #fff;
 }
 
 .note-preview.noteimg {
-    background-color: #e6f2ff;
+    background-color: #fff;
 }
 
 .note-preview.notetodos {
-    background-color: #f0fff0;
+    background-color: #fff;
 }
 
 .note-preview.pinned {
-    border-left: 4px solid #f1c40f;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-top: 3px solid #f1c40f;
 }
 
 .pin-indicator {
@@ -39,7 +39,7 @@
 }
 
 .note-content {
-    padding: 15px;
+    padding: 16px;
     word-break: break-word;
 }
 
@@ -48,12 +48,14 @@
     margin-bottom: 8px;
     font-size: 16px;
     font-weight: 500;
+    color: #202124;
 }
 
 .note-content p {
     margin: 0;
     font-size: 14px;
     line-height: 1.5;
+    color: #202124;
 }
 
 .note-content img {
@@ -74,7 +76,7 @@
 
 .note-content li.done {
     text-decoration: line-through;
-    color: #888;
+    color: #80868b;
 }
 
 .note-actions {
@@ -94,7 +96,7 @@
     border: none;
     cursor: pointer;
     margin-left: 8px;
-    color: #767676;
+    color: #5f6368;
     font-size: 18px;
     padding: 5px;
     border-radius: 50%;
@@ -107,16 +109,21 @@
 }
 
 .note-actions button:hover {
-    background-color: rgba(0, 0, 0, 0.08);
+    background-color: rgba(95, 99, 104, 0.157);
 }
 
 .pin-btn.pinned {
     color: #f1c40f;
 }
 
-.notes-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    grid-gap: 16px;
-    padding: 16px;
+.restore-btn {
+    color: #5f6368;
+}
+
+.remove-btn.delete-forever {
+    color: #d93025;
+}
+
+.note-preview.in-trash {
+    opacity: 0.85;
 }

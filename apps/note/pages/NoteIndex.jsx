@@ -5,10 +5,14 @@ import { NoteList } from '../cmps/NoteList.jsx'
 import { NoteAdd } from '../cmps/NoteAdd.jsx'
 import { NoteFilter } from '../cmps/NoteFilter.jsx'
 
-export function NoteIndex() {
+export function NoteIndex({ isTrash = false }) {
     const [notes, setNotes] = useState([])
-    const [filterBy, setFilterBy] = useState({ txt: '', type: '' })
+    const [filterBy, setFilterBy] = useState({ txt: '', type: '', inTrash: isTrash })
     const [isLoading, setIsLoading] = useState(true)
+    
+    useEffect(() => {
+        setFilterBy(prev => ({ ...prev, inTrash: isTrash }))
+    }, [isTrash])
     
     useEffect(() => {
         loadNotes()
@@ -39,20 +43,44 @@ export function NoteIndex() {
     }
     
     function onRemoveNote(noteId) {
-        noteService.remove(noteId)
-            .then(() => {
-                setNotes(prevNotes => prevNotes.filter(note => note.id !== noteId))
-                console.log('Note removed successfully')
-            })
-            .catch(err => {
-                console.error('Error removing note:', err)
-            })
+        if (filterBy.inTrash) {
+            noteService.remove(noteId)
+                .then(() => {
+                    setNotes(prevNotes => prevNotes.filter(note => note.id !== noteId))
+                    console.log('Note permanently deleted')
+                })
+                .catch(err => {
+                    console.error('Error removing note:', err)
+                })
+        } else {
+            noteService.moveToTrash(noteId)
+                .then(() => {
+                    setNotes(prevNotes => prevNotes.filter(note => note.id !== noteId))
+                    console.log('Note moved to trash')
+                })
+                .catch(err => {
+                    console.error('Error moving note to trash:', err)
+                })
+        }
     }
     
     function onPinNote(noteId) {
         const note = notes.find(note => note.id === noteId)
         if (!note) {
             console.error('Note not found:', noteId)
+            return
+        }
+        
+        if (filterBy.inTrash) {
+            noteService.restoreFromTrash(noteId)
+                .then(() => {
+                    setNotes(prevNotes => prevNotes.filter(note => note.id !== noteId))
+                    console.log('Note restored from trash')
+                })
+                .catch(err => {
+                    console.error('Error restoring note:', err)
+                })
+            
             return
         }
         
@@ -63,7 +91,7 @@ export function NoteIndex() {
         
         noteService.save(updatedNote)
             .then(savedNote => {
-                setNotes(prevNotes => 
+                setNotes(prevNotes =>
                     prevNotes.map(note =>
                         note.id === savedNote.id ? savedNote : note
                     )
@@ -85,15 +113,19 @@ export function NoteIndex() {
                 <NoteFilter onSetFilter={onSetFilter} />
             </div>
             
-            <div className="note-add-container">
-                <NoteAdd onAddNote={onAddNote} />
-            </div>
+            {!filterBy.inTrash && (
+                <div className="note-add-container">
+                    <NoteAdd onAddNote={onAddNote} />
+                </div>
+            )}
             
             <div className="notes-container">
+                {filterBy.inTrash && <h2 className="page-title">אשפה</h2>}
                 <NoteList
                     notes={notes}
                     onRemoveNote={onRemoveNote}
                     onPinNote={onPinNote}
+                    inTrash={filterBy.inTrash}
                 />
             </div>
         </section>
