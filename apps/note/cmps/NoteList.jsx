@@ -7,12 +7,9 @@ export function NoteList({ notes, onRemoveNote, onPinNote, inTrash = false }) {
         </div>
     )
     
-    // Sort notes - pinned notes first, then by creation date (newest first)
     const sortedNotes = [...notes].sort((a, b) => {
-        // When in trash, don't sort by pinned status
         if (inTrash) return b.createdAt - a.createdAt
         
-        // Normal sort order with pinned notes first
         if (a.isPinned && !b.isPinned) return -1
         if (!a.isPinned && b.isPinned) return 1
         return b.createdAt - a.createdAt

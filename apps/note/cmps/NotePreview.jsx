@@ -3,14 +3,14 @@ export function NotePreview({ note, onRemoveNote, onPinNote }) {
     const { backgroundColor = '#ffffff' } = style
     
     function handleRemove(ev) {
-        ev.preventDefault()  // Prevent navigation
-        ev.stopPropagation() // Prevent parent handlers
+        ev.preventDefault()  
+        ev.stopPropagation() 
         onRemoveNote(id)
     }
     
     function handlePin(ev) {
-        ev.preventDefault()  // Prevent navigation
-        ev.stopPropagation() // Prevent parent handlers
+        ev.preventDefault() 
+        ev.stopPropagation() 
         onPinNote(id)
     }
     

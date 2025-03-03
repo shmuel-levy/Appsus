@@ -13,7 +13,6 @@ export function NoteAdd({ onAddNote }) {
     const formRef = useRef()
     const colorPaletteRef = useRef()
 
-    // Available colors like Google Keep
     const colors = [
         { name: 'Default', value: '#ffffff' },
         { name: 'Red', value: '#f28b82' },
@@ -34,11 +33,10 @@ export function NoteAdd({ onAddNote }) {
             if (formRef.current && !formRef.current.contains(event.target)) {
                 if (isExpanded && isNoteEmpty()) {
                     setIsExpanded(false)
-                    setSelectedColor('#ffffff') // Reset color when collapsing
+                    setSelectedColor('#ffffff') 
                 }
             }
             
-            // Close color palette when clicking outside it
             if (colorPaletteRef.current && 
                 !colorPaletteRef.current.contains(event.target) && 
                 event.target.className !== 'color-btn') {
@@ -96,7 +94,7 @@ export function NoteAdd({ onAddNote }) {
                 onAddNote(savedNote)
                 resetForm()
                 setIsExpanded(false)
-                setSelectedColor('#ffffff') // Reset color after adding
+                setSelectedColor('#ffffff')
             })
             .catch(err => {
                 console.error('Error saving note:', err)
