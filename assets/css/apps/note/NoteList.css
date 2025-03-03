@@ -2,17 +2,17 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     grid-gap: 16px;
-    padding: 16px;
+    padding: 0;
     margin: 0 auto;
-    max-width: 1200px;
+    max-width: 100%;
 }
-
 
 .no-notes {
     text-align: center;
     padding: 32px;
     color: #5f6368;
     font-size: 16px;
+    direction: rtl;
 }
 
 .notes-section-header {
@@ -20,14 +20,77 @@
     color: #5f6368;
     font-weight: 500;
     text-transform: uppercase;
-    padding: 8px 16px;
-    border-bottom: 1px solid #e0e0e0;
+    padding: 8px 0;
     grid-column: 1 / -1;
     margin-top: 16px;
 }
+
+.note-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.coming-soon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 18px;
+    color: #5f6368;
+    text-align: center;
+    direction: rtl;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    font-size: 16px;
+    color: #5f6368;
+    direction: rtl;
+}
+
+.page-title {
+    font-size: 1.25rem;
+    font-weight: normal;
+    color: #202124;
+    margin: 0 0 16px 0;
+    text-align: right;
+}
+
+.note-link {
+    text-decoration: none !important;
+    color: inherit;
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.restore-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.restore-btn:hover {
+    opacity: 1;
+}
+
+.remove-btn.delete-forever {
+    color: #d93025;
+}
+
 @media (max-width: 600px) {
     .notes-list {
         grid-template-columns: 1fr;
-        padding: 8px;
     }
 }

@@ -9,8 +9,9 @@
 @import './cmps/AppHeader.css';
 
 /* Note-App */
-@import './apps/note/sidebar-components/NoteHeader.css';
+@import './apps/note/sidebar-components/NoteApp.css';
 @import './apps/note/sidebar-components/NoteSidebar.css';
+@import './apps/note/NoteEdit.css';
 @import './apps/note/NoteAdd.css';
 @import './apps/note/NotePreview.css';
 @import './apps/note/NoteList.css';

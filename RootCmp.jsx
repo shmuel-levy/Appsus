@@ -8,10 +8,11 @@ import { Home } from './pages/Home.jsx'
 
 import { MailIndex } from './apps/mail/pages/MailIndex.jsx'
 import { MailDetails } from './apps/mail/pages/MailDetails.jsx'
-
-
-import { NoteIndex } from './apps/note/pages/NoteIndex.jsx'
 import { MailCompose } from './apps/mail/cmps/MailCompose.jsx'
+
+import { NoteApp } from './apps/note/pages/NoteApp.jsx'
+import { NoteIndex } from './apps/note/pages/NoteIndex.jsx'
+import { NoteEdit } from './apps/note/pages/NoteEdit.jsx'
 
 export function RootCmp() {
     return <Router>
@@ -21,10 +22,17 @@ export function RootCmp() {
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/mail" element={<MailIndex />} >
-                <Route path="/mail/:mailId" element={<MailDetails />} />
+                    <Route path="/mail/:mailId" element={<MailDetails />} />
                 </Route>
-                <Route path="/note" element={<NoteIndex />} />
-                <Route path= "/mail/compose" element={<MailCompose />} />
+                <Route path="/mail/compose" element={<MailCompose />} />
+                
+                <Route path="/note" element={<NoteApp />}>
+                    <Route index element={<NoteIndex />} />
+                    <Route path=":noteId" element={<NoteEdit />} />
+                    <Route path="reminders" element={<div className="coming-soon">תזכורות יגיעו בקרוב</div>} />
+                    <Route path="archive" element={<div className="coming-soon">ארכיון יגיע בקרוב</div>} />
+                    <Route path="trash" element={<NoteIndex isTrash={true} />} />
+                </Route>
             </Routes>
             <UserMsg />
         </section>
