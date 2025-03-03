@@ -22,7 +22,7 @@ export function MailIndex() {
     const [isComposing, setIsComposing] = useState(false)
     const [unreadCount, setUnreadCount] = useState(0)
     const [selectedMails, setSelectedMails] = useState([])
-    const [sortBy, setSortBy] = useState('date');
+    const [sortBy, setSortBy] = useState('date')
     const location = useLocation()
     const navigate = useNavigate()
 
@@ -73,15 +73,32 @@ export function MailIndex() {
                 filteredMails.sort((a, b) => a.subject.localeCompare(b.subject))
             }
 
+            if (filterBy.from) {
+                filteredMails = filteredMails.filter(mail => mail.from.toLowerCase().includes(filterBy.from.toLowerCase()))
+            }
+            if (filterBy.subject) {
+                filteredMails = filteredMails.filter(mail => mail.subject.toLowerCase().includes(filterBy.subject.toLowerCase()))
+            }
+            if (filterBy.date) {
+                const selectedDate = new Date(filterBy.date).setHours(0, 0, 0, 0)
+                filteredMails = filteredMails.filter(mail => {
+                    const mailDate = new Date(mail.sentAt).setHours(0, 0, 0, 0)
+                    return mailDate === selectedDate
+                })
+            }
+            if (filterBy.hasWords) {
+                filteredMails = filteredMails.filter(mail => mail.body.toLowerCase().includes(filterBy.hasWords.toLowerCase()))
+            }
+
             setMails(filteredMails)
         })
     }
 
     function updateUnreadCount() {
         mailService.query().then(allMails => {
-            const count = allMails.filter(mail => !mail.isRead && mail.folder === "inbox").length;
-            setUnreadCount(count);
-        });
+            const count = allMails.filter(mail => !mail.isRead && mail.folder === "inbox").length
+            setUnreadCount(count)
+        })
     }
 
     function toggleStar(mailId) {
@@ -90,11 +107,11 @@ export function MailIndex() {
         ))
 
         mailService.get(mailId).then(mail => {
-            mail.isStarred = !mail.isStarred;
+            mail.isStarred = !mail.isStarred
             mailService.save(mail).then(() => {
                 window.dispatchEvent(new Event('mail-updated'))
-            });
-        });
+            })
+        })
     }
 
     function toggleSelect(mailId) {
@@ -121,28 +138,30 @@ export function MailIndex() {
         ))
 
         mailService.get(mailId).then(mail => {
-            mail.isRead = !mail.isRead;
+            mail.isRead = !mail.isRead
             mailService.save(mail).then(() => {
                 window.dispatchEvent(new Event('mail-updated'))
-            });
-        });
+            })
+        })
     }
 
     function onDeleteMail(mailId) {
-        setMails(prevMails => prevMails.filter(mail => mail.id !== mailId))
+
 
         mailService.get(mailId).then(mail => {
             if (mail.folder === 'trash') {
                 mailService.remove(mailId).then(() => {
-                    window.dispatchEvent(new Event('mail-updated'));
-                });
+                    setMails(prevMails => prevMails.filter(mail => mail.id !== mailId))
+                })
             } else {
-                mail.folder = 'trash';
+                mail.folder = 'trash'
                 mailService.save(mail).then(() => {
-                    window.dispatchEvent(new Event('mail-updated'));
-                });
+                    setMails(prevMails => prevMails.filter(mail => mail.id !== mailId))
+                })
             }
-        });
+        })
+
+        console.log(mails)
     }
 
     function handleMailSent() {
@@ -158,7 +177,7 @@ export function MailIndex() {
                 <MailFolderList onSetFolder={onSetFolder} activeFolder={folder} unreadCount={unreadCount} />
             </aside>
             <div className="mail-content">
-            <MailFilter onSetFilter={onSetFilter} />
+                <MailFilter onSetFilter={onSetFilter} />
                 <div className="mail-filter-container">
                     {/* <MailFilter onSetFilter={onSetFilter} /> */}
                     <select name='filter' onChange={(ev) => setFilterBy(prev => ({ ...prev, filter: ev.target.value }))}>
