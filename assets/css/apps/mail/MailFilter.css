@@ -58,6 +58,7 @@
     border-bottom: 1px solid #ddd;
     border-radius: 10px 10px 0px 0px;
     padding: 10px;
+    min-width: 300px;
 }
 
 .mail-filter-container select {

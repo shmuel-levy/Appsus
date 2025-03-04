@@ -18,4 +18,6 @@
    display: flex;
    flex-direction: column;
    padding: 10px;
+   min-width: 0;
+   flex-shrink: 1;
 }

@@ -191,7 +191,7 @@ export function MailIndex() {
                         <option value="title">Title</option>
                     </select>
                 </div>
-                <div style={{ display: location.pathname.includes('/mail/') ? 'none' : 'block' }}>
+                <div className='mail-filter-inside' style={{ display: location.pathname.includes('/mail/') ? 'none' : 'block' }}>
                     <MailList mails={mails} onMailClick={markAsRead} onToggleStar={toggleStar} onToggleSelect={toggleSelect} onDeleteMail={onDeleteMail} selectedMails={selectedMails} />
                 </div>
                 {isComposing && <MailCompose onClose={() => setIsComposing(false)} onMailSent={handleMailSent} />}
