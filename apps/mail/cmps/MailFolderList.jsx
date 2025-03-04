@@ -12,7 +12,7 @@ export function MailFolderList({ onSetFolder, activeFolder, unreadCount }) {
                 <i className='fa-regular fa-star'></i>Starred</button>
             <button onClick={() => onSetFolder('sent')} className={activeFolder === 'sent' ? 'active' : ''}>
                 <i className='fa-regular fa-paper-plane'></i>Sent</button>
-            <button onClick={() => onSetFolder('draft')} className={activeFolder === 'draft' ? 'active' : ''}>
+            <button onClick={() => onSetFolder('drafts')} className={activeFolder === 'drafts' ? 'active' : ''}>
                 <i className='fa-regular fa-file'></i>Drafts</button>
             <button onClick={() => onSetFolder('trash')} className={activeFolder === 'trash' ? 'active' : ''}>
                 <i className='fa-regular fa-trash-can'></i>Trash</button>

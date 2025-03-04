@@ -1,5 +1,5 @@
 const { useEffect, useState } = React
-const { useParams, useNavigate, useLocation } = ReactRouter
+const { useParams, useNavigate, useLocation , } = ReactRouter
 
 import { mailService } from "../services/mail.service.js"
 
@@ -8,7 +8,7 @@ export function MailDetails() {
     const navigate = useNavigate()
     const location = useLocation()
     const searchParams = new URLSearchParams(location.search)
-    const folder = searchParams.get('folder' || 'inbox')
+    const folder = searchParams.get('folder') || 'inbox'
     const [mail, setMail] = useState(null)
     
 
@@ -22,7 +22,7 @@ export function MailDetails() {
             if (!mail.isRead) {
                 mail.isRead = true
                 mailService.save(mail).then(() => {
-                    window.dispatchEvent(new Event('mail-updated')) // 🔥 Trigger UI refresh
+                    window.dispatchEvent(new Event('mail-updated')) 
                 })
             }
             setMail(mail)

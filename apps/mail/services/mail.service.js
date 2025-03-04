@@ -182,17 +182,27 @@ function get(mailId) {
 
 function save(mail) {
     return query().then(mails => {
-        const idx = mails.findIndex(m => m.id === mail.id);
-        if (idx === -1) {
-            // console.log('Adding New Mail:', mail); // ✅ Debugging: New mail
-            mails.push(mail);
-        } else {
-            // console.log('Updating Existing Mail:', mail); // ✅ Debugging: Updating mail
-            mails[idx] = mail;
+        let updatedMails = [...mails]
+
+        if (!mail.id) {
+            mail.id = utilService.makeId() // Generate ID if missing
         }
-        localStorage.setItem(MAIL_KEY, JSON.stringify(mails));
-        return mail;
-    });
+
+        if (!mail.from) {
+            mail.from = "user@appsus.com" // Ensure drafts get a sender
+        }
+
+        const existingMailIdx = updatedMails.findIndex(m => m.id === mail.id)
+
+        if (existingMailIdx !== -1) {
+            updatedMails[existingMailIdx] = mail // Update draft
+        } else {
+            updatedMails.push(mail) // Add new mail
+        }
+
+        localStorage.setItem(MAIL_KEY, JSON.stringify(updatedMails))
+        return mail
+    })
 }
 
 function remove(mailId) {

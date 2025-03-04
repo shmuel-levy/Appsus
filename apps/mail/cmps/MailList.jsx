@@ -1,6 +1,7 @@
 import { MailPreview } from '../cmps/MailPreview.jsx'
 
-export function MailList({ mails, onMailClick, onToggleStar, onToggleSelect, onDeleteMail, selectedMails = [] }) {
+export function MailList({ mails, onMailClick, onToggleStar, onToggleSelect, onDeleteMail, onEditDraft, selectedMails = [] }) {
+    if (!mails.length) return <p>No mails to display</p>
     return (
         <section className='mail-list'>
             <ul>
@@ -13,6 +14,7 @@ export function MailList({ mails, onMailClick, onToggleStar, onToggleSelect, onD
                         onToggleSelect={onToggleSelect} 
                         onDeleteMail={onDeleteMail}
                         selectedMails={selectedMails}
+                        onEditDraft={onEditDraft}
                     />
                 ))}
             </ul>

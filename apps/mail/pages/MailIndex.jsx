@@ -20,11 +20,12 @@ export function MailIndex() {
 
     const [mails, setMails] = useState([])
     const [isComposing, setIsComposing] = useState(false)
+    const [editingDraft, setEditingDraft] = useState(null)
     const [unreadCount, setUnreadCount] = useState(0)
     const [selectedMails, setSelectedMails] = useState([])
     const [sortBy, setSortBy] = useState('date')
+    
     const location = useLocation()
-    const navigate = useNavigate()
 
     useEffect(() => {
         loadMails()
@@ -49,10 +50,24 @@ export function MailIndex() {
 
     function loadMails() {
         mailService.query().then(allMails => {
+           
             let filteredMails = allMails.filter(mail =>
                 mail.subject.toLowerCase().includes(filterBy.text.toLowerCase())
             )
 
+           
+            if (filterBy.folder === 'drafts') {
+                filteredMails = allMails.filter(mail => mail.folder === 'drafts') 
+            } else if (filterBy.folder === 'sent') {
+                filteredMails = allMails.filter(mail => mail.folder === 'sent')
+            } else if (filterBy.folder === 'starred') {
+                filteredMails = allMails.filter(mail => mail.isStarred)
+            } else if (filterBy.folder !== 'all') {
+                filteredMails = filteredMails.filter(mail => mail.folder === filterBy.folder)
+            }
+
+
+        
             if (filterBy.filter === 'read') {
                 filteredMails = filteredMails.filter(mail => mail.isRead)
             } else if (filterBy.filter === 'unread') {
@@ -61,24 +76,18 @@ export function MailIndex() {
                 filteredMails = filteredMails.filter(mail => mail.isStarred)
             }
 
-            if (filterBy.folder === 'starred') {
-                filteredMails = allMails.filter(mail => mail.isStarred)
-            } else if (filterBy.folder !== 'all') {
-                filteredMails = filteredMails.filter(mail => mail.folder === filterBy.folder)
-            }
-
-            if (sortBy === 'date') {
-                filteredMails.sort((a, b) => b.sentAt = a.sentAt)
-            } else if (sortBy === 'title') {
-                filteredMails.sort((a, b) => a.subject.localeCompare(b.subject))
-            }
-
             if (filterBy.from) {
-                filteredMails = filteredMails.filter(mail => mail.from.toLowerCase().includes(filterBy.from.toLowerCase()))
+                filteredMails = filteredMails.filter(mail =>
+                    mail.from.toLowerCase().includes(filterBy.from.toLowerCase())
+                )
             }
+
             if (filterBy.subject) {
-                filteredMails = filteredMails.filter(mail => mail.subject.toLowerCase().includes(filterBy.subject.toLowerCase()))
+                filteredMails = filteredMails.filter(mail =>
+                    mail.subject.toLowerCase().includes(filterBy.subject.toLowerCase())
+                )
             }
+
             if (filterBy.date) {
                 const selectedDate = new Date(filterBy.date).setHours(0, 0, 0, 0)
                 filteredMails = filteredMails.filter(mail => {
@@ -86,8 +95,11 @@ export function MailIndex() {
                     return mailDate === selectedDate
                 })
             }
+
             if (filterBy.hasWords) {
-                filteredMails = filteredMails.filter(mail => mail.body.toLowerCase().includes(filterBy.hasWords.toLowerCase()))
+                filteredMails = filteredMails.filter(mail =>
+                    mail.body.toLowerCase().includes(filterBy.hasWords.toLowerCase())
+                )
             }
 
             setMails(filteredMails)
@@ -164,8 +176,15 @@ export function MailIndex() {
         console.log(mails)
     }
 
-    function handleMailSent() {
+    function onMailSent() {
         loadMails()
+    }
+
+    function onEditDraft(draftId) {
+        mailService.get(draftId).then(draft => {
+            setEditingDraft(draft)  
+            setIsComposing(true)    
+        })
     }
 
     return (
@@ -192,9 +211,9 @@ export function MailIndex() {
                     </select>
                 </div>
                 <div className='mail-filter-inside' style={{ display: location.pathname.includes('/mail/') ? 'none' : 'block' }}>
-                    <MailList mails={mails} onMailClick={markAsRead} onToggleStar={toggleStar} onToggleSelect={toggleSelect} onDeleteMail={onDeleteMail} selectedMails={selectedMails} />
+                    <MailList mails={mails} onEditDraft={onEditDraft} onMailClick={markAsRead} onToggleStar={toggleStar} onToggleSelect={toggleSelect} onDeleteMail={onDeleteMail} selectedMails={selectedMails} />
                 </div>
-                {isComposing && <MailCompose onClose={() => setIsComposing(false)} onMailSent={handleMailSent} />}
+                {isComposing && <MailCompose onClose={() => setIsComposing(false)} onMailSent={onMailSent} draft={editingDraft} />}
                 <Outlet />
             </div>
         </section>
