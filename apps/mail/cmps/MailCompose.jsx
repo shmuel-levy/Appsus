@@ -63,7 +63,7 @@ export function MailCompose({ onClose, onMailSent , draft}) {
         ev.preventDefault()
 
         if (!mail.id) {
-            mail.id = utilService.makeId();
+            mail.id = utilService.makeId()
         }
     
         const newMail = {
@@ -79,18 +79,27 @@ export function MailCompose({ onClose, onMailSent , draft}) {
 
 
         mailService.save(newMail).then(() => {
-            if (mail.folder === "drafts") {
-                mailService.remove(mail.id).then(() => {
-                    console.log("Draft Removed:", mail.id) 
+            console.log("✅ Sent Mail Saved:", newMail)
+    
+           
+            mailService.query().then(mails => {
+                const draftExists = mails.some(m => m.id === mail.id && m.folder === "drafts")
+    
+                if (draftExists) {
+                    mailService.remove(mail.id).then(() => {
+                        console.log("🗑️ Draft Removed:", mail.id)
+                        if (typeof onMailSent === "function") onMailSent()
+                        if (typeof onClose === "function") onClose()
+                        navigate("/mail?folder=sent") 
+                    }).catch(err => {
+                        console.error("❌ Error Removing Draft:", err)
+                    })
+                } else {
                     if (typeof onMailSent === "function") onMailSent()
                     if (typeof onClose === "function") onClose()
                     navigate("/mail?folder=sent")
-                })
-            } else {
-                if (typeof onMailSent === "function") onMailSent()
-                if (typeof onClose === "function") onClose()
-                navigate("/mail?folder=sent")
-            }
+                }
+            })
         }).catch(err => {
             console.error("❌ Error Saving Sent Mail:", err)
         })

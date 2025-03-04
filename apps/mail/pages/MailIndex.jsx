@@ -62,7 +62,7 @@ export function MailIndex() {
                 filteredMails = allMails.filter(mail => mail.folder === 'sent')
             } else if (filterBy.folder === 'starred') {
                 filteredMails = allMails.filter(mail => mail.isStarred)
-            } else if (filterBy.folder !== 'all') {
+            } else if ( filterBy.folder && filterBy.folder !== 'all') {
                 filteredMails = filteredMails.filter(mail => mail.folder === filterBy.folder)
             }
 

@@ -42,10 +42,10 @@ export function MailDetails() {
     
             if (mail.folder === 'trash') {
                 mailService.remove(mailId).then(() => {
-                    window.dispatchEvent(new CustomEvent('mail-updated'))
-                    navigate(`/mail?folder=trash`)
+                    // window.dispatchEvent(new CustomEvent('mail-updated'))
+                    navigate(`/mail?folder=${folder}`)
                     setTimeout(() => {
-                        window.dispatchEvent(new CustomEvent('mail-reload'))
+                        // window.dispatchEvent(new CustomEvent('mail-reload'))
                     }, 100)
                 }).catch(err => {
                     console.error('Failed to delete mail:', err)
@@ -54,7 +54,7 @@ export function MailDetails() {
             } else {
                 mail.folder = 'trash'
                 mailService.save(mail).then(() => {
-                    window.dispatchEvent(new CustomEvent('mail-updated'))
+                    // window.dispatchEvent(new CustomEvent('mail-updated'))
                     navigate(`/mail?folder=${folder}`) 
                     setTimeout(() => {
                         window.dispatchEvent(new CustomEvent('mail-reload'))
