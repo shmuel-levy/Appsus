@@ -1,10 +1,17 @@
 .notes-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    grid-gap: 16px;
-    padding: 0;
+    column-count: auto; 
+    column-width: 250px;
+    column-gap: 16px;
+    padding: 16px;
     margin: 0 auto;
     max-width: 100%;
+}
+
+.note-item {
+    break-inside: avoid;
+    margin-bottom: 16px;
+    display: inline-block;
+    width: 100%;
 }
 
 .no-notes {
@@ -89,8 +96,20 @@
     color: #d93025;
 }
 
+@media (max-width: 1200px) {
+    .notes-list {
+        column-count: 3;
+    }
+}
+
+@media (max-width: 900px) {
+    .notes-list {
+        column-count: 2;
+    }
+}
+
 @media (max-width: 600px) {
     .notes-list {
-        grid-template-columns: 1fr;
+        column-count: 1;
     }
 }

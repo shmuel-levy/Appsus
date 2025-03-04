@@ -1,9 +1,11 @@
+const { useOutletContext } = ReactRouterDOM
 const { useState, useEffect } = React
 
+import { NoteList } from "../cmps/NoteList.jsx"
+import { NoteAdd } from "../cmps/NoteAdd.jsx"
+import { NoteFilter } from "../cmps/NoteFilter.jsx"
 import { noteService } from '../services/note.service.js'
-import { NoteList } from '../cmps/NoteList.jsx'
-import { NoteAdd } from '../cmps/NoteAdd.jsx'
-import { NoteFilter } from '../cmps/NoteFilter.jsx'
+import { showSuccessMsg, showErrorMsg } from '../../../services/event-bus.service.js'
 
 export function NoteIndex({ isTrash = false }) {
     const [notes, setNotes] = useState([])
@@ -39,6 +41,7 @@ export function NoteIndex({ isTrash = false }) {
     
     function onAddNote(newNote) {
         setNotes(prevNotes => [newNote, ...prevNotes])
+        showSuccessMsg("Note added successfully")
     }
     
     function onRemoveNote(noteId) {
@@ -46,19 +49,21 @@ export function NoteIndex({ isTrash = false }) {
             noteService.remove(noteId)
                 .then(() => {
                     setNotes(prevNotes => prevNotes.filter(note => note.id !== noteId))
-                    console.log('Note permanently deleted')
+                    showSuccessMsg('Note permanently deleted')
                 })
                 .catch(err => {
                     console.error('Error removing note:', err)
+                    showErrorMsg('Failed to delete note')
                 })
         } else {
             noteService.moveToTrash(noteId)
                 .then(() => {
                     setNotes(prevNotes => prevNotes.filter(note => note.id !== noteId))
-                    console.log('Note moved to trash')
+                    showSuccessMsg('Note moved to trash')
                 })
                 .catch(err => {
                     console.error('Error moving note to trash:', err)
+                    showErrorMsg('Failed to move note to trash')
                 })
         }
     }
@@ -74,10 +79,11 @@ export function NoteIndex({ isTrash = false }) {
             noteService.restoreFromTrash(noteId)
                 .then(() => {
                     setNotes(prevNotes => prevNotes.filter(note => note.id !== noteId))
-                    console.log('Note restored from trash')
+                    showSuccessMsg('Note restored from trash')
                 })
                 .catch(err => {
                     console.error('Error restoring note:', err)
+                    showErrorMsg('Failed to restore note')
                 })
             
             return
@@ -97,11 +103,62 @@ export function NoteIndex({ isTrash = false }) {
                 )
                 
                 const actionText = savedNote.isPinned ? 'pinned' : 'unpinned'
-                console.log(`Note ${actionText} successfully`)
+                showSuccessMsg(`Note ${actionText} successfully`)
             })
             .catch(err => {
                 console.error('Error updating note:', err)
+                showErrorMsg('Failed to update note')
             })
+    }
+    
+    function onChangeColor(noteId, color, setColorPickerNoteId) {
+        const note = notes.find(note => note.id === noteId)
+        if (!note) return
+        
+        const updatedNote = {
+            ...note,
+            style: {
+                ...note.style,
+                backgroundColor: color
+            }
+        }
+        
+        noteService.save(updatedNote)
+            .then(savedNote => {
+                setNotes(prevNotes => 
+                    prevNotes.map(note => 
+                        note.id === savedNote.id ? savedNote : note
+                    )
+                )
+                if (setColorPickerNoteId) setColorPickerNoteId(null)
+            })
+            .catch(err => {
+                console.error('Error changing note color:', err)
+                showErrorMsg('Failed to change note color')
+            })
+    }
+    
+    function onDuplicateNote(note) {
+        const newNote = { ...note, id: '' }
+        
+        noteService.save(newNote)
+            .then(savedNote => {
+                setNotes(prevNotes => [savedNote, ...prevNotes])
+                showSuccessMsg('Note duplicated successfully')
+            })
+            .catch(err => {
+                console.error('Error duplicating note:', err)
+                showErrorMsg('Failed to duplicate note')
+            })
+    }
+    
+    function onChangeNote(updatedNote) {
+        setNotes(prevNotes => 
+            prevNotes.map(note => 
+                note.id === updatedNote.id ? updatedNote : note
+            )
+        )
+        showSuccessMsg('Note updated successfully')
     }
     
     if (isLoading && notes.length === 0) return <div className="loading">Loading...</div>
@@ -124,6 +181,9 @@ export function NoteIndex({ isTrash = false }) {
                     notes={notes}
                     onRemoveNote={onRemoveNote}
                     onPinNote={onPinNote}
+                    onChangeColor={onChangeColor}
+                    onDuplicateNote={onDuplicateNote}
+                    onChangeNote={onChangeNote}
                     inTrash={filterBy.inTrash}
                 />
             </div>
