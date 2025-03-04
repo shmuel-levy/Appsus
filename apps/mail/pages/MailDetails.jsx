@@ -15,22 +15,22 @@ export function MailDetails() {
     useEffect(() => {
         mailService.get(mailId).then(mail => {
             if (!mail) {
-                console.warn('Mail not found.');
-                navigate(`/mail?folder=${folder}`);
-                return;
+                console.warn('Mail not found.')
+                navigate(`/mail?folder=${folder}`)
+                return
             }
             if (!mail.isRead) {
-                mail.isRead = true;
+                mail.isRead = true
                 mailService.save(mail).then(() => {
-                    window.dispatchEvent(new Event('mail-updated')); // 🔥 Trigger UI refresh
-                });
+                    window.dispatchEvent(new Event('mail-updated')) // 🔥 Trigger UI refresh
+                })
             }
-            setMail(mail);
+            setMail(mail)
         }).catch(err => {
-            console.error('Error fetching mail:', err);
-            navigate(`/mail?folder=${folder}`);
-        });
-    }, [mailId]);
+            console.error('Error fetching mail:', err)
+            navigate(`/mail?folder=${folder}`)
+        })
+    }, [mailId])
 
     function onDeleteMail() {
         mailService.get(mailId).then(mail => {
