@@ -4,10 +4,10 @@ export function NoteList({ notes, onRemoveNote, onPinNote, onArchiveNote, inTras
     if (!notes.length) return (
         <div className="no-notes">
             {inTrash 
-                ? 'אין פתקים באשפה' 
+                ? 'No notes in trash' 
                 : inArchive 
-                    ? 'אין פתקים בארכיון'
-                    : 'אין פתקים להצגה'
+                    ? 'No notes in archive'
+                    : 'No notes to display'
             }
         </div>
     )

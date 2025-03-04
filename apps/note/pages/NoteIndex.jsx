@@ -93,6 +93,7 @@ export function NoteIndex({ isTrash = false, isArchive = false }) {
                     console.error('Error restoring note:', err)
                     showErrorMsg('Failed to restore note')
                 })
+            
             return
         }
         
@@ -106,6 +107,7 @@ export function NoteIndex({ isTrash = false, isArchive = false }) {
                     console.error('Error unarchiving note:', err)
                     showErrorMsg('Failed to unarchive note')
                 })
+            
             return
         }
         
@@ -143,55 +145,6 @@ export function NoteIndex({ isTrash = false, isArchive = false }) {
             })
     }
     
-    function onChangeNote(updatedNote) {
-        setNotes(prevNotes => 
-            prevNotes.map(note => 
-                note.id === updatedNote.id ? updatedNote : note
-            )
-        )
-    }
-    
-    function onChangeColor(noteId, color) {
-        const note = notes.find(note => note.id === noteId)
-        if (!note) return
-        
-        const updatedNote = {
-            ...note,
-            style: {
-                ...note.style,
-                backgroundColor: color
-            }
-        }
-        
-        noteService.save(updatedNote)
-            .then(savedNote => {
-                setNotes(prevNotes => 
-                    prevNotes.map(note => 
-                        note.id === savedNote.id ? savedNote : note
-                    )
-                )
-                showSuccessMsg('Note color changed')
-            })
-            .catch(err => {
-                console.error('Error changing note color:', err)
-                showErrorMsg('Failed to change note color')
-            })
-    }
-    
-    function onDuplicateNote(note) {
-        const newNote = { ...note, id: '' }
-        
-        noteService.save(newNote)
-            .then(savedNote => {
-                setNotes(prevNotes => [savedNote, ...prevNotes])
-                showSuccessMsg('Note duplicated')
-            })
-            .catch(err => {
-                console.error('Error duplicating note:', err)
-                showErrorMsg('Failed to duplicate note')
-            })
-    }
-    
     if (isLoading && notes.length === 0) return <div className="loading">Loading...</div>
     
     return (
@@ -209,17 +162,46 @@ export function NoteIndex({ isTrash = false, isArchive = false }) {
             <div className="notes-container">
                 {filterBy.inTrash && <h2 className="page-title">Trash</h2>}
                 {filterBy.isArchived && <h2 className="page-title">Archive</h2>}
-                <NoteList
-                    notes={notes}
-                    onRemoveNote={onRemoveNote}
-                    onPinNote={onPinNote}
-                    onArchiveNote={onArchiveNote}
-                    onChangeColor={onChangeColor}
-                    onDuplicateNote={onDuplicateNote}
-                    onChangeNote={onChangeNote}
-                    inTrash={filterBy.inTrash}
-                    inArchive={filterBy.isArchived}
-                />
+                
+                {!filterBy.inTrash && !filterBy.isArchived && notes.some(note => note.isPinned) && (
+                    <div className="pinned-notes-section">
+                        <h2 className="section-title">Pinned</h2>
+                        <NoteList
+                            notes={notes.filter(note => note.isPinned)}
+                            onRemoveNote={onRemoveNote}
+                            onPinNote={onPinNote}
+                            onArchiveNote={onArchiveNote}
+                            inTrash={filterBy.inTrash}
+                            inArchive={filterBy.isArchived}
+                        />
+                    </div>
+                )}
+                
+                {!filterBy.inTrash && !filterBy.isArchived && notes.some(note => note.isPinned) && notes.some(note => !note.isPinned) && (
+                    <div className="other-notes-section">
+                        <h2 className="section-title">Other</h2>
+                        <NoteList
+                            notes={notes.filter(note => !note.isPinned)}
+                            onRemoveNote={onRemoveNote}
+                            onPinNote={onPinNote}
+                            onArchiveNote={onArchiveNote}
+                            inTrash={filterBy.inTrash}
+                            inArchive={filterBy.isArchived}
+                        />
+                    </div>
+                )}
+                
+                
+                {(filterBy.inTrash || filterBy.isArchived || !notes.some(note => note.isPinned) || !notes.some(note => !note.isPinned)) && (
+                    <NoteList
+                        notes={notes}
+                        onRemoveNote={onRemoveNote}
+                        onPinNote={onPinNote}
+                        onArchiveNote={onArchiveNote}
+                        inTrash={filterBy.inTrash}
+                        inArchive={filterBy.isArchived}
+                    />
+                )}
             </div>
         </section>
     )
