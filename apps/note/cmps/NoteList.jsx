@@ -1,14 +1,19 @@
 import { NotePreview } from './NotePreview.jsx'
 
-export function NoteList({ notes, onRemoveNote, onPinNote, inTrash = false }) {
+export function NoteList({ notes, onRemoveNote, onPinNote, onArchiveNote, inTrash = false, inArchive = false }) {
     if (!notes.length) return (
         <div className="no-notes">
-            {inTrash ? 'אין פתקים באשפה' : 'אין פתקים להצגה'}
+            {inTrash 
+                ? 'אין פתקים באשפה' 
+                : inArchive 
+                    ? 'אין פתקים בארכיון'
+                    : 'אין פתקים להצגה'
+            }
         </div>
     )
     
     const sortedNotes = [...notes].sort((a, b) => {
-        if (inTrash) return b.createdAt - a.createdAt
+        if (inTrash || inArchive) return b.createdAt - a.createdAt
         
         if (a.isPinned && !b.isPinned) return -1
         if (!a.isPinned && b.isPinned) return 1
@@ -24,7 +29,9 @@ export function NoteList({ notes, onRemoveNote, onPinNote, inTrash = false }) {
                             note={note}
                             onRemoveNote={onRemoveNote}
                             onPinNote={onPinNote}
+                            onArchiveNote={onArchiveNote}
                             inTrash={inTrash}
+                            inArchive={inArchive}
                         />
                     </a>
                 </div>

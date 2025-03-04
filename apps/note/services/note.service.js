@@ -10,19 +10,22 @@ const defaultNotes = [
         type: 'NoteTxt',
         isPinned: true,
         inTrash: false,
-        style: { backgroundColor: '#f8f8f8' },
-        info: { txt: 'Fullstack Me Baby!' }
+        style: { backgroundColor: '#fff475' },
+        info: { 
+            title: 'Presentation Notes',
+            txt: 'what are we vowing bout'
+        }
     },
     {
         id: 'n102',
         createdAt: 1112223,
         type: 'NoteImg',
-        isPinned: false,
+        isPinned: true,
         inTrash: false,
-        style: { backgroundColor: '#e6f2ff' },
+        style: { backgroundColor: '#cbf0f8' }, 
         info: {
-            url: 'https://picsum.photos/200/300',
-            title: 'Bobi and Me'
+            url: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y29kaW5nfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60',
+            title: 'My Amazing Project'
         }
     },
     {
@@ -31,13 +34,69 @@ const defaultNotes = [
         type: 'NoteTodos',
         isPinned: false,
         inTrash: false,
-        style: { backgroundColor: '#f0fff0' },
+        style: { backgroundColor: '#d7aefb' }, 
         info: {
-            title: 'Get my stuff together',
+            title: 'Project Features',
             todos: [
-                { txt: 'Driving license', doneAt: null },
-                { txt: 'Coding power', doneAt: 187111111 }
+                { txt: 'Modal editing with real-time updates', doneAt: 187111111 },
+                { txt: 'Color picker for note customization', doneAt: 187111111 },
+                { txt: 'Pinning important notes', doneAt: 187111111 },
+                { txt: 'Moving notes to trash', doneAt: null },
+                { txt: 'Archive functionality', doneAt: null }
             ]
+        }
+    },
+    {
+        id: 'n104',
+        createdAt: 1112225,
+        type: 'NoteTxt',
+        isPinned: false,
+        inTrash: false,
+        style: { backgroundColor: '#fdcfe8' }, 
+        info: {
+            title: 'CSS Tips',
+            txt: 'Remember to use flexbox for responsive layouts. Grid is great for two-dimensional layouts. Keep your CSS modular and reusable!'
+        }
+    },
+    {
+        id: 'n105',
+        createdAt: 1112226,
+        type: 'NoteTodos',
+        isPinned: false,
+        inTrash: false,
+        style: { backgroundColor: '#a7ffeb' }, 
+        info: {
+            title: 'Project Showcase',
+            todos: [
+                { txt: 'Prepare live demo', doneAt: null },
+                { txt: 'Highlight key features', doneAt: null },
+                { txt: 'Explain technical challenges', doneAt: null },
+                { txt: 'Mention future improvements', doneAt: null }
+            ]
+        }
+    },
+    {
+        id: 'n106',
+        createdAt: 1112227,
+        type: 'NoteImg',
+        isPinned: false,
+        inTrash: false,
+        style: { backgroundColor: '#f28b82' }, 
+        info: {
+            url: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGNvZGluZ3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60',
+            title: 'Late Night Coding Sessions'
+        }
+    },
+    {
+        id: 'n107',
+        createdAt: 1112228,
+        type: 'NoteTxt',
+        isPinned: false,
+        inTrash: false,
+        style: { backgroundColor: '#ccff90' }, 
+        info: {
+            title: 'React Best Practices',
+            txt: 'Always use functional components with hooks. Keep state local when possible. Use context for global state. Break complex UIs into smaller components. Handle errors gracefully.'
         }
     }
 ]
@@ -51,7 +110,9 @@ export const noteService = {
     createNote,
     getRandomId: utilService.makeId,
     moveToTrash,
-    restoreFromTrash
+    restoreFromTrash,
+    moveToArchive,
+    restoreFromArchive
 }
 
 _createDemoNotes()
@@ -60,25 +121,27 @@ function query(filterBy = {}) {
     return storageService.query(NOTES_KEY)
         .then(notes => {
             notes = notes.map(note => {
-                if (note.inTrash === undefined) {
-                    note.inTrash = false;
-                }
-                return note;
-            });
-                        if (filterBy.inTrash) {
-                notes = notes.filter(note => note.inTrash);
+                if (note.inTrash === undefined) note.inTrash = false
+                if (note.isArchived === undefined) note.isArchived = false
+                return note
+            })
+            
+            if (filterBy.inTrash) {
+                notes = notes.filter(note => note.inTrash)
+            } else if (filterBy.isArchived) {
+                notes = notes.filter(note => note.isArchived && !note.inTrash)
             } else {
-                notes = notes.filter(note => !note.inTrash);
+                notes = notes.filter(note => !note.inTrash && !note.isArchived)
             }
             
             if (filterBy.type) {
-                notes = notes.filter(note => note.type === filterBy.type);
+                notes = notes.filter(note => note.type === filterBy.type)
             }
             
             if (filterBy.txt) {
                 notes = notes.filter(note => 
                     _getNoteText(note).toLowerCase().includes(filterBy.txt.toLowerCase())
-                );
+                )
             }
             
             if (filterBy.color) {
@@ -86,11 +149,11 @@ function query(filterBy = {}) {
                     note.style && 
                     note.style.backgroundColor && 
                     note.style.backgroundColor.toLowerCase() === filterBy.color.toLowerCase()
-                );
+                )
             }
             
-            return notes.sort((a, b) => b.isPinned - a.isPinned || b.createdAt - a.createdAt);
-        });
+            return notes.sort((a, b) => b.isPinned - a.isPinned || b.createdAt - a.createdAt)
+        })
 }
 
 function get(noteId) {
@@ -125,6 +188,23 @@ function restoreFromTrash(noteId) {
             note.inTrash = false;
             return save(note);
         });
+}
+
+
+function moveToArchive(noteId) {
+    return get(noteId)
+        .then(note => {
+            note.isArchived = true
+            return save(note)
+        })
+}
+
+function restoreFromArchive(noteId) {
+    return get(noteId)
+        .then(note => {
+            note.isArchived = false
+            return save(note)
+        })
 }
 
 function createNote(type, info, style = {}) {

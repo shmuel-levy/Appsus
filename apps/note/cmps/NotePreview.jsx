@@ -1,4 +1,4 @@
-export function NotePreview({ note, onRemoveNote, onPinNote, inTrash = false }) {
+export function NotePreview({ note, onRemoveNote, onPinNote, onArchiveNote, inTrash = false, inArchive = false }) {
     const { id, type, info, isPinned, style = {} } = note
     const { backgroundColor = '#ffffff' } = style
     
@@ -20,10 +20,21 @@ export function NotePreview({ note, onRemoveNote, onPinNote, inTrash = false }) 
         onPinNote(id) 
     }
     
+    function handleArchive(ev) {
+        ev.preventDefault()
+        ev.stopPropagation()
+        if (onArchiveNote) onArchiveNote(id)
+    }
+    
     function renderNoteContent() {
         switch (type) {
             case 'NoteTxt':
-                return <p>{info.txt}</p>
+                return (
+                    <div>
+                        {info.title && <h3>{info.title}</h3>}
+                        {info.txt && <p>{info.txt}</p>}
+                    </div>
+                )
                 
             case 'NoteImg':
                 return (
@@ -60,10 +71,10 @@ export function NotePreview({ note, onRemoveNote, onPinNote, inTrash = false }) 
     
     return (
         <div 
-            className={`note-preview ${type.toLowerCase()} ${isPinned ? 'pinned' : ''} ${inTrash ? 'in-trash' : ''}`}
+            className={`note-preview ${type.toLowerCase()} ${isPinned ? 'pinned' : ''} ${inTrash ? 'in-trash' : ''} ${inArchive ? 'in-archive' : ''}`}
             style={{ backgroundColor }}
         >
-            {isPinned && !inTrash && (
+            {isPinned && !inTrash && !inArchive && (
                 <div className="pin-indicator">
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="#f1c40f">
                         <path d="M17 4v7l2 3v2h-6v5l-1 1-1-1v-5H5v-2l2-3V4c0-1.1.9-2 2-2h6c1.11 0 2 .89 2 2zM9 4v7.75L7.5 14h9L15 11.75V4H9z"/>
@@ -74,9 +85,9 @@ export function NotePreview({ note, onRemoveNote, onPinNote, inTrash = false }) 
             <div className="note-content">
                 {renderNoteContent()}
             </div>
-            
-            <div className="note-actions">
-                {!inTrash ? (
+          
+            <div className="note-actions" style={{ display: 'none' }}>
+                {!inTrash && !inArchive ? (
                     <div className="regular-actions">
                         <button 
                             className={`pin-btn ${isPinned ? 'pinned' : ''}`}
@@ -90,7 +101,7 @@ export function NotePreview({ note, onRemoveNote, onPinNote, inTrash = false }) 
                         
                         <button 
                             className="archive-btn"
-                            onClick={handleRestore}
+                            onClick={handleArchive}
                             title="Archive"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="currentColor">
@@ -108,7 +119,7 @@ export function NotePreview({ note, onRemoveNote, onPinNote, inTrash = false }) 
                             </svg>
                         </button>
                     </div>
-                ) : (
+                ) : inTrash ? (
                     <div className="trash-actions">
                         <button 
                             className="restore-btn"
@@ -126,6 +137,27 @@ export function NotePreview({ note, onRemoveNote, onPinNote, inTrash = false }) 
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="currentColor">
                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12 1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
+                            </svg>
+                        </button>
+                    </div>
+                ) : (
+                    <div className="archive-actions">
+                        <button 
+                            className="restore-btn"
+                            onClick={handleRestore}
+                            title="Unarchive"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="currentColor">
+                                <path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM6.24 5h11.52l.83 1H5.42l.82-1zM5 19V8h14v11H5zm8.45-9h-2.9v3H8l4 4 4-4h-2.55z"/>
+                            </svg>
+                        </button>
+                        <button 
+                            className="remove-btn"
+                            onClick={handleRemove}
+                            title="Move to trash"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="currentColor">
+                                <path d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm-2 16H9V8h1v12zm3 0h-1V8h1v12zM7 20H6V6h1v14z"/>
                             </svg>
                         </button>
                     </div>
