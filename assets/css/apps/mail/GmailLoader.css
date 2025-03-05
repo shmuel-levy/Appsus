@@ -47,7 +47,7 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, #db4437, #ff6f61);
-    animation: smooth-progress 2s infinite linear;
+    animation: smooth-progress-once 4s ease-out forwards;
 }
 
 /* ✅ Loading Text */
@@ -85,10 +85,9 @@
 }
 
 /* ✅ Smooth Progress Bar Motion */
-@keyframes smooth-progress {
+@keyframes smooth-progress-once {
     0% { transform: translateX(-100%); }
-    50% { transform: translateX(0); }
-    100% { transform: translateX(100%); }
+    100% { transform: translateX(0); } /* ✅ Stops at full width */
 }
 
 /* ✅ Text Fading Animation */
