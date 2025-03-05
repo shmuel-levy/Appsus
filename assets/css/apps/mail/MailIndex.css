@@ -2,8 +2,8 @@
 
  .mail-index {
     display: flex;
-    
     background-color: #f8fafd;
+    margin-top: 70px;
  }
 
  .mail-sidebar {
@@ -27,6 +27,8 @@
    width: 110px;
    height: 40px;
   }
+
+  
   
   .mail-sidebar-logo {
    display: flex;

@@ -215,7 +215,7 @@ export function MailIndex() {
                 txt: mail.body || "",
             },
         };
-    
+
         noteService.save(newNote)
             .then(savedNote => {
                 console.log("✅ Note Saved:", savedNote);
@@ -228,7 +228,9 @@ export function MailIndex() {
         <section className="mail-index">
             <aside className="mail-sidebar">
                 <div className='mail-sidebar-logo'>
-                    <div><span><i className="fa-solid fa-bars"></i></span></div>
+                    <div>
+                        <span><i className="fa-solid fa-bars"></i></span>
+                    </div>
                     <img className='gmail-logo' src="./assets/img/logo-gmail.png"></img>
                 </div>
                 <button className="compose-btn" onClick={() => setIsComposing(true)}>
