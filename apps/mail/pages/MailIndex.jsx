@@ -8,6 +8,7 @@ import { MailList } from "../cmps/MailList.jsx"
 import { MailFilter } from "../cmps/MailFilter.jsx"
 import { MailFolderList } from "../cmps/MailFolderList.jsx"
 import { MailCompose } from "../cmps/MailCompose.jsx"
+import { showSuccessMsg, showErrorMsg } from "../../../services/event-bus.service.js";
 
 
 
@@ -57,11 +58,6 @@ export function MailIndex() {
         mailService.query().then(allMails => {
             let filteredMails = allMails.filter(mail => mail.folder === folder)
 
-            // if (folder !== "all") {
-            //     filteredMails = filteredMails.filter(mail => mail.folder === folder);
-            // }
-
-
             if (filterBy.folder === 'drafts') {
                 filteredMails = allMails.filter(mail => mail.folder === 'drafts')
             } else if (filterBy.folder === 'sent') {
@@ -69,12 +65,8 @@ export function MailIndex() {
             } else if (filterBy.folder === 'starred') {
                 filteredMails = allMails.filter(mail => mail.isStarred)
             }
-            // else if (filterBy.folder && filterBy.folder !== 'all') {
-            //     filteredMails = filteredMails.filter(mail => mail.folder === filterBy.folder)
-            // }
-
-
-
+            
+            
             if (filterBy.filter === 'read') {
                 filteredMails = filteredMails.filter(mail => mail.isRead)
             } else if (filterBy.filter === 'unread') {
@@ -152,24 +144,17 @@ export function MailIndex() {
     }
 
     function markAsRead(mailId) {
+        setMails(prevMails =>
+            prevMails.map(mail =>
+                mail.id === mailId ? { ...mail, isRead: !mail.isRead } : mail
+            )
+        );
         mailService.get(mailId).then(mail => {
-            if (!mail) return;
-
-            mail.isRead = !mail.isRead; // ✅ Toggle read/unread
-            mailService.save(mail).then(() => {
-                setMails(prevMails =>
-                    prevMails.map(m => m.id === mailId ? { ...m, isRead: mail.isRead } : m) // ✅ Update UI instantly
-                );
-            });
+            mail.isRead = !mail.isRead;
+            mailService.save(mail)
+                .then(() => showSuccessMsg(`Conversation marked as ${mail.isRead ? "read." : "unread."}`))
+                .catch(() => showErrorMsg("Failed to update mail status"));
         });
-
-
-        mailService.get(mailId).then(mail => {
-            mail.isRead = !mail.isRead
-            mailService.save(mail).then(() => {
-                window.dispatchEvent(new Event('mail-updated'))
-            })
-        })
     }
 
     function onDeleteMail(mailId) {
@@ -178,11 +163,13 @@ export function MailIndex() {
         mailService.get(mailId).then(mail => {
             if (mail.folder === 'trash') {
                 mailService.remove(mailId).then(() => {
+                    showSuccessMsg("Conversation deleted forever.");
                     setMails(prevMails => prevMails.filter(mail => mail.id !== mailId))
                 })
             } else {
                 mail.folder = 'trash'
                 mailService.save(mail).then(() => {
+                    showSuccessMsg("Conversation moved to Trash.");
                     setMails(prevMails => prevMails.filter(mail => mail.id !== mailId))
                 })
             }
@@ -218,7 +205,7 @@ export function MailIndex() {
 
         noteService.save(newNote)
             .then(savedNote => {
-                console.log("✅ Note Saved:", savedNote);
+                showSuccessMsg("Note saved successfully");
                 navigate(`/note/${savedNote.id}`);  // ✅ Redirect to KeepApp
             })
             .catch(err => console.error("❌ Failed to save note:", err));

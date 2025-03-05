@@ -2,6 +2,8 @@ const { useEffect, useState } = React
 const { useParams, useNavigate, useLocation , } = ReactRouter
 
 import { mailService } from "../services/mail.service.js"
+import { showSuccessMsg, showErrorMsg } from "../../../services/event-bus.service.js";
+
 
 export function MailDetails() {
     const { mailId } = useParams()
@@ -36,6 +38,7 @@ export function MailDetails() {
         mailService.get(mailId).then(mail => {
             if (!mail) {
                 console.warn('Mail not found, probably already deleted.')
+                showErrorMsg('Mail not found.')
                 navigate(`/mail?folder=${folder}`)
                 return
             }
@@ -43,28 +46,33 @@ export function MailDetails() {
             if (mail.folder === 'trash') {
                 mailService.remove(mailId).then(() => {
                     // window.dispatchEvent(new CustomEvent('mail-updated'))
+                    showSuccessMsg('Conversation deleted forever.')
                     navigate(`/mail?folder=${folder}`)
                     setTimeout(() => {
                         // window.dispatchEvent(new CustomEvent('mail-reload'))
                     }, 100)
                 }).catch(err => {
                     console.error('Failed to delete mail:', err)
+                    showErrorMsg('Failed to delete mail.')
                     navigate(`/mail?folder=trash`)
                 })
             } else {
                 mail.folder = 'trash'
                 mailService.save(mail).then(() => {
                     // window.dispatchEvent(new CustomEvent('mail-updated'))
+                    showSuccessMsg('Conversation moved to Trash.')
                     navigate(`/mail?folder=${folder}`) 
                     setTimeout(() => {
                         window.dispatchEvent(new CustomEvent('mail-reload'))
                     }, 100)
                 }).catch(err => {
                     console.error('Failed to move mail to trash:', err)
+                    showErrorMsg('Failed to move mail to trash.')
                 })
             }
         }).catch(err => {
             console.error('Error retrieving mail:', err)
+            showErrorMsg('Failed to move mail to trash.')
             navigate(`/mail?folder=${folder}`) 
         })
     }

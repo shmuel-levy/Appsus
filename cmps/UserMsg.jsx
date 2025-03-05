@@ -13,7 +13,7 @@ export function UserMsg() {
         clearTimeout(timeoutIdRef.current)
         timeoutIdRef.current = null
       }
-      timeoutIdRef.current = setTimeout(closeMsg, 3000)
+      timeoutIdRef.current = setTimeout(closeMsg, 5000)
     })
     return unsubscribe
   }, [])
@@ -24,7 +24,7 @@ export function UserMsg() {
   const className = (msg)? `${msg.type} open` : '' 
   return (
     <section className={`user-msg ${className}`}>
-      <button onClick={closeMsg}>x</button>
+      <button onClick={closeMsg}><i className="fa-solid fa-xmark"></i></button>
       {msg && msg.txt}
     </section>
   )

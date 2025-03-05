@@ -59,6 +59,12 @@
     font-size: 16px;
 }
 
+.mail-preview i:hover {
+    background-color: rgb(224, 224, 224);
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
 .mail-preview input[type="checkbox" i] {
     cursor: pointer;
 }
@@ -136,7 +142,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    min-width: 80px; 
+    min-width: 120px; 
     flex-shrink: 0;
     position: relative;
 }
