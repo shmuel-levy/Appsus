@@ -295,7 +295,7 @@ export function NoteAdd({ onAddNote }) {
                                 dir="ltr"
                             />
                         </div>
-                    );
+                    )
 
             default:
                 return <div>Unsupported note type</div>

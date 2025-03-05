@@ -240,49 +240,48 @@ export function NoteEdit() {
   }
 
   function handleSendToMail() {
-    if (!note || !note.info) return;
+    if (!note || !note.info) return
     
-    // Format the note differently based on its type
-    let subject = '';
-    let body = '';
+    let subject = ''
+    let body = ''
     
     switch (note.type) {
       case 'NoteTxt':
-        subject = note.info.title || 'Text Note';
-        body = `${note.info.title ? note.info.title + '\n\n' : ''}${note.info.txt || ''}`;
-        break;
+        subject = note.info.title || 'Text Note'
+        body = `${note.info.title ? note.info.title + '\n\n' : ''}${note.info.txt || ''}`
+        break
         
       case 'NoteImg':
-        subject = note.info.title || 'Image Note';
-        body = `${note.info.title ? note.info.title + '\n\n' : ''}Image URL: ${note.info.url}`;
-        break;
+        subject = note.info.title || 'Image Note'
+        body = `${note.info.title ? note.info.title + '\n\n' : ''}Image URL: ${note.info.url}`
+        break
         
       case 'NoteVideo':
-        subject = note.info.title || 'Video Note';
-        body = `${note.info.title ? note.info.title + '\n\n' : ''}Video URL: ${note.info.url}`;
-        break;
+        subject = note.info.title || 'Video Note'
+        body = `${note.info.title ? note.info.title + '\n\n' : ''}Video URL: ${note.info.url}`
+        break
         
       case 'NoteTodos':
-        subject = note.info.title || 'Todo List';
-        body = note.info.title ? note.info.title + '\n\n' : '';
+        subject = note.info.title || 'Todo List'
+        body = note.info.title ? note.info.title + '\n\n' : ''
         if (note.info.todos && note.info.todos.length > 0) {
           note.info.todos.forEach((todo, idx) => {
-            body += `${idx + 1}. [${todo.doneAt ? 'x' : ' '}] ${todo.txt}\n`;
-          });
+            body += `${idx + 1}. [${todo.doneAt ? 'x' : ' '}] ${todo.txt}\n`
+          })
         }
-        break;
+        break
         
       default:
-        subject = 'Note from Keep';
-        body = 'Note content';
+        subject = 'Note from Keep'
+        body = 'Note content'
     }
-      const encodedSubject = encodeURIComponent(subject);
-    const encodedBody = encodeURIComponent(body);
+      const encodedSubject = encodeURIComponent(subject)
+    const encodedBody = encodeURIComponent(body)
     
     
-    const emailComposeUrl = `#/mail/compose?subject=${encodedSubject}&body=${encodedBody}`;
+    const emailComposeUrl = `#/mail/compose?subject=${encodedSubject}&body=${encodedBody}`
     
-    window.location.href = emailComposeUrl;
+    window.location.href = emailComposeUrl
   }
 
   function toggleColorPalette(ev) {
@@ -291,23 +290,23 @@ export function NoteEdit() {
   }
 
   function getYoutubeEmbedUrl(url) {
-    if (!url) return '';
+    if (!url) return ''
     
-    let videoId = null;
-    const standardMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/);
+    let videoId = null
+    const standardMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/)
     if (standardMatch && standardMatch[1]) {
-      videoId = standardMatch[1];
+      videoId = standardMatch[1]
     }
     
 
-    const embedMatch = url.match(/youtube\.com\/embed\/([^?]+)/);
+    const embedMatch = url.match(/youtube\.com\/embed\/([^?]+)/)
     if (embedMatch && embedMatch[1]) {
-      videoId = embedMatch[1];
+      videoId = embedMatch[1]
     }
     
-    if (!videoId) return '';
+    if (!videoId) return ''
     
-    return `https://www.youtube.com/embed/${videoId}`;
+    return `https://www.youtube.com/embed/${videoId}`
   }
 
   if (isLoading || !note)
