@@ -9,6 +9,7 @@ import { MailFilter } from "../cmps/MailFilter.jsx"
 import { MailFolderList } from "../cmps/MailFolderList.jsx"
 import { MailCompose } from "../cmps/MailCompose.jsx"
 import { showSuccessMsg, showErrorMsg } from "../../../services/event-bus.service.js";
+import { GmailLoader } from "../cmps/GmailLoader.jsx";
 
 
 
@@ -29,9 +30,16 @@ export function MailIndex() {
     const [unreadCount, setUnreadCount] = useState(0)
     const [selectedMails, setSelectedMails] = useState([])
     const [sortBy, setSortBy] = useState('date')
+    const [isLoading, setIsLoading] = useState(true)
     const navigate = useNavigate()
-
     const location = useLocation()
+
+    useEffect(() => {
+        mailService.query().then(fetchedMails => {
+            setMails(fetchedMails);
+            setTimeout(() => setIsLoading(false), 2500); // ✅ Simulate Loading Delay
+        });
+    }, []);
 
     useEffect(() => {
         loadMails()
@@ -210,6 +218,8 @@ export function MailIndex() {
             })
             .catch(err => console.error("❌ Failed to save note:", err));
     }
+
+    if (isLoading) return <GmailLoader />
 
     return (
         <section className="mail-index">
