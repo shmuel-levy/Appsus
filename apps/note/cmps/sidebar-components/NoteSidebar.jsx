@@ -1,10 +1,26 @@
 const { NavLink } = ReactRouterDOM
-import { KeepLogo } from './KeepLogo.jsx'
+const { useState, useEffect } = React
 
 export function NoteSidebar() {
+    const [isExpanded, setIsExpanded] = useState(false)
+    
+    const toggleSidebar = () => {
+        setIsExpanded(prev => !prev)
+    }
+    useEffect(() => {
+        const content = document.querySelector('.note-app-content')
+        if (content) {
+            if (isExpanded) {
+                content.classList.add('sidebar-expanded')
+            } else {
+                content.classList.remove('sidebar-expanded')
+            }
+        }
+    }, [isExpanded])
+    
     return (
-        <aside className="note-sidebar">
-            <KeepLogo />
+        <aside className={`note-sidebar ${isExpanded ? 'expanded' : ''}`}>
+           
             <div className="sidebar-content">
                 <NavLink to="/note" className="sidebar-item" end>
                     <div className="sidebar-icon">
@@ -23,8 +39,6 @@ export function NoteSidebar() {
                     </div>
                     <span className="sidebar-text">Reminders</span>
                 </NavLink>
-                
-                <div className="sidebar-divider"></div>
                 
                 <NavLink to="/note/archive" className="sidebar-item">
                     <div className="sidebar-icon">

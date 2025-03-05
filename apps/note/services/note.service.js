@@ -157,37 +157,37 @@ function query(filterBy = {}) {
 }
 
 function get(noteId) {
-    return storageService.get(NOTES_KEY, noteId);
+    return storageService.get(NOTES_KEY, noteId)
 }
 
 function remove(noteId) {
-    return storageService.remove(NOTES_KEY, noteId);
+    return storageService.remove(NOTES_KEY, noteId)
 }
 
 function save(note) {
     if (note.id) {
-        return storageService.put(NOTES_KEY, note);
+        return storageService.put(NOTES_KEY, note)
     } else {
-        note.createdAt = Date.now();
-        if (note.inTrash === undefined) note.inTrash = false;
-        return storageService.post(NOTES_KEY, note);
+        note.createdAt = Date.now()
+        if (note.inTrash === undefined) note.inTrash = false
+        return storageService.post(NOTES_KEY, note)
     }
 }
 
 function moveToTrash(noteId) {
     return get(noteId)
         .then(note => {
-            note.inTrash = true;
-            return save(note);
-        });
+            note.inTrash = true
+            return save(note)
+        })
 }
 
 function restoreFromTrash(noteId) {
     return get(noteId)
         .then(note => {
-            note.inTrash = false;
-            return save(note);
-        });
+            note.inTrash = false
+            return save(note)
+        })
 }
 
 
@@ -219,7 +219,7 @@ function createNote(type, info, style = {}) {
         },
         info
     }
-    return save(note);
+    return save(note)
 }
 
 function getEmptyNote(type = 'NoteTxt') {
@@ -230,55 +230,55 @@ function getEmptyNote(type = 'NoteTxt') {
     }
     
     if (!emptyInfoMap[type]) {
-        throw new Error('Invalid note type');
+        throw new Error('Invalid note type')
     }
     
     return {
         type,
         inTrash: false,
         info: {...emptyInfoMap[type]}
-    };
+    }
 }
 
 function _createDemoNotes() {
     return storageService.query(NOTES_KEY)
         .then(notes => {
             if (notes.length >= 3) {
-                let needsUpdate = false;
+                let needsUpdate = false
                 notes = notes.map(note => {
                     if (note.inTrash === undefined) {
-                        note.inTrash = false;
-                        needsUpdate = true;
+                        note.inTrash = false
+                        needsUpdate = true
                     }
-                    return note;
-                });
+                    return note
+                })
                 
                 if (needsUpdate) {
-                    localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+                    localStorage.setItem(NOTES_KEY, JSON.stringify(notes))
                 }
                 
-                return notes;
+                return notes
             }
             
-            localStorage.removeItem(NOTES_KEY);
+            localStorage.removeItem(NOTES_KEY)
             
             return storageService.post(NOTES_KEY, defaultNotes[0])
                 .then(() => storageService.post(NOTES_KEY, defaultNotes[1]))
                 .then(() => storageService.post(NOTES_KEY, defaultNotes[2]))
-                .then(() => storageService.query(NOTES_KEY));
-        });
+                .then(() => storageService.query(NOTES_KEY))
+        })
 }
 
 function _getNoteText(note) {
     switch(note.type) {
         case 'NoteTxt': 
-            return note.info.txt || '';
+            return note.info.txt || ''
         case 'NoteTodos': 
-            return (note.info.title || '') + ' ' + (note.info.todos || []).map(todo => todo.txt).join(' ');
+            return (note.info.title || '') + ' ' + (note.info.todos || []).map(todo => todo.txt).join(' ')
         case 'NoteImg':
         case 'NoteVideo': 
-            return note.info.title || '';
+            return note.info.title || ''
         default: 
-            return '';
+            return ''
     }
 }

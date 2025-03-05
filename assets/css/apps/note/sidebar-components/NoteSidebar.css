@@ -1,32 +1,30 @@
+/* Collapsible Sidebar Styles */
 .note-sidebar {
-    position: absolute;
-    top: 81px;
+    position: fixed;
+    top: 64px;
     left: 0;
-    right: auto !important;
-    height: 100%;
-    width: 280px;
+    height: calc(100vh - 64px);
+    width: 72px; /* Start with collapsed width */
     background-color: #fff;
-    transition: width 0.2sease;
+    transition: width 0.2s ease;
     z-index: 100;
-    border-right: 1px solid #dadce0;
-    border-left: none !important;
-    display: flex
-;
+    border-right: 1px solid #e0e0e0;
+    display: flex;
     flex-direction: column;
-    padding-top: 15px;
-    direction: ltr !important;
+    padding-top: 8px;
     overflow-y: auto;
     overflow-x: hidden;
-    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
+}
+
+.note-sidebar.expanded {
+    width: 280px;
 }
 
 .keep-logo {
     display: flex;
     align-items: center;
-    padding: 12px 24px;
-    height: 48px;
-    margin-bottom: 0;
-    border-bottom: none;
+    padding: 12px 16px;
+    margin-bottom: 8px;
 }
 
 .keep-logo img {
@@ -37,20 +35,25 @@
 }
 
 .keep-logo span {
+    opacity: 0;
+    white-space: nowrap;
     font-size: 22px;
     font-weight: 400;
     color: #5f6368;
+    transition: opacity 0.2s ease;
 }
 
+.note-sidebar.expanded .keep-logo span {
+    opacity: 1;
+}
 
 .sidebar-item {
     display: flex;
     align-items: center;
-    padding: 0 24px 0 24px !important;
+    padding: 0 24px 0 24px;
     height: 48px;
-    border-radius: 0 25px 25px 0 !important;
-    margin-right: 12px !important;
-    margin-left: 0 !important;
+    border-radius: 0 25px 25px 0;
+    margin-right: 12px;
     cursor: pointer;
     color: #202124;
     text-decoration: none;
@@ -62,19 +65,19 @@
 }
 
 .sidebar-item.active {
-    background-color: #feefc3 !important;
+    background-color: #feefc3;
     color: #202124;
     font-weight: 500;
 }
 
 .sidebar-icon {
-    margin-right: 20px !important;
-    margin-left: 0 !important;
+    margin-right: 20px;
     width: 24px;
     height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .sidebar-icon svg {
@@ -93,57 +96,92 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
 
-.notes-list, 
-.note-add, 
-.note-filter-container,
-.note-index,
-.notes-container {
-    margin-left: 280px !important;
-    margin-right: auto !important;
-    padding-left: 20px;
-    padding-right: 20px;
-    max-width: 900px;
+.note-sidebar.expanded .sidebar-text {
+    opacity: 1;
 }
 
-.note-filter-container {
-    margin-top: 16px;
-}
-
-.note-filter-container input {
-    background-color: #f1f3f4;
-    border-radius: 8px;
+/* Hamburger menu button */
+.menu-toggle {
+    background: none;
     border: none;
-    padding: 12px 16px;
-    width: 100%;
-    box-shadow: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin-right: 8px;
+    padding: 12px;
 }
 
-@media (max-width: 768px) {
-    .note-sidebar {
-        width: 72px;
-    }
-    
-    .notes-list, 
-    .note-add, 
-    .note-filter-container,
-    .note-index,
-    .notes-container {
-        margin-left: 72px !important;
-    }
-    
-    .sidebar-text,
-    .keep-logo span {
+.menu-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.menu-toggle svg {
+    fill: #5f6368;
+    width: 24px;
+    height: 24px;
+}
+
+/* Main content adjustments */
+.note-app-content {
+    margin-left: 72px; /* Start with collapsed margin */
+    width: calc(100% - 72px);
+    transition: margin-left 0.2s ease, width 0.2s ease;
+}
+
+.note-app-content.sidebar-expanded {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+}
+
+/* App header adjustments */
+.app-header {
+    display: flex;
+    align-items: center;
+    height: 64px;
+    padding: 0 16px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3);
+    z-index: 101;
+}
+
+.app-header-left {
+    display: flex;
+    align-items: center;
+}
+
+.app-logo {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+}
+
+.app-logo img {
+    height: 40px;
+    width: 40px;
+    margin-right: 8px;
+}
+
+.app-logo span {
+    font-size: 22px;
+    font-weight: 400;
+    color: #5f6368;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 600px) {
+    .app-logo span {
         display: none;
-    }
-    
-    .keep-logo {
-        justify-content: center;
-        padding: 12px 0;
-    }
-    
-    .sidebar-icon {
-        margin-right: 0 !important;
     }
 }

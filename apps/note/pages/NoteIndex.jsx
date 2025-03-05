@@ -1,9 +1,9 @@
 const { useState, useEffect } = React
+const { useOutletContext } = ReactRouterDOM
 
 import { noteService } from '../services/note.service.js'
 import { NoteList } from '../cmps/NoteList.jsx'
 import { NoteAdd } from '../cmps/NoteAdd.jsx'
-import { NoteFilter } from '../cmps/NoteFilter.jsx'
 import { showSuccessMsg, showErrorMsg } from '../../../services/event-bus.service.js'
 
 export function NoteIndex({ isTrash = false, isArchive = false }) {
@@ -15,14 +15,17 @@ export function NoteIndex({ isTrash = false, isArchive = false }) {
         isArchived: isArchive 
     })
     const [isLoading, setIsLoading] = useState(true)
+    const [globalFilterBy, onSetFilter] = useOutletContext() || [{}, () => {}]
     
     useEffect(() => {
         setFilterBy(prev => ({ 
             ...prev, 
+            txt: globalFilterBy.txt || prev.txt,
+            type: globalFilterBy.type || prev.type,
             inTrash: isTrash,
             isArchived: isArchive 
         }))
-    }, [isTrash, isArchive])
+    }, [globalFilterBy, isTrash, isArchive])
     
     useEffect(() => {
         loadNotes()
@@ -41,10 +44,6 @@ export function NoteIndex({ isTrash = false, isArchive = false }) {
             .finally(() => {
                 setIsLoading(false)
             })
-    }
-    
-    function onSetFilter(newFilterBy) {
-        setFilterBy(prevFilterBy => ({ ...prevFilterBy, ...newFilterBy }))
     }
     
     function onAddNote(newNote) {
@@ -149,8 +148,9 @@ export function NoteIndex({ isTrash = false, isArchive = false }) {
     
     return (
         <section className="note-index">
+            {/* Note: We're hiding the filter in CSS since it's now in the header */}
             <div className="note-filter-container">
-                <NoteFilter onSetFilter={onSetFilter} />
+                {/* This will be hidden by CSS */}
             </div>
             
             {!filterBy.inTrash && !filterBy.isArchived && (
@@ -190,7 +190,6 @@ export function NoteIndex({ isTrash = false, isArchive = false }) {
                         />
                     </div>
                 )}
-                
                 
                 {(filterBy.inTrash || filterBy.isArchived || !notes.some(note => note.isPinned) || !notes.some(note => !note.isPinned)) && (
                     <NoteList

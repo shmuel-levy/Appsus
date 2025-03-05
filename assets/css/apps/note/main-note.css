@@ -1,0 +1,145 @@
+/* Note App Sub-Header styling */
+.note-sub-header {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    height: 64px;
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3);
+    z-index: 100;
+    position: fixed;
+    top: 64px; /* Position below the main AppHeader */
+    left: 0;
+    right: 0;
+}
+
+/* Hamburger menu button */
+.menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin-right: 4px;
+    padding: 12px;
+}
+
+.menu-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.menu-toggle svg {
+    fill: #5f6368;
+    width: 24px;
+    height: 24px;
+}
+
+/* Keep logo in header */
+.note-sub-header .keep-logo {
+    display: flex;
+    align-items: center;
+    margin-right: 60px;
+}
+
+.note-sub-header .keep-logo img {
+    height: 40px;
+    width: 40px;
+    margin-right: 8px;
+}
+
+.note-sub-header .keep-logo span {
+    font-size: 22px;
+    font-weight: 400;
+    color: #5f6368;
+}
+
+/* Move the filter to the header and style it like Google Keep */
+.note-filter-header {
+    flex: 1;
+    max-width: 720px;
+    margin-left: 30px; /* Added margin to move filter to the right */
+}
+
+.search-bar {
+    background-color: #f1f3f4;
+    border-radius: 8px;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.search-bar.focused {
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 1px 3px 1px rgba(60, 64, 67, 0.149);
+}
+
+/* Hide the original filter container since it's now in the header */
+.note-filter-container {
+    display: none;
+}
+
+/* Collapsible sidebar styling */
+.note-sidebar {
+    position: fixed;
+    top: 128px; /* Position below both headers (64px + 64px) */
+    left: 0;
+    height: calc(100vh - 128px); /* Adjust height to account for both headers */
+    width: 72px; /* Start with collapsed width */
+    background-color: #fff;
+    transition: width 0.2s ease;
+    z-index: 100;
+    border-right: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    padding-top: 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.note-sidebar.expanded {
+    width: 280px;
+}
+
+.sidebar-text {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.note-sidebar.expanded .sidebar-text {
+    opacity: 1;
+}
+
+/* Main content adjustments */
+.note-app-content {
+    margin-left: 72px; /* Start with collapsed margin */
+    margin-top: 128px; /* Space for both headers */
+    width: calc(100% - 72px);
+    transition: margin-left 0.2s ease, width 0.2s ease;
+    padding: 16px;
+}
+
+.note-app-content.sidebar-expanded {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+}
+
+/* Media queries for responsive design */
+@media (max-width: 600px) {
+    .note-sub-header .keep-logo span {
+        display: none;
+    }
+    
+    .note-sub-header .keep-logo {
+        margin-right: 16px;
+    }
+    
+    .note-filter-header {
+        margin-left: 10px;
+    }
+}
