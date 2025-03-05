@@ -1,10 +1,9 @@
-/* Collapsible Sidebar Styles */
 .note-sidebar {
     position: fixed;
     top: 64px;
     left: 0;
     height: calc(100vh - 64px);
-    width: 72px; /* Start with collapsed width */
+    width: 72px; 
     background-color: #fff;
     transition: width 0.2s ease;
     z-index: 100;
@@ -104,7 +103,6 @@
     opacity: 1;
 }
 
-/* Hamburger menu button */
 .menu-toggle {
     background: none;
     border: none;
@@ -129,9 +127,8 @@
     height: 24px;
 }
 
-/* Main content adjustments */
 .note-app-content {
-    margin-left: 72px; /* Start with collapsed margin */
+    margin-left: 72px;
     width: calc(100% - 72px);
     transition: margin-left 0.2s ease, width 0.2s ease;
 }
@@ -141,7 +138,6 @@
     width: calc(100% - 280px);
 }
 
-/* App header adjustments */
 .app-header {
     display: flex;
     align-items: center;
@@ -179,7 +175,6 @@
     color: #5f6368;
 }
 
-/* Media queries for responsive design */
 @media (max-width: 600px) {
     .app-logo span {
         display: none;
