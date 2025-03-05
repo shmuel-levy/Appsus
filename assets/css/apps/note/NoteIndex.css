@@ -1,8 +1,8 @@
 .note-index {
-    max-width: 100%;
-    margin: 0 auto;
+    max-width: 100% ;
+    margin: 0 ;
     padding: 0;
-    position: relative;
+    position: relative ;
 }
 
 .note-filter-container {
@@ -34,10 +34,30 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 200px;
-    font-size: 16px;
-    color: #5f6368;
+    height: 300px;
+    width: 100%;
 }
+
+.loading iframe {
+    width: 200px;
+    height: 200px;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    overflow: hidden;
+}
+
+.simple-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 100%;
+    font-size: 18px;
+    color: #5f6368;
+    font-family: 'Roboto', Arial, sans-serif;
+}
+
 
 .error {
     color: #d9534f;

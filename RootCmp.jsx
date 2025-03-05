@@ -29,7 +29,7 @@ export function RootCmp() {
                 <Route path="/note" element={<NoteApp />}>
                     <Route index element={<NoteIndex />} />
                     <Route path=":noteId" element={<NoteEdit />} />
-                    <Route path="reminders" element={<div className="coming-soon">תזכורות יגיעו בקרוב</div>} />
+                    <Route path="reminders" element={<div className="coming-soon"> </div>} />
                     <Route path="archive" element={<NoteIndex isArchive={true} />} />
                     <Route path="trash" element={<NoteIndex isTrash={true} />} />
                 </Route>

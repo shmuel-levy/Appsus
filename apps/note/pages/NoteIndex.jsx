@@ -5,6 +5,9 @@ import { noteService } from '../services/note.service.js'
 import { NoteList } from '../cmps/NoteList.jsx'
 import { NoteAdd } from '../cmps/NoteAdd.jsx'
 import { showSuccessMsg, showErrorMsg } from '../../../services/event-bus.service.js'
+import { LoadingAnimation } from '../cmps/LoadingNote.jsx'
+
+let isFirstLoad = true
 
 export function NoteIndex({ isTrash = false, isArchive = false }) {
     const [notes, setNotes] = useState([])
@@ -15,6 +18,8 @@ export function NoteIndex({ isTrash = false, isArchive = false }) {
         isArchived: isArchive 
     })
     const [isLoading, setIsLoading] = useState(true)
+    const [forceLoading, setForceLoading] = useState(isFirstLoad) 
+    
     const [globalFilterBy, onSetFilter] = useOutletContext() || [{}, () => {}]
     
     useEffect(() => {
@@ -29,6 +34,14 @@ export function NoteIndex({ isTrash = false, isArchive = false }) {
     
     useEffect(() => {
         loadNotes()
+                if (isFirstLoad) {
+            const timer = setTimeout(() => {
+                setForceLoading(false)
+                isFirstLoad = false 
+            }, 5000)
+            
+            return () => clearTimeout(timer)
+        }
     }, [filterBy])
     
     function loadNotes() {
@@ -36,12 +49,11 @@ export function NoteIndex({ isTrash = false, isArchive = false }) {
         noteService.query(filterBy)
             .then(notesFromService => {
                 setNotes(notesFromService)
+                setIsLoading(false)
             })
             .catch(err => {
                 console.error('Error loading notes:', err)
                 setNotes([])
-            })
-            .finally(() => {
                 setIsLoading(false)
             })
     }
@@ -143,14 +155,17 @@ export function NoteIndex({ isTrash = false, isArchive = false }) {
                 showErrorMsg('Failed to archive note')
             })
     }
-    
-    if (isLoading && notes.length === 0) return <div className="loading">Loading...</div>
+    if (isLoading || forceLoading) {
+        if (isFirstLoad) {
+            return <LoadingAnimation />
+        } else {
+            return <div className="simple-loading">Loading...</div>
+        }
+    }
     
     return (
         <section className="note-index">
-            {/* Note: We're hiding the filter in CSS since it's now in the header */}
             <div className="note-filter-container">
-                {/* This will be hidden by CSS */}
             </div>
             
             {!filterBy.inTrash && !filterBy.isArchived && (
