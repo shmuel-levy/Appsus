@@ -1,7 +1,7 @@
 import { MailPreview } from '../cmps/MailPreview.jsx'
 
 export function MailList({ mails, onMailClick, onToggleStar, onToggleSelect, onDeleteMail, onEditDraft, onSaveAsNote, selectedMails = [] }) {
-    if (!mails.length) return <p>No mails to display</p>
+    if (!mails.length) return <p className='empty-folder'>No mails to display...</p>
     return (
         <section className='mail-list'>
             <ul>

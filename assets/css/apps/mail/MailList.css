@@ -23,6 +23,12 @@
     cursor: pointer;
  }
 
+ .empty-folder {
+   font-family: 'Roboto', serif;
+   text-align: center;
+   font-size: 20px;
+ }
+
  
 
  
