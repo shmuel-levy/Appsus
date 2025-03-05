@@ -83,7 +83,7 @@
 
 .note-sidebar {
     position: fixed;
-    top: 128px; 
+    top: 143px; 
     left: 0;
     height: calc(100vh - 128px); 
     width: 72px;

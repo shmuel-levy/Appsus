@@ -1,9 +1,9 @@
 .note-sidebar {
     position: fixed;
-    top: 64px;
+    top: 143px; 
     left: 0;
-    height: calc(100vh - 64px);
-    width: 72px; 
+    height: calc(100vh - 128px); 
+    width: 72px;
     background-color: #fff;
     transition: width 0.2s ease;
     z-index: 100;
