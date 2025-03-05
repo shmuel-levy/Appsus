@@ -21,3 +21,33 @@
    min-width: 0;
    flex-shrink: 1;
 }
+
+.mail-index .gmail-logo {
+   /* padding-right: 30px; */
+   width: 110px;
+   height: 40px;
+  }
+  
+  .mail-sidebar span {
+   height: 24px;
+   width: 24px;
+   text-align: center;
+  }
+  
+  .mail-sidebar-logo {
+   display: flex;
+   padding: 10px;
+  }
+  
+  .mail-sidebar-logo div {
+   display: inline-block;
+   margin: 0 4px;
+   padding: 12px;
+   overflow: hidden;
+   vertical-align: middle;
+   cursor: pointer;
+   height: 24px;
+   width: 24px;
+   text-align: center;
+   color: #5f6368;
+  }

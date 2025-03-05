@@ -55,15 +55,15 @@ export function MailIndex() {
             // if (folder !== "all") {
             //     filteredMails = filteredMails.filter(mail => mail.folder === folder);
             // }
-            
-    
+
+
             if (filterBy.folder === 'drafts') {
                 filteredMails = allMails.filter(mail => mail.folder === 'drafts')
             } else if (filterBy.folder === 'sent') {
                 filteredMails = allMails.filter(mail => mail.folder === 'sent')
             } else if (filterBy.folder === 'starred') {
                 filteredMails = allMails.filter(mail => mail.isStarred)
-            } 
+            }
             // else if (filterBy.folder && filterBy.folder !== 'all') {
             //     filteredMails = filteredMails.filter(mail => mail.folder === filterBy.folder)
             // }
@@ -200,6 +200,10 @@ export function MailIndex() {
     return (
         <section className="mail-index">
             <aside className="mail-sidebar">
+                <div className='mail-sidebar-logo'>
+                    <div><span><i class="fa-solid fa-bars"></i></span></div>
+                    <img className='gmail-logo' src="./assets/img/logo-gmail.png"></img>
+                </div>
                 <button className="compose-btn" onClick={() => setIsComposing(true)}>
                     <img src="./assets/img/compose.png"></img> Compose
                 </button>
