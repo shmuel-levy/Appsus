@@ -197,7 +197,7 @@ export function NoteEdit() {
         .catch(err => {
             console.error('Error archiving note:', err)
         })
-}
+  }
 
   function handleAddImage() {
     setNoteType("NoteImg")
@@ -263,7 +263,14 @@ export function NoteEdit() {
   return (
     <div className="modal-overlay">
       <div className="modal-container" ref={modalRef}>
-        <div className="note-edit-modal" style={note.style}>
+        <div className={`note-edit-modal ${note.isPinned ? 'pinned' : ''}`} style={note.style}>
+          {note.isPinned && (
+            <div className="pin-indicator">
+              <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="#f1c40f">
+                <path d="M17 4v7l2 3v2h-6v5l-1 1-1-1v-5H5v-2l2-3V4c0-1.1.9-2 2-2h6c1.11 0 2 .89 2 2zM9 4v7.75L7.5 14h9L15 11.75V4H9z" />
+              </svg>
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="note-edit-form">
             <input
               style={note.style}
@@ -368,8 +375,8 @@ export function NoteEdit() {
                 <button
                   type="button"
                   onClick={handlePinNote}
-                  className="action-btn push_pin"
-                  title="Pin note"
+                  className={`action-btn push_pin ${note.isPinned ? 'pinned' : ''}`}
+                  title={note.isPinned ? "Unpin note" : "Pin note"}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

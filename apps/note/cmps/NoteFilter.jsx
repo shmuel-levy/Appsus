@@ -7,21 +7,21 @@ export function NoteFilter({ onSetFilter }) {
     })
     const [isSearchFocused, setIsSearchFocused] = useState(false)
     const searchInputRef = useRef(null)
-
+    
     useEffect(() => {
         onSetFilter(filterBy)
     }, [filterBy])
-
+    
     function handleChange(ev) {
         const { name, value } = ev.target
         setFilterBy(prevFilter => ({ ...prevFilter, [name]: value }))
     }
-
+    
     function clearSearch() {
         setFilterBy(prevFilter => ({ ...prevFilter, txt: '' }))
         searchInputRef.current.focus()
     }
-
+    
     return (
         <div className="note-filter">
             <div className={`search-bar ${isSearchFocused ? 'focused' : ''}`}>
@@ -36,12 +36,12 @@ export function NoteFilter({ onSetFilter }) {
                     className="search-input"
                     type="text"
                     name="txt"
-                    placeholder="חיפוש"
+                    placeholder="Search"
                     value={filterBy.txt}
                     onChange={handleChange}
                     onFocus={() => setIsSearchFocused(true)}
                     onBlur={() => setIsSearchFocused(false)}
-                    dir="rtl"
+                    dir="ltr"
                 />
                 
                 {filterBy.txt && (

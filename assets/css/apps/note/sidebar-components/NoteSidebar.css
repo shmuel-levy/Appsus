@@ -101,15 +101,10 @@
 .note-index,
 .notes-container {
     margin-left: 280px !important;
-    margin-right: 0 !important;
+    margin-right: auto !important;
     padding-left: 20px;
     padding-right: 20px;
-}
-
-.notes-list {
-    column-gap: 16px;
-    column-width: 240px;
-    padding: 16px 20px;
+    max-width: 900px;
 }
 
 .note-filter-container {
