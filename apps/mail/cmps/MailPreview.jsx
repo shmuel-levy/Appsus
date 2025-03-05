@@ -1,6 +1,6 @@
 const { Link, useSearchParams, useNavigate } = ReactRouterDOM
 
-export function MailPreview({ mail, onMailClick, onToggleStar, onToggleSelect, onDeleteMail, onEditDraft, selectedMails = [] }) {
+export function MailPreview({ mail, onMailClick, onToggleStar, onToggleSelect, onDeleteMail, onEditDraft,  onSaveAsNote, selectedMails = [] }) {
     const [searchParams] = useSearchParams()
     const folder = searchParams.get('folder') || 'inbox'
     const navigate = useNavigate()
@@ -41,12 +41,12 @@ export function MailPreview({ mail, onMailClick, onToggleStar, onToggleSelect, o
     return (
         <div onClick={handleClick} className={`mail-preview ${mail.isRead ? "read" : "unread"} ${selectedMails.includes(mail.id) ? "selected" : ""} ${mail.isStarred ? "starred" : ""}`}>
             <div className='tooltip-btn'>
-            <input
-                type="checkbox"
-                checked={selectedMails.includes(mail.id)}
-                onChange={() => onToggleSelect(mail.id)}
-            />
-            <span className="tooltip-text">Select</span>
+                <input
+                    type="checkbox"
+                    checked={selectedMails.includes(mail.id)}
+                    onChange={() => onToggleSelect(mail.id)}
+                />
+                <span className="tooltip-text">Select</span>
             </div>
 
             <div className='tooltip-btn'>
@@ -91,8 +91,19 @@ export function MailPreview({ mail, onMailClick, onToggleStar, onToggleSelect, o
                     {formatMailDate(mail)}
                 </span>
                 <div className="mail-actions">
+
+
+                    <div className='tooltip-btn save-note-btn'>
+                        <i className='fa-regular fa-note-sticky' onClick={(ev) => {
+                            ev.stopPropagation()
+                            onSaveAsNote(mail)
+                        }}>
+                        </i>
+                        <span className='tooltip-text'>Save as Note</span>
+                    </div>
+
                     <div className='tooltip-btn'>
-                    <i className={mail.isRead ? "fa-regular fa-envelope" : "fa-regular fa-envelope-open"}
+                        <i className={mail.isRead ? "fa-regular fa-envelope" : "fa-regular fa-envelope-open"}
                             onClick={(ev) => {
                                 ev.stopPropagation()
                                 onMailClick(mail.id)
@@ -100,13 +111,16 @@ export function MailPreview({ mail, onMailClick, onToggleStar, onToggleSelect, o
                         ></i>
                         <span className="tooltip-text">{mail.isRead ? "Mark as Unread" : "Mark as Read"}</span>
                     </div>
+
                     <div className='tooltip-btn'>
-                    <i className="fa-regular fa-trash-can" onClick={(ev) => {
-                        ev.stopPropagation()
-                        onDeleteMail(mail.id)
-                    }}></i>
-                    <span className="tooltip-text">Delete</span>
+                        <i className="fa-regular fa-trash-can" onClick={(ev) => {
+                            ev.stopPropagation()
+                            onDeleteMail(mail.id)
+                        }}></i>
+                        <span className="tooltip-text">Delete</span>
                     </div>
+
+
                 </div>
             </div>
         </div>

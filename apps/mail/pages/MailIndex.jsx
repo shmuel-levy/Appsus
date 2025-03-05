@@ -2,10 +2,14 @@
 const { useState, useEffect } = React
 const { Outlet, Link, useLocation, useNavigate, useSearchParams } = ReactRouterDOM
 import { mailService } from "../services/mail.service.js"
+import { noteService } from "../../note/services/note.service.js";
+import { utilService } from "../../../services/util.service.js";
 import { MailList } from "../cmps/MailList.jsx"
 import { MailFilter } from "../cmps/MailFilter.jsx"
 import { MailFolderList } from "../cmps/MailFolderList.jsx"
 import { MailCompose } from "../cmps/MailCompose.jsx"
+
+
 
 export function MailIndex() {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -24,6 +28,7 @@ export function MailIndex() {
     const [unreadCount, setUnreadCount] = useState(0)
     const [selectedMails, setSelectedMails] = useState([])
     const [sortBy, setSortBy] = useState('date')
+    const navigate = useNavigate()
 
     const location = useLocation()
 
@@ -197,11 +202,33 @@ export function MailIndex() {
         })
     }
 
+    function onSaveAsNote(mail) {
+        const newNote = {
+            id: utilService.makeId(),  // ✅ Generate unique ID
+            createdAt: Date.now(),
+            type: "NoteTxt",
+            isPinned: false,
+            inTrash: false,
+            style: { backgroundColor: "#fff" },
+            info: {
+                title: mail.subject || "New Note",
+                txt: mail.body || "",
+            },
+        };
+    
+        noteService.save(newNote)
+            .then(savedNote => {
+                console.log("✅ Note Saved:", savedNote);
+                navigate(`/note/${savedNote.id}`);  // ✅ Redirect to KeepApp
+            })
+            .catch(err => console.error("❌ Failed to save note:", err));
+    }
+
     return (
         <section className="mail-index">
             <aside className="mail-sidebar">
                 <div className='mail-sidebar-logo'>
-                    <div><span><i class="fa-solid fa-bars"></i></span></div>
+                    <div><span><i className="fa-solid fa-bars"></i></span></div>
                     <img className='gmail-logo' src="./assets/img/logo-gmail.png"></img>
                 </div>
                 <button className="compose-btn" onClick={() => setIsComposing(true)}>
@@ -225,7 +252,7 @@ export function MailIndex() {
                     </select>
                 </div>
                 <div className='mail-filter-inside' style={{ display: location.pathname.includes('/mail/') ? 'none' : 'block' }}>
-                    <MailList mails={mails} onEditDraft={onEditDraft} onMailClick={markAsRead} onToggleStar={toggleStar} onToggleSelect={toggleSelect} onDeleteMail={onDeleteMail} selectedMails={selectedMails} />
+                    <MailList mails={mails} onEditDraft={onEditDraft} onMailClick={markAsRead} onToggleStar={toggleStar} onToggleSelect={toggleSelect} onDeleteMail={onDeleteMail} onSaveAsNote={onSaveAsNote} selectedMails={selectedMails} />
                 </div>
                 {isComposing && <MailCompose onClose={() => setIsComposing(false)} onMailSent={onMailSent} draft={editingDraft} />}
                 <Outlet />
