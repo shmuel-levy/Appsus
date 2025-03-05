@@ -112,6 +112,8 @@ export function NoteAdd({ onAddNote }) {
                 return (
                     !noteInfo.title || !noteInfo.todos || noteInfo.todos.length === 0
                 )
+                case "NoteVideo":
+            return !noteInfo.url || !noteInfo.title
             default:
                 return true
         }
@@ -164,6 +166,13 @@ export function NoteAdd({ onAddNote }) {
                                 >
                                     Todos
                                 </button>
+                                <button
+    type="button"
+    className={noteType === "NoteVideo" ? "active" : ""}
+    onClick={() => handleTypeChange("NoteVideo")}
+>
+    Video
+</button>
                             </div>
 
                             <div className="color-picker">
@@ -264,6 +273,29 @@ export function NoteAdd({ onAddNote }) {
                         />
                     </div>
                 )
+                case "NoteVideo":
+                    return (
+                        <div className="video-note-form" dir="ltr">
+                            <input
+                                type="text"
+                                name="title"
+                                placeholder="Title"
+                                value={noteInfo.title || ""}
+                                onChange={handleChange}
+                                onFocus={handleFocus}
+                                dir="ltr"
+                            />
+                            <input
+                                type="text"
+                                name="url"
+                                placeholder="YouTube Video URL"
+                                value={noteInfo.url || ""}
+                                onChange={handleChange}
+                                onFocus={handleFocus}
+                                dir="ltr"
+                            />
+                        </div>
+                    );
 
             default:
                 return <div>Unsupported note type</div>

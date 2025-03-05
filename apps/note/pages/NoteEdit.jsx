@@ -240,15 +240,74 @@ export function NoteEdit() {
   }
 
   function handleSendToMail() {
-    if (!note || !note.info) return
-    window.location.href = `mailto:?subject=${encodeURIComponent(
-      note.info.title || "Note"
-    )}&body=${encodeURIComponent(note.info.txt || "")}`
+    if (!note || !note.info) return;
+    
+    // Format the note differently based on its type
+    let subject = '';
+    let body = '';
+    
+    switch (note.type) {
+      case 'NoteTxt':
+        subject = note.info.title || 'Text Note';
+        body = `${note.info.title ? note.info.title + '\n\n' : ''}${note.info.txt || ''}`;
+        break;
+        
+      case 'NoteImg':
+        subject = note.info.title || 'Image Note';
+        body = `${note.info.title ? note.info.title + '\n\n' : ''}Image URL: ${note.info.url}`;
+        break;
+        
+      case 'NoteVideo':
+        subject = note.info.title || 'Video Note';
+        body = `${note.info.title ? note.info.title + '\n\n' : ''}Video URL: ${note.info.url}`;
+        break;
+        
+      case 'NoteTodos':
+        subject = note.info.title || 'Todo List';
+        body = note.info.title ? note.info.title + '\n\n' : '';
+        if (note.info.todos && note.info.todos.length > 0) {
+          note.info.todos.forEach((todo, idx) => {
+            body += `${idx + 1}. [${todo.doneAt ? 'x' : ' '}] ${todo.txt}\n`;
+          });
+        }
+        break;
+        
+      default:
+        subject = 'Note from Keep';
+        body = 'Note content';
+    }
+      const encodedSubject = encodeURIComponent(subject);
+    const encodedBody = encodeURIComponent(body);
+    
+    
+    const emailComposeUrl = `#/mail/compose?subject=${encodedSubject}&body=${encodedBody}`;
+    
+    window.location.href = emailComposeUrl;
   }
 
   function toggleColorPalette(ev) {
     ev.preventDefault()
     setShowColorPalette((prev) => !prev)
+  }
+
+  function getYoutubeEmbedUrl(url) {
+    if (!url) return '';
+    
+    let videoId = null;
+    const standardMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/);
+    if (standardMatch && standardMatch[1]) {
+      videoId = standardMatch[1];
+    }
+    
+
+    const embedMatch = url.match(/youtube\.com\/embed\/([^?]+)/);
+    if (embedMatch && embedMatch[1]) {
+      videoId = embedMatch[1];
+    }
+    
+    if (!videoId) return '';
+    
+    return `https://www.youtube.com/embed/${videoId}`;
   }
 
   if (isLoading || !note)
@@ -315,30 +374,29 @@ export function NoteEdit() {
               </div>
             )}
 
-            {noteType === "NoteVideo" && (
-              <div>
-                <input
-                  style={note.style}
-                  type="url"
-                  name="url"
-                  className="input edit-note-input-url"
-                  placeholder="Enter YouTube video URL"
-                  onChange={handleChange}
-                  value={note.info.url || ""}
-                />
-                {note.info.url && (
-                  <div className="video-container">
-                    <iframe
-                      src={note.info.url}
-                      title={note.info.title || "Note video"}
-                      frameBorder="0"
-                      allow="accelerometer autoplay clipboard-write encrypted-media gyroscope picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-                )}
-              </div>
-            )}
+{noteType === "NoteVideo" && (
+  <div>
+    <input
+      style={note.style}
+      type="url"
+      name="url"
+      className="input edit-note-input-url"
+      placeholder="Enter YouTube video URL"
+      onChange={handleChange}
+      value={note.info.url || ""}
+    />
+    {note.info.url && (
+      <div className="video-container">
+        <iframe
+          src={getYoutubeEmbedUrl(note.info.url)}
+          title={note.info.title || "Note video"}
+          frameBorder="0"
+          allowFullScreen
+        ></iframe>
+      </div>
+    )}
+  </div>
+)}
 
             {noteType === "NoteTodos" && (
               <div className="edit-todo-container">

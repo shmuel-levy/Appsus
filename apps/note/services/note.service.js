@@ -25,7 +25,7 @@ const defaultNotes = [
         style: { backgroundColor: '#cbf0f8' }, 
         info: {
             url: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y29kaW5nfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60',
-            title: 'My Amazing Project'
+            title: 'My NoteKeep and EmailKeep in progress'
         }
     },
     {
@@ -98,6 +98,42 @@ const defaultNotes = [
             title: 'React Best Practices',
             txt: 'Always use functional components with hooks. Keep state local when possible. Use context for global state. Break complex UIs into smaller components. Handle errors gracefully.'
         }
+    },
+    {
+        id: 'n108',
+        createdAt: 1112229,
+        type: 'NoteVideo',
+        isPinned: true,
+        inTrash: false,
+        style: { backgroundColor: '#cbf0f8' },
+        info: {
+            url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+            title: 'Must Watch Video'
+        }
+    },
+    {
+        id: 'n109',
+        createdAt: 1112230,
+        type: 'NoteVideo',
+        isPinned: false,
+        inTrash: false,
+        style: { backgroundColor: '#fff475' },
+        info: {
+            url: 'https://www.youtube.com/watch?v=jNQXAC9IVRw',
+            title: 'First YouTube Video Ever'
+        }
+    },
+    {
+        id: 'n110',
+        createdAt: 1112231,
+        type: 'NoteVideo',
+        isPinned: false,
+        inTrash: false,
+        style: { backgroundColor: '#fdcfe8' },
+        info: {
+            url: 'https://www.youtube.com/watch?v=_GuOjXYl5ew',
+            title: 'Quick React JS Tutorial'
+        }
     }
 ]
 
@@ -112,7 +148,9 @@ export const noteService = {
     moveToTrash,
     restoreFromTrash,
     moveToArchive,
-    restoreFromArchive
+    restoreFromArchive,
+    sendNoteToEmail,
+    formatNoteForEmail
 }
 
 _createDemoNotes()
@@ -221,6 +259,7 @@ function createNote(type, info, style = {}) {
         type,
         isPinned: false,
         inTrash: false,
+        isArchived: false,
         style: {
             backgroundColor: style.backgroundColor || '#ffffff'
         },
@@ -231,20 +270,82 @@ function createNote(type, info, style = {}) {
 
 function getEmptyNote(type = 'NoteTxt') {
     const emptyInfoMap = {
-        'NoteTxt': { txt: '' },
+        'NoteTxt': { title: '', txt: '' },
         'NoteImg': { url: '', title: '' },
-        'NoteTodos': { title: '', todos: [] }
+        'NoteTodos': { title: '', todos: [] },
+        'NoteVideo': { url: '', title: '' } 
     }
     
     if (!emptyInfoMap[type]) {
-        throw new Error('Invalid note type')
+        console.warn(`Invalid note type: ${type}, defaulting to NoteTxt`)
+        type = 'NoteTxt'
     }
     
     return {
         type,
         inTrash: false,
+        isArchived: false,
+        isPinned: false,
+        style: { backgroundColor: '#ffffff' },
         info: {...emptyInfoMap[type]}
     }
+}
+
+/**
+ * Formats a note for email content based on its type
+ * @param {Object} note - The note to format
+ * @returns {Object} - Object with subject and body for email
+ */
+function formatNoteForEmail(note) {
+    let subject = '';
+    let body = '';
+    
+    switch (note.type) {
+        case 'NoteTxt':
+            subject = note.info.title || 'Text Note';
+            body = `${note.info.title ? note.info.title + '\n\n' : ''}${note.info.txt || ''}`;
+            break;
+            
+        case 'NoteImg':
+            subject = note.info.title || 'Image Note';
+            body = `${note.info.title ? note.info.title + '\n\n' : ''}Image URL: ${note.info.url}`;
+            break;
+            
+        case 'NoteVideo':
+            subject = note.info.title || 'Video Note';
+            body = `${note.info.title ? note.info.title + '\n\n' : ''}Video URL: ${note.info.url}`;
+            break;
+            
+        case 'NoteTodos':
+            subject = note.info.title || 'Todo List';
+            body = note.info.title ? note.info.title + '\n\n' : '';
+            if (note.info.todos && note.info.todos.length > 0) {
+                note.info.todos.forEach((todo, idx) => {
+                    body += `${idx + 1}. [${todo.doneAt ? 'x' : ' '}] ${todo.txt}\n`;
+                });
+            }
+            break;
+            
+        default:
+            subject = 'Note from Keep';
+            body = 'Note content';
+    }
+    
+    return { subject, body };
+}
+
+function sendNoteToEmail(note) {
+    const { subject, body } = formatNoteForEmail(note);
+    
+    // Encode the subject and body for URL parameters
+    const encodedSubject = encodeURIComponent(subject);
+    const encodedBody = encodeURIComponent(body);
+    
+    // Create the URL with query parameters for the Mail app compose page
+    const emailComposeUrl = `#/mail/compose?subject=${encodedSubject}&body=${encodedBody}`;
+    
+    // Navigate to the email compose page
+    window.location.href = emailComposeUrl;
 }
 
 function _createDemoNotes() {
@@ -255,6 +356,10 @@ function _createDemoNotes() {
                 notes = notes.map(note => {
                     if (note.inTrash === undefined) {
                         note.inTrash = false
+                        needsUpdate = true
+                    }
+                    if (note.isArchived === undefined) {
+                        note.isArchived = false
                         needsUpdate = true
                     }
                     return note
@@ -268,20 +373,17 @@ function _createDemoNotes() {
             }
             
             localStorage.removeItem(NOTES_KEY)
-            
-            return storageService.post(NOTES_KEY, defaultNotes[0])
-                .then(() => storageService.post(NOTES_KEY, defaultNotes[1]))
-                .then(() => storageService.post(NOTES_KEY, defaultNotes[2]))
-                .then(() => storageService.query(NOTES_KEY))
+            localStorage.setItem(NOTES_KEY, JSON.stringify(defaultNotes))
+            return defaultNotes
         })
 }
 
 function _getNoteText(note) {
     switch(note.type) {
         case 'NoteTxt': 
-            return note.info.txt || ''
+            return `${note.info.title || ''} ${note.info.txt || ''}`
         case 'NoteTodos': 
-            return (note.info.title || '') + ' ' + (note.info.todos || []).map(todo => todo.txt).join(' ')
+            return `${note.info.title || ''} ${(note.info.todos || []).map(todo => todo.txt).join(' ')}`
         case 'NoteImg':
         case 'NoteVideo': 
             return note.info.title || ''

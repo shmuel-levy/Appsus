@@ -19,6 +19,7 @@
 @import './apps/note/NoteFilter.css';
 @import './apps/note/ltr-styles.css';
 @import './apps/note/AppHeader.css';
+@import './apps/note/NoteVideo.css';
 
 /* Mail-App */
 @import './apps/mail/MailIndex.css';
