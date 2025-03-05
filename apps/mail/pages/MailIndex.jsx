@@ -24,7 +24,7 @@ export function MailIndex() {
     const [unreadCount, setUnreadCount] = useState(0)
     const [selectedMails, setSelectedMails] = useState([])
     const [sortBy, setSortBy] = useState('date')
-    
+
     const location = useLocation()
 
     useEffect(() => {
@@ -50,24 +50,26 @@ export function MailIndex() {
 
     function loadMails() {
         mailService.query().then(allMails => {
-           
-            let filteredMails = allMails.filter(mail =>
-                mail.subject.toLowerCase().includes(filterBy.text.toLowerCase())
-            )
+            let filteredMails = allMails.filter(mail => mail.folder === folder)
 
-           
+            // if (folder !== "all") {
+            //     filteredMails = filteredMails.filter(mail => mail.folder === folder);
+            // }
+            
+    
             if (filterBy.folder === 'drafts') {
-                filteredMails = allMails.filter(mail => mail.folder === 'drafts') 
+                filteredMails = allMails.filter(mail => mail.folder === 'drafts')
             } else if (filterBy.folder === 'sent') {
                 filteredMails = allMails.filter(mail => mail.folder === 'sent')
             } else if (filterBy.folder === 'starred') {
                 filteredMails = allMails.filter(mail => mail.isStarred)
-            } else if ( filterBy.folder && filterBy.folder !== 'all') {
-                filteredMails = filteredMails.filter(mail => mail.folder === filterBy.folder)
-            }
+            } 
+            // else if (filterBy.folder && filterBy.folder !== 'all') {
+            //     filteredMails = filteredMails.filter(mail => mail.folder === filterBy.folder)
+            // }
 
 
-        
+
             if (filterBy.filter === 'read') {
                 filteredMails = filteredMails.filter(mail => mail.isRead)
             } else if (filterBy.filter === 'unread') {
@@ -145,9 +147,17 @@ export function MailIndex() {
     }
 
     function markAsRead(mailId) {
-        setMails(prevMails => prevMails.map(mail =>
-            mail.id === mailId ? { ...mail, isRead: !mail.isRead } : mail
-        ))
+        mailService.get(mailId).then(mail => {
+            if (!mail) return;
+
+            mail.isRead = !mail.isRead; // ✅ Toggle read/unread
+            mailService.save(mail).then(() => {
+                setMails(prevMails =>
+                    prevMails.map(m => m.id === mailId ? { ...m, isRead: mail.isRead } : m) // ✅ Update UI instantly
+                );
+            });
+        });
+
 
         mailService.get(mailId).then(mail => {
             mail.isRead = !mail.isRead
@@ -182,8 +192,8 @@ export function MailIndex() {
 
     function onEditDraft(draftId) {
         mailService.get(draftId).then(draft => {
-            setEditingDraft(draft)  
-            setIsComposing(true)    
+            setEditingDraft(draft)
+            setIsComposing(true)
         })
     }
 

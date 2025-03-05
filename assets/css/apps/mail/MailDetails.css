@@ -54,21 +54,25 @@
     transition: color 0.2s;
 }
 
+
 .tooltip-btn i {
     font-size: 18px;
 }
 
 /* Tooltip Text Styling */
 .tooltip-text {
+    
     position: absolute;
-    bottom: -23px; /* Move tooltip below the button */
+    bottom: -30px; /* Move tooltip below the button */
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.75);
     color: white;
     padding: 5px 8px;
     border-radius: 4px;
+    font-family: 'Roboto', serif;
     font-size: 12px;
+    font-weight: 600;
     white-space: nowrap;
     opacity: 0;
     visibility: hidden;
