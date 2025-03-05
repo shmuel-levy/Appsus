@@ -165,13 +165,20 @@ function remove(noteId) {
 }
 
 function save(note) {
-    if (note.id) {
-        return storageService.put(NOTES_KEY, note)
-    } else {
-        note.createdAt = Date.now()
-        if (note.inTrash === undefined) note.inTrash = false
-        return storageService.post(NOTES_KEY, note)
+    if (!note.id) {
+        note.id = utilService.makeId()  
+        return storageService.post(NOTES_KEY, note)  
     }
+
+    return storageService.query(NOTES_KEY)
+        .then(notes => {
+            const existingNote = notes.find(n => n.id === note.id)
+            if (!existingNote) {
+                console.warn('🛑 Note with ID ${note.id} not found, creating a new one.')
+                return storageService.post(NOTES_KEY, note)  
+            }
+            return storageService.put(NOTES_KEY, note)  
+        })
 }
 
 function moveToTrash(noteId) {
