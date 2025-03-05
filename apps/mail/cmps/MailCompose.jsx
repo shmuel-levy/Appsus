@@ -3,56 +3,64 @@ const { useNavigate, useLocation } = ReactRouterDOM
 import { mailService } from "../services/mail.service.js"
 import { utilService } from "../../../services/util.service.js"
 
-export function MailCompose({ onClose, onMailSent , draft}) {
-
+export function MailCompose({ onClose, onMailSent, draft }) {
     const { search } = useLocation()
     const navigate = useNavigate()
     const searchParams = new URLSearchParams(search)
-    const draftId = searchParams.get('draftId') 
-
+    const draftId = searchParams.get('draftId')
+    
+    const subjectFromParams = searchParams.get('subject') || ''
+    const bodyFromParams = searchParams.get('body') || ''
 
     const [mail, setMail] = useState(draft || {
         id: null,
         to: '',
-        subject: '',
-        body: '',
+        subject: subjectFromParams, 
+        body: bodyFromParams, 
         folder: 'drafts'
     })
 
     useEffect(() => {
         if (draft) {
-            setMail(draft) 
+            setMail(draft)
         }
     }, [draft])
 
     useEffect(() => {
         if (draftId) {
-            mailService.get(draftId).then(setMail) 
+            mailService.get(draftId).then(setMail)
         }
     }, [draftId])
 
-    
+    useEffect(() => {
+        if (subjectFromParams || bodyFromParams) {
+            setMail(prevMail => ({
+                ...prevMail,
+                subject: subjectFromParams || prevMail.subject,
+                body: bodyFromParams || prevMail.body
+            }))
+        }
+    }, [subjectFromParams, bodyFromParams])
+
     useEffect(() => {
         const saveDraftInterval = setInterval(() => {
             if (mail.to || mail.subject || mail.body) {
-                const draft = { 
-                    ...mail, 
+                const draft = {
+                    ...mail,
                     folder: "drafts",
-                    from: "user@appsus.com", 
+                    from: "user@appsus.com",
                     createdAt: new Date(),
                 }
-    
+
                 mailService.save(draft).then(savedDraft => {
-                    console.log("Draft Saved:", savedDraft) 
+                    console.log("Draft Saved:", savedDraft)
                     setMail(prevMail => ({ ...prevMail, id: savedDraft.id }))
                 })
             }
         }, 5000)
-    
+
         return () => clearInterval(saveDraftInterval)
     }, [mail.to, mail.subject, mail.body])
-
-    
 
     function handleChange({ target }) {
         const { name, value } = target
@@ -65,7 +73,7 @@ export function MailCompose({ onClose, onMailSent , draft}) {
         if (!mail.id) {
             mail.id = utilService.makeId()
         }
-    
+
         const newMail = {
             ...mail,
             id: utilService.makeId(),
@@ -77,20 +85,18 @@ export function MailCompose({ onClose, onMailSent , draft}) {
             folder: 'sent'
         }
 
-
         mailService.save(newMail).then(() => {
             console.log("✅ Sent Mail Saved:", newMail)
-    
-           
+
             mailService.query().then(mails => {
                 const draftExists = mails.some(m => m.id === mail.id && m.folder === "drafts")
-    
+
                 if (draftExists) {
                     mailService.remove(mail.id).then(() => {
                         console.log("🗑️ Draft Removed:", mail.id)
                         if (typeof onMailSent === "function") onMailSent()
                         if (typeof onClose === "function") onClose()
-                        navigate("/mail?folder=sent") 
+                        navigate("/mail?folder=sent")
                     }).catch(err => {
                         console.error("❌ Error Removing Draft:", err)
                     })
