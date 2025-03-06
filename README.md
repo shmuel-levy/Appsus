@@ -109,6 +109,10 @@ Copy/Appsus
 │           └── note.service.js
 └── /assets
     └── /css               # Component-specific styling
+![NOTES](https://github.com/user-attachments/assets/7f3e72ba-c2bc-4874-922a-ea65afc14f5a)
+![HOME](https://github.com/user-attachments/assets/b97c9f7e-7e90-449c-bf59-8265d9ab6bb0)
+![ABOUT](https://github.com/user-attachments/assets/a8ad3775-4bb6-4159-9074-acb1d2f194e0)
+![GMAIL](https://github.com/user-attachments/assets/b35711fb-43de-4394-8dd9-4c301390fc3f)
 
 🔧 Key Functionality
 Notes Management
