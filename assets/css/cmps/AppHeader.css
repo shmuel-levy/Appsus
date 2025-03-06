@@ -8,6 +8,11 @@
     border-bottom: 1px solid #ddd;
 }
 
+.header-logo {
+    height: 70px;
+    border-radius: 50%;
+}
+
 .logo-text {
     font-family: 'Google Sans', Arial, sans-serif;
     font-size: 24px;
@@ -29,12 +34,29 @@
 }
 
 .app-header nav a {
+    font-family: 'Roboto', serif;
+    font-weight: 600;
     text-decoration: none;
-    color: #5f6368;
-    font-size: 14px;
+    font-size: 18px;
     padding: 8px 16px;
     border-radius: 4px;
     transition: all 0.2s ease;
+}
+
+.app-header a.home-link {
+    color: #4285F4;
+}
+.app-header a.about-link {
+    color: #34A853;
+   
+}
+.app-header a.mail-link {
+    color: 	#EA4335;
+   
+}
+.app-header a.note-link {
+    color: 	#FBBC04;
+   
 }
 
 .app-header nav a:hover {
@@ -42,7 +64,7 @@
 }
 
 .app-header nav a.active {
-    color: #1a73e8;
+    color: black;
     font-weight: 500;
     position: relative;
 }
@@ -54,11 +76,9 @@
     left: 0;
     right: 0;
     height: 3px;
-    background-color: #1a73e8;
+    background-color: black;
     border-radius: 3px 3px 0 0;
 }
-
-
 
 main {
     padding: 20px;

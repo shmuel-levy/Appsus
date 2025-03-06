@@ -41,7 +41,7 @@
     width: 200px;
     height: 200px;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: scale 0.5s ease-in-out
 }
 
 /* ✅ Keep Existing Animations */
@@ -81,15 +81,26 @@
 
 /* ✅ Hover Effect */
 .icon:hover, .appsus-logo:hover {
-    scale: 110%;
-    transition: scale 0.5s ease-in-out;
+    scale: 1.1;
+}
+
+.icon:not(:hover), .appsus-logo:not(:hover) {
+    scale: 1; /* Smoothly scale back to original size */
 }
 
 
 
 .container.home h1 {
     font-family: 'Roboto', serif;
-    font-size: 80px;
-    color:#4285F4
+    font-size: 100px;
+    color:#4285F4;
+    margin-bottom: 30px ;
+}
 
+.container.home p {
+    font-family: 'Roboto',serif;
+    font-size: 30px;
+    color: black;
+    margin: 0;
+    font-weight: 200;
 }
