@@ -162,10 +162,7 @@ User authentication
 Cloud storage integration
 Collaborative notes and emails
 Labels and categories
-Dark mode
 Mobile app version
-Contact management
-Calendar integration
 
 🤝 Contributing
 Contributions, issues, and feature requests are welcome! Feel free to check issues page.
