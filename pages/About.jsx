@@ -31,25 +31,25 @@ export function About() {
               <p>Responsible for the Keep application and About page.</p>
               <div className="social-links">
                 <a
-                  href="https://facebook.com/"
+                  href="https://www.facebook.com/hartknthruanutk"
                   target="_blank"
                   className="social-icon"
                 >
                   <i className="fab fa-facebook-f"></i>
                 </a>
                 <a
-                  href="https://instagram.com/"
+                  href="https://www.instagram.com/shmuel_levy12/"
                   target="_blank"
                   className="social-icon"
                 >
                   <i className="fab fa-instagram"></i>
-                </a>
+                  </a>
                 <a
-                  href="https://linkedin.com/"
+                  href="https://github.com/shmuel-levy"
                   target="_blank"
                   className="social-icon"
                 >
-                  <i className="fab fa-linkedin-in"></i>
+                  <i className="fab fa-github"></i>
                 </a>
               </div>
             </div>
@@ -60,30 +60,30 @@ export function About() {
                 alt="Team Member"
                 className="member-img"
               />
-              <h3>Shoham Shitler</h3>
+              <h3>Shoham Shtiler</h3>
               <p>Front-end Developer</p>
               <p>Responsible for the Mail application and Home page.</p>
               <div className="social-links">
                 <a
-                  href="https://facebook.com/"
+                  href="https://www.facebook.com/shoham.shtiler"
                   target="_blank"
                   className="social-icon"
                 >
                   <i className="fab fa-facebook-f"></i>
                 </a>
                 <a
-                  href="https://instagram.com/"
+                  href="https://www.instagram.com/shoham.shtiler/"
                   target="_blank"
                   className="social-icon"
                 >
                   <i className="fab fa-instagram"></i>
-                </a>
+                  </a>
                 <a
-                  href="https://linkedin.com/"
+                  href="https://github.com/ShohamShtiler"
                   target="_blank"
                   className="social-icon"
                 >
-                  <i className="fab fa-linkedin-in"></i>
+                  <i className="fab fa-github"></i>
                 </a>
               </div>
             </div>
