@@ -112,8 +112,8 @@ export function NoteAdd({ onAddNote }) {
                 return (
                     !noteInfo.title || !noteInfo.todos || noteInfo.todos.length === 0
                 )
-                case "NoteVideo":
-            return !noteInfo.url || !noteInfo.title
+            case "NoteVideo":
+                return !noteInfo.url || !noteInfo.title
             default:
                 return true
         }
@@ -144,36 +144,52 @@ export function NoteAdd({ onAddNote }) {
                 {isExpanded && (
                     <div className="note-form-footer">
                         <div className="note-tools">
-                            <div className="note-type-buttons">
-                                <button
-                                    type="button"
-                                    className={noteType === "NoteTxt" ? "active" : ""}
-                                    onClick={() => handleTypeChange("NoteTxt")}
-                                >
-                                    Text
-                                </button>
-                                <button
-                                    type="button"
-                                    className={noteType === "NoteImg" ? "active" : ""}
-                                    onClick={() => handleTypeChange("NoteImg")}
-                                >
-                                    Image
-                                </button>
-                                <button
-                                    type="button"
-                                    className={noteType === "NoteTodos" ? "active" : ""}
-                                    onClick={() => handleTypeChange("NoteTodos")}
-                                >
-                                    Todos
-                                </button>
-                                <button
-    type="button"
-    className={noteType === "NoteVideo" ? "active" : ""}
-    onClick={() => handleTypeChange("NoteVideo")}
->
-    Video
-</button>
-                            </div>
+                        <div className="note-type-buttons">
+    <button
+        type="button"
+        className={noteType === "NoteTxt" ? "active" : ""}
+        onClick={() => handleTypeChange("NoteTxt")}
+        title="Text note"
+    >
+        {/* Text icon */}
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="currentColor">
+            <path d="M14 17H4v2h10v-2zm6-8H4v2h16V9zM4 15h16v-2H4v2zM4 5v2h16V5H4z"/>
+        </svg>
+    </button>
+    <button
+        type="button"
+        className={noteType === "NoteImg" ? "active" : ""}
+        onClick={() => handleTypeChange("NoteImg")}
+        title="Image note"
+    >
+        {/* Image icon */}
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="currentColor">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-1.96-2.36L6.5 17h11l-3.54-4.71z"/>
+        </svg>
+    </button>
+    <button
+        type="button"
+        className={noteType === "NoteTodos" ? "active" : ""}
+        onClick={() => handleTypeChange("NoteTodos")}
+        title="List note"
+    >
+        {/* Todo list icon */}
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="currentColor">
+            <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+        </svg>
+    </button>
+    <button
+        type="button"
+        className={noteType === "NoteVideo" ? "active" : ""}
+        onClick={() => handleTypeChange("NoteVideo")}
+        title="YouTube video note"
+    >
+        {/* YouTube icon */}
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="currentColor">
+            <path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.54-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM10 15V9l5.2 3-5.2 3z"/>
+        </svg>
+    </button>
+</div>
 
                             <div className="color-picker">
                                 <button
@@ -273,29 +289,30 @@ export function NoteAdd({ onAddNote }) {
                         />
                     </div>
                 )
-                case "NoteVideo":
-                    return (
-                        <div className="video-note-form" dir="ltr">
-                            <input
-                                type="text"
-                                name="title"
-                                placeholder="Title"
-                                value={noteInfo.title || ""}
-                                onChange={handleChange}
-                                onFocus={handleFocus}
-                                dir="ltr"
-                            />
-                            <input
-                                type="text"
-                                name="url"
-                                placeholder="YouTube Video URL"
-                                value={noteInfo.url || ""}
-                                onChange={handleChange}
-                                onFocus={handleFocus}
-                                dir="ltr"
-                            />
-                        </div>
-                    )
+                
+            case "NoteVideo":
+                return (
+                    <div className="video-note-form" dir="ltr">
+                        <input
+                            type="text"
+                            name="title"
+                            placeholder="Title"
+                            value={noteInfo.title || ""}
+                            onChange={handleChange}
+                            onFocus={handleFocus}
+                            dir="ltr"
+                        />
+                        <input
+                            type="text"
+                            name="url"
+                            placeholder="YouTube Video URL"
+                            value={noteInfo.url || ""}
+                            onChange={handleChange}
+                            onFocus={handleFocus}
+                            dir="ltr"
+                        />
+                    </div>
+                )
 
             default:
                 return <div>Unsupported note type</div>

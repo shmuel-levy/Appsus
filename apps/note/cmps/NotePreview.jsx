@@ -26,6 +26,25 @@ export function NotePreview({ note, onRemoveNote, onPinNote, onArchiveNote, inTr
         if (onArchiveNote) onArchiveNote(id)
     }
     
+    function getYoutubeEmbedUrl(url) {
+        if (!url) return ''
+        
+        let videoId = null
+        const standardMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/)
+        if (standardMatch && standardMatch[1]) {
+            videoId = standardMatch[1]
+        }
+        
+        const embedMatch = url.match(/youtube\.com\/embed\/([^?]+)/)
+        if (embedMatch && embedMatch[1]) {
+            videoId = embedMatch[1]
+        }
+        
+        if (!videoId) return ''
+        
+        return `https://www.youtube.com/embed/${videoId}`
+    }
+    
     function renderNoteContent() {
         switch (type) {
             case 'NoteTxt':
@@ -61,6 +80,22 @@ export function NotePreview({ note, onRemoveNote, onPinNote, onArchiveNote, inTr
                                 </li>
                             ))}
                         </ul>
+                    </div>
+                )
+            
+            case 'NoteVideo':
+                return (
+                    <div>
+                        <h3>{info.title}</h3>
+                        <div className="video-container">
+                            <iframe
+                                src={getYoutubeEmbedUrl(info.url)}
+                                title={info.title || "YouTube video"}
+                                frameBorder="0"
+                                allow="accelerometer autoplay clipboard-write encrypted-media gyroscope picture-in-picture"
+                                allowFullScreen>
+                            </iframe>
+                        </div>
                     </div>
                 )
                 
