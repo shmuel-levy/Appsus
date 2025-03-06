@@ -5,6 +5,7 @@ export function Home() {
     return (
         <section className="container home">
             <h1 className="fade-in">Welcome to Appsus</h1>
+            <p>Where Productivity Meets Simplicity</p>
 
             {/* Logo Container - Centered */}
             <div className="logos-container">
