@@ -19,7 +19,11 @@
     max-width: 90vw;
     max-height: 85vh;
     overflow: auto;
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
 }
+
+
 
 .note-edit-modal {
     padding: 20px 20px 10px;
