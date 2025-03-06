@@ -1,3 +1,40 @@
+.app-header {
+    display: flex;
+    align-items: center;
+    height: 64px;
+    padding: 0 16px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3);
+    z-index: 101;
+}
+
+.app-header-left {
+    display: flex;
+    align-items: center;
+}
+
+.app-logo {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+}
+
+.app-logo img {
+    height: 40px;
+    width: 40px;
+    margin-right: 8px;
+}
+
+.app-logo span {
+    font-size: 22px;
+    font-weight: 400;
+    color: #5f6368;
+}
+
 .note-sub-header {
     display: flex;
     align-items: center;
@@ -61,57 +98,15 @@
     margin-left: 30px; 
 }
 
-.search-bar {
-    background-color: #f1f3f4;
-    border-radius: 8px;
-    padding: 0 8px;
-    display: flex;
-    align-items: center;
-    height: 48px;
-    transition: box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-.search-bar.focused {
-    background-color: #fff;
-    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 1px 3px 1px rgba(60, 64, 67, 0.149);
-}
-
-.note-filter-container {
-    display: none;
-}
-
-
-
-.note-sidebar.expanded {
-    width: 280px;
-}
-
-.sidebar-text {
-    opacity: 0;
-    transition: opacity 0.2s ease;
-}
-
-.note-sidebar.expanded .sidebar-text {
-    opacity: 1;
-}
-
 .note-app-content {
-    margin-left: 72px; 
-    margin-top: 128px;
+    margin-left: 280px;    margin-top: 128px;
     width: calc(100% - 72px);
     transition: margin-left 0.2s ease, width 0.2s ease;
     padding: 16px;
 }
 
-.note-app-content.sidebar-expanded {
-    margin-left: 280px;
-    width: calc(100% - 280px);
-}
-
-
-
 @media (max-width: 600px) {
-    .note-sub-header .keep-logo span {
+    .app-logo.note-sub-header .keep-logo span {
         display: none;
     }
     
@@ -123,3 +118,4 @@
         margin-left: 10px;
     }
 }
+

@@ -4,24 +4,24 @@
     margin-top: 64px;
 }
 
-.note-app-content {
-    margin-right: 280px;
-    padding: 20px;
-    min-height: calc(100vh - 64px);
-    width: calc(100% - 280px);
-    transition: margin-right 0.2s ease, width 0.2s ease;
-}
+
 
 @media (max-width: 768px) {
     .note-app-content {
-        margin-right: 72px;
-        width: calc(100% - 72px);
+        margin-left: 72px !important;
+        margin-right: 0 ;
+        width: calc(100% - 72px) ;
+    }
+    
+    .note-sidebar {
+        width: 72px ;
     }
 }
 
 @media (max-width: 480px) {
     .note-app-content {
-        margin-right: 0;
-        width: 100%;
+        margin-left: 0 ;
+        margin-right: 0 ;
+        width: 100% ;
     }
 }

@@ -9,6 +9,7 @@
     z-index: 100;
     border-right: 1px solid #e0e0e0;
     display: flex;
+    margin-top: 5px;
     flex-direction: column;
     padding-top: 8px;
     overflow-y: auto;
@@ -103,80 +104,9 @@
     opacity: 1;
 }
 
-.menu-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    margin-right: 8px;
-    padding: 12px;
-}
-
-.menu-toggle:hover {
-    background-color: rgba(0, 0, 0, 0.04);
-}
-
-.menu-toggle svg {
-    fill: #5f6368;
-    width: 24px;
-    height: 24px;
-}
-
-.note-app-content {
-    margin-left: 72px;
-    width: calc(100% - 72px);
-    transition: margin-left 0.2s ease, width 0.2s ease;
-}
-
-.note-app-content.sidebar-expanded {
+s
+.sidebar-expanded {
     margin-left: 280px;
     width: calc(100% - 280px);
 }
 
-.app-header {
-    display: flex;
-    align-items: center;
-    height: 64px;
-    padding: 0 16px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: #fff;
-    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3);
-    z-index: 101;
-}
-
-.app-header-left {
-    display: flex;
-    align-items: center;
-}
-
-.app-logo {
-    display: flex;
-    align-items: center;
-    margin-left: 8px;
-}
-
-.app-logo img {
-    height: 40px;
-    width: 40px;
-    margin-right: 8px;
-}
-
-.app-logo span {
-    font-size: 22px;
-    font-weight: 400;
-    color: #5f6368;
-}
-
-@media (max-width: 600px) {
-    .app-logo span {
-        display: none;
-    }
-}

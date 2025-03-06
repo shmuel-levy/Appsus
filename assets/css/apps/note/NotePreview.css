@@ -69,66 +69,66 @@
 
 .note-actions {
     display: flex !important;
-    justify-content: flex-end !important;
-    padding: 8px !important;
-    opacity: 0 !important;
-    transition: opacity 0.2s ease !important;
-    position: absolute !important;
-    bottom: 0 !important;
-    right: 0 !important;
-    left: 0 !important;
-    background: linear-gradient(to top, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%) !important;
+    justify-content: flex-end ;
+    padding: 8px ;
+    opacity: 0 ;
+    transition: opacity 0.2s ease ;
+    position: absolute ;
+    bottom: 0 ;
+    right: 0 ;
+    left: 0 ;
+    background: linear-gradient(to top, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%) ;
 }
 
 .note-preview:hover .note-actions {
-    opacity: 1 !important;
+    opacity: 1 ;
 }
 
 .regular-actions, .trash-actions, .archive-actions {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: flex-end !important;
-    width: 100% !important;
+    display: flex ;
+    flex-direction: row ;
+    align-items: center ;
+    justify-content: flex-end ;
+    width: 100% ;
 }
 
 .note-actions button {
-    background: none !important;
-    border: none !important;
-    cursor: pointer !important;
-    margin-left: 4px !important;
-    color: #5f6368 !important;
-    font-size: 18px !important;
-    padding: 0 !important;
-    border-radius: 50% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 32px !important;
-    height: 32px !important;
-    transition: background-color 0.2s ease !important;
+    background: none ;
+    border: none ;
+    cursor: pointer ;
+    margin-left: 4px ;
+    color: #5f6368 ;
+    font-size: 18px ;
+    padding: 0 ;
+    border-radius: 50% ;
+    display: flex ;
+    align-items: center ;
+    justify-content: center ;
+    width: 32px ;
+    height: 32px ;
+    transition: background-color 0.2s ease ;
 }
 
 .note-actions button:hover {
-    background-color: rgba(95, 99, 104, 0.157) !important;
+    background-color: rgba(95, 99, 104, 0.157) ;
 }
 
 .pin-btn.pinned {
-    color: #f1c40f !important;
+    color: #f1c40f ;
 }
 
 .restore-btn {
-    color: #5f6368 !important;
+    color: #5f6368 ;
 }
 
 .remove-btn.delete-forever {
-    color: #d93025 !important;
+    color: #d93025 ;
 }
 
 .note-preview.in-trash {
-    opacity: 0.85 !important;
+    opacity: 0.85 ;
 }
 
 .note-preview.in-archive {
-    opacity: 0.9 !important;
+    opacity: 0.9 ;
 }
