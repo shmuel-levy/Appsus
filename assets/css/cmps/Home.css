@@ -1,33 +1,95 @@
- /* home */
-
-.home {
-    background-color: var(--bg2);
+.container.home {
+    text-align: center;
+    padding: 0px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: url('../../img/background-image.png') center center/cover no-repeat fixed; /* ✅ Your Image */
+    /* width: 100vw; */
+   height: 100vh;
+   
+   
 }
 
-.home .box-container {
-    padding: 1em 0;
+/* ✅ Add Overlay for Better Visibility */
+.container.home::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
 }
 
-.home .box1 {
-    background-color: var(--color1);
-    min-height: 10em;
+/* Logos Container - Centered */
+.logos-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin-top: 50px;
+    position: relative;
+    z-index: 1; /* ✅ So icons are above overlay */
 }
 
-.home .box2 {
-    background-color: var(--color2);
-    min-height: 10em;
+/* Make all icons bigger */
+.icon, .appsus-logo {
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
- @media (min-width: 750px) {
-    .home .box-container {
-        display: flex;
-        flex-direction: row-reverse;
-    }
-    .home .box1 {
-        flex: 1
-    }
-    .home .box2 {
-        width: 30vw;
-    }
-    
+/* ✅ Keep Existing Animations */
+.zoom-in {
+    opacity: 0;
+    transform: scale(0.5);
+    animation: zoomIn 1.5s forwards;
+}
+
+@keyframes zoomIn {
+    0% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 0.5; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.bounce-in-left {
+    transform: translateX(-150px);
+    animation: bounceInLeft 1.5s forwards;
+}
+
+@keyframes bounceInLeft {
+    0% { transform: translateX(-150px); }
+    60% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+}
+
+.bounce-in-right {
+    transform: translateX(150px);
+    animation: bounceInRight 1.5s forwards;
+}
+
+@keyframes bounceInRight {
+    0% { transform: translateX(150px); }
+    60% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+
+/* ✅ Hover Effect */
+.icon:hover, .appsus-logo:hover {
+    scale: 110%;
+    transition: scale 0.5s ease-in-out;
+}
+
+
+
+.container.home h1 {
+    font-family: 'Roboto', serif;
+    font-size: 80px;
+    color:#4285F4
+
 }
