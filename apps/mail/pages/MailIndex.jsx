@@ -31,8 +31,13 @@ export function MailIndex() {
     const [selectedMails, setSelectedMails] = useState([])
     const [sortBy, setSortBy] = useState('date')
     const [isLoading, setIsLoading] = useState(true)
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const navigate = useNavigate()
     const location = useLocation()
+
+    function toggleSidebar() {
+        setIsSidebarCollapsed(prev => !prev);
+    }
 
     useEffect(() => {
         mailService.query().then(fetchedMails => {
@@ -73,8 +78,8 @@ export function MailIndex() {
             } else if (filterBy.folder === 'starred') {
                 filteredMails = allMails.filter(mail => mail.isStarred)
             }
-            
-            
+
+
             if (filterBy.filter === 'read') {
                 filteredMails = filteredMails.filter(mail => mail.isRead)
             } else if (filterBy.filter === 'unread') {
@@ -223,21 +228,26 @@ export function MailIndex() {
 
     return (
         <section className="mail-index">
-            <aside className="mail-sidebar">
+            <aside className={`mail-sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
+
                 <div className='mail-sidebar-logo'>
-                    <div>
+                    <div onClick={toggleSidebar}>
                         <span><i className="fa-solid fa-bars"></i></span>
                     </div>
                     <img className='gmail-logo' src="./assets/img/logo-gmail.png"></img>
                 </div>
-                <button className="compose-btn" onClick={() => setIsComposing(true)}>
-                    <img src="./assets/img/compose.png"></img> Compose
-                </button>
-                <MailFolderList onSetFolder={onSetFolder} activeFolder={folder} unreadCount={unreadCount} />
+
+                <div className="mail-sidebar-content">
+                    <button className="compose-btn" onClick={() => setIsComposing(true)}>
+                        <img src="./assets/img/compose.png"></img><span>Compose</span>
+                    </button>
+                    <MailFolderList onSetFolder={onSetFolder} activeFolder={folder} unreadCount={unreadCount} isCollapsed={isSidebarCollapsed} />
+                </div>
+
             </aside>
-            <div className="mail-content">
+            <div className='mail-content'>
                 <MailFilter onSetFilter={onSetFilter} />
-                <div className="mail-filter-container">
+                <div className={`mail-filter-container ${isSidebarCollapsed ? 'collapsed' : ''}`}>
                     {/* <MailFilter onSetFilter={onSetFilter} /> */}
                     <select name='filter' onChange={(ev) => setFilterBy(prev => ({ ...prev, filter: ev.target.value }))}>
                         <option value='all'>All</option>
@@ -250,7 +260,7 @@ export function MailIndex() {
                         <option value="title">Title</option>
                     </select>
                 </div>
-                <div className='mail-filter-inside' style={{ display: location.pathname.includes('/mail/') ? 'none' : 'block' }}>
+                <div className={`mail-filter-inside ${isSidebarCollapsed ? 'collapsed' : ''}`} style={{ display: location.pathname.includes('/mail/') ? 'none' : 'block' }}>
                     <MailList mails={mails} onEditDraft={onEditDraft} onMailClick={markAsRead} onToggleStar={toggleStar} onToggleSelect={toggleSelect} onDeleteMail={onDeleteMail} onSaveAsNote={onSaveAsNote} selectedMails={selectedMails} />
                 </div>
                 {isComposing && <MailCompose onClose={() => setIsComposing(false)} onMailSent={onMailSent} draft={editingDraft} />}

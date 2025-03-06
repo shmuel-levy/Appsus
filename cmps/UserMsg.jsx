@@ -13,7 +13,7 @@ export function UserMsg() {
         clearTimeout(timeoutIdRef.current)
         timeoutIdRef.current = null
       }
-      timeoutIdRef.current = setTimeout(closeMsg, 5000)
+      timeoutIdRef.current = setTimeout(closeMsg, 3000)
     })
     return unsubscribe
   }, [])

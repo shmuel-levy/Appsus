@@ -162,3 +162,7 @@
     outline: 1px solid transparent;
     border: none;
 }
+
+.mail-sidebar.collapsed .input-icon {
+    margin-left: 80px;
+ }
