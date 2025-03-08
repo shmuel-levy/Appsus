@@ -31,4 +31,6 @@
 @import './apps/mail/MailCompose.css';
 @import './apps/mail/MailFolderList.css';
 @import './apps/mail/MailFilter.css';
-@import './apps/mail/GmailLoader.css'
+@import './apps/mail/GmailLoader.css';
+@import './apps/mail/HomeLoader.css';
+@import './apps/mail/mq.css';

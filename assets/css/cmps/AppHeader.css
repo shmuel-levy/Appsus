@@ -9,8 +9,7 @@
 }
 
 .header-logo {
-    height: 70px;
-    border-radius: 50%;
+    height: 85px;
 }
 
 .logo-text {
@@ -64,7 +63,7 @@
 }
 
 .app-header nav a.active {
-    color: black;
+    color: white;
     font-weight: 500;
     position: relative;
 }
@@ -76,7 +75,7 @@
     left: 0;
     right: 0;
     height: 3px;
-    background-color: black;
+    background-color: white;
     border-radius: 3px 3px 0 0;
 }
 

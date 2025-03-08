@@ -42,7 +42,7 @@ export function MailIndex() {
     useEffect(() => {
         mailService.query().then(fetchedMails => {
             setMails(fetchedMails);
-            setTimeout(() => setIsLoading(false), 4000); // ✅ Simulate Loading Delay
+            setTimeout(() => setIsLoading(false), 2000); // ✅ Simulate Loading Delay
         });
     }, []);
 

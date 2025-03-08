@@ -1,0 +1,64 @@
+/* Home-page */
+@media screen and (max-width: 768px) {
+    .container.home {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(45deg, #4285F4, #34A853, #EA4335, #FBBC04);
+        background-size: 300% 300%;
+        animation: gentleColorFlow 10s infinite alternate ease-in-out;
+        z-index: -1; /* Keeps it in the background */
+    }
+    .container.home h1 {
+        color: white;
+        font-size: 40px; /* Smaller title */
+        margin-bottom: 20px;
+    }
+
+    .container.home p {
+        font-size: 18px; /* Smaller text */
+    }
+
+    .logos-container {
+        /* flex-direction: column; Stack icons vertically */
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .icon {
+        width: 100px; /* Smaller icons */
+        height: 100px;
+    }
+
+    .appsus-logo {
+        width: 80px;
+        height: 80px;
+    }
+     
+     .icon.mail {
+        padding: 0px 15px;
+     }
+
+    /* @keyframes animatedGradient {
+        0% { background-position: 0% 50%; }
+        25% { background-position: 50% 100%; }
+        50% { background-position: 100% 50%; }
+        75% { background-position: 50% 0%; }
+        100% { background-position: 0% 50%; }
+    } */
+
+    @keyframes gentleColorFlow {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+}

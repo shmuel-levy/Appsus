@@ -2,12 +2,12 @@
     display: flex;
     align-items: center;
     height: 64px;
-    padding: 0 16px;
+    padding: 8px 16px 0px 0px;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    background-color: #fff;
+    background-color: #1B1B1B;
     box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3);
     z-index: 101;
 }

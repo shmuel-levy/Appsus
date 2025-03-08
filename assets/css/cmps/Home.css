@@ -8,10 +8,11 @@
     align-items: center;
     position: relative;
     background: url('../../../assets/img/background-home.png') center center/cover no-repeat fixed; 
-    /* width: 100vw; */
    height: 100vh;
-   
-   
+}
+
+.mail {
+    padding: 0px 20px;
 }
 
 
@@ -42,6 +43,11 @@
     height: 200px;
     cursor: pointer;
     transition: scale 0.5s ease-in-out
+}
+
+.appsus-logo {
+    width: 180px;
+    height: 180px;
 }
 
 

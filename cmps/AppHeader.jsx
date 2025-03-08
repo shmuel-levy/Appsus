@@ -3,7 +3,7 @@ const { Link, NavLink } = ReactRouterDOM
 export function AppHeader() {
     return <header className="app-header">
         <Link to="/" className="logo-text">
-            <img src='./assets/img/horse.png' className='header-logo'></img>
+            <img src='./assets/img/header.png' className='header-logo'></img>
         </Link>
         <nav>
                 <NavLink to="/" className={({ isActive }) => isActive ? "active" : "home-link"}>
