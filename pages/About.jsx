@@ -1,9 +1,8 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
 export function About() {
   return (
     <div className="about-page">
-      <div className="background-image"></div>
       <div className="about-container">
         <h1>About Appsus</h1>
         
@@ -31,21 +30,21 @@ export function About() {
               <p>Responsible for the Keep application and About page.</p>
               <div className="social-links">
                 <a
-                  href="https://www.facebook.com/hartknthruanutk"
+                  href="https://facebook.com/"
                   target="_blank"
                   className="social-icon"
                 >
                   <i className="fab fa-facebook-f"></i>
                 </a>
                 <a
-                  href="https://www.instagram.com/shmuel_levy12/"
+                  href="https://instagram.com/"
                   target="_blank"
                   className="social-icon"
                 >
                   <i className="fab fa-instagram"></i>
-                  </a>
+                </a>
                 <a
-                  href="https://github.com/shmuel-levy"
+                  href="https://github.com/"
                   target="_blank"
                   className="social-icon"
                 >
@@ -60,30 +59,30 @@ export function About() {
                 alt="Team Member"
                 className="member-img"
               />
-              <h3>Shoham Shtiler</h3>
+              <h3>Shoham Shitler</h3>
               <p>Front-end Developer</p>
               <p>Responsible for the Mail application and Home page.</p>
               <div className="social-links">
                 <a
-                  href="https://www.facebook.com/shoham.shtiler"
+                  href="https://facebook.com/"
                   target="_blank"
                   className="social-icon"
                 >
                   <i className="fab fa-facebook-f"></i>
                 </a>
                 <a
-                  href="https://www.instagram.com/shoham.shtiler/"
+                  href="https://instagram.com/"
                   target="_blank"
                   className="social-icon"
                 >
                   <i className="fab fa-instagram"></i>
-                  </a>
+                </a>
                 <a
-                  href="https://github.com/ShohamShtiler"
+                  href="https://linkedin.com/"
                   target="_blank"
                   className="social-icon"
                 >
-                  <i className="fab fa-github"></i>
+                  <i className="fab fa-linkedin-in"></i>
                 </a>
               </div>
             </div>
@@ -119,5 +118,5 @@ export function About() {
         </footer>
       </div>
     </div>
-  )
+  );
 }
