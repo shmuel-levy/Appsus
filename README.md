@@ -60,9 +60,11 @@ Note Types	Text, Todo, YouTube embeds, Image, Audio, Canvas
 Styling	Component-scoped CSS
 Integration	Notes ↔ Mail linkage (send note as email)
 Deployment	GitHub Pages / local browser-based storage
+
 📸 Screenshots
+
 <img width="1828" height="1300" alt="Appsus home" src="https://github.com/user-attachments/assets/fa487e08-d466-4e44-8f93-b0c3cf1bc03c" />
-   <img width="1828" height="1292" alt="Appsus about" src="https://github.com/user-attachments/assets/6f76d193-712f-4074-b50b-86ae5a10edf2" />
+ <img width="1828" height="1292" alt="Appsus about" src="https://github.com/user-attachments/assets/6f76d193-712f-4074-b50b-86ae5a10edf2" />
 <img width="1811" height="1300" alt="Appsus gmail" src="https://github.com/user-attachments/assets/37a2ed3a-651e-4c8f-b052-75f4bc7f984f" />
 <img width="1816" height="1289" alt="Appsus notes" src="https://github.com/user-attachments/assets/289f662f-d42a-4e4b-81a7-93f3246eaa95" />
 
