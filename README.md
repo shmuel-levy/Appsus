@@ -19,7 +19,7 @@ APPSUS is a comprehensive clone of Google's productivity suite, featuring pixel-
 
 ## 🚀 Live Demo
 
-[**View Live Application**][(your-demo-link)](https://shohamshtiler.github.io/Appsus/) | [**Source Code**][(your-github-link)](https://github.com/shmuel-levy/Appsus)
+[**View Live Application**][Appsus](https://shohamshtiler.github.io/Appsus/) | [**Source Code**][Shmuel Levy](https://github.com/shmuel-levy/Appsus)
 
 ---
 
