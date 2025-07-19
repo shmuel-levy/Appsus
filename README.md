@@ -281,7 +281,5 @@ Contributions are welcome! Please read our contributing guidelines and submit pu
 ## 👨‍💻 Authors
 
 **Shoham & Shmuel** – Full Stack Developers
-
-- Portfolio: [your-portfolio-link]
-- LinkedIn: [your-linkedin-link]
-- Email: your-email@example.com
+- LinkedIn: [Shmuel Levy](https://www.linkedin.com/in/shmuel-levy-760171295/)
+- Email: shmuellevy16@gmail.com
