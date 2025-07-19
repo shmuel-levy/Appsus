@@ -19,7 +19,7 @@ APPSUS is a comprehensive clone of Google's productivity suite, featuring pixel-
 
 ## 🚀 Live Demo
 
-[**View Live Application**](your-demo-link) | [**Source Code**](your-github-link)
+[**View Live Application**][(your-demo-link)](https://shohamshtiler.github.io/Appsus/) | [**Source Code**][(your-github-link)](https://github.com/shmuel-levy/Appsus)
 
 ---
 
@@ -255,7 +255,7 @@ src/
 
 ---
 
-## 🎯 Learning Outcomes
+##  Learning Outcomes
 
 This project demonstrates proficiency in:
 - **Modern React Development** – Hooks, Context API, Component Patterns
@@ -266,7 +266,7 @@ This project demonstrates proficiency in:
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Please read our contributing guidelines and submit pull requests for any improvements.
 
@@ -278,12 +278,6 @@ Contributions are welcome! Please read our contributing guidelines and submit pu
 
 ---
 
-## 📜 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
 ## 👨‍💻 Authors
 
 **Shoham & Shmuel** – Full Stack Developers
@@ -291,16 +285,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Portfolio: [your-portfolio-link]
 - LinkedIn: [your-linkedin-link]
 - Email: your-email@example.com
-
----
-
-## 🙏 Acknowledgments
-
-- **Google Workspace** – Design and functionality inspiration
-- **Material Design** – UI/UX guidelines and icon library
-- **React Community** – Documentation and best practices
-- **Open Source Contributors** – Libraries and tools that made this possible
-
----
-
-*Built with ❤️ and modern web technologies*
